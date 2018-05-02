@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller">
+   <top>
+      <VBox prefHeight="176.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+         <children>
+            <MenuBar>
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Close" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Delete" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <TextField prefHeight="36.0" prefWidth="918.0" promptText="Host" />
+            <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="1280.0" promptText="Port" />
+            <HBox prefHeight="61.0" prefWidth="1280.0" spacing="20.0">
+               <children>
+                  <Button fx:id="myButton" mnemonicParsing="false" onAction="#setCrapbutton" prefHeight="51.0" prefWidth="132.0" text="Connect" />
+                  <Button mnemonicParsing="false" prefHeight="52.0" prefWidth="131.0" text="Disconnect" />
+                  <Circle fill="#ff1f1f" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Connected/Disconnected" textAlignment="JUSTIFY" wrappingWidth="169.84912109375" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   <bottom>
+      <HBox alignment="CENTER_LEFT" prefHeight="97.0" prefWidth="1244.0" spacing="30.0" BorderPane.alignment="CENTER">
+         <children>
+            <ScrollPane prefHeight="97.0" prefWidth="1033.0">
+               <content>
+                  <TextArea prefHeight="93.0" prefWidth="1031.0" promptText="Type message" />
+               </content>
+            </ScrollPane>
+            <Button alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="67.0" prefWidth="123.0" snapToPixel="false" text="Send" />
+         </children>
+      </HBox>
+   </bottom>
+   <center>
+      <ScrollPane prefHeight="448.0" prefWidth="1035.0" BorderPane.alignment="CENTER">
+         <content>
+            <TextArea prefHeight="445.0" prefWidth="1033.0" />
+         </content>
+      </ScrollPane>
+   </center>
+   <right>
+      <TreeView fx:id="treeView" editable="true" prefHeight="423.0" prefWidth="245.0" showRoot="false" BorderPane.alignment="CENTER" />
+   </right>
+</BorderPane>
