@@ -1,23 +1,25 @@
 package GroupManagement;
 
 public class Member {
-    //variable:identifier
     private String name;
-    //variable:IP address;
     private String address;
+    private String port;
 
-    public Member(String name, String address) {
+    public Member(String name, String address, String port) {
         this.name = name;
         this.address = address;
+        this.port = port;
     }
 
-    //method:getID
     public String getName() {
         return name;
     }
 
-    //method:getIP
     public String getAddress() {
         return address;
+    }
+
+    public String getPort() {
+        return port;
     }
 }

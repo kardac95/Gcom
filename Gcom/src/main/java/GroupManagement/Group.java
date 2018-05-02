@@ -1,33 +1,37 @@
 package GroupManagement;
 
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Group {
-    //variable:memberList
+public class Group implements Observer {
     private HashMap<String, Member> members;
-    //variable:identifier
     private String name;
+
 
     public Group(String name) {
         this.name = name;
         this.members = new HashMap<>();
     }
 
-    public Group(String name, HashMap<String, Member> members) {
-        this.name = name;
+    public Group(String groupName, HashMap<String, Member> members) {
+        this.name = groupName;
         this.members = members;
     }
 
-    //method:addMember
-    public void addMember(String name, String address) {
-        members.put(name, new Member(name, address));
+    public void addMember(String memberName, String address, String port) {
+        members.put(memberName, new Member(memberName, address, port));
+    }
+    public void addMember(Member member) {
+        members.put(member.getName(), member);
     }
 
-    //method:removeMember
-    public void removeMember(String name) {
-        members.remove(name);
+    public void removeMember(String memberName) {
+        members.remove(memberName);
     }
 
-    //method:?joinGroup
-    //method:?refreshMemberList
+    @Override
+    public void update(Observable observable, Object o) {
+
+    }
 }
