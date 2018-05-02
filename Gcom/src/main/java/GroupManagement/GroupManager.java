@@ -24,7 +24,7 @@ public class GroupManager {
     }
 
     //method:joinGroup
-    public void joinGroup() {
-        
+    public void joinGroup(String groupName, String name, String address) {
+        groups.get(groupName).addMember(name, address);
     }
 }
