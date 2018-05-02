@@ -19,12 +19,13 @@ public class Group implements Observer {
         this.members = members;
     }
 
-    //method:addMember
-    public void addMember(String memberName, String address) {
-        members.put(memberName, new Member(memberName, address));
+    public void addMember(String memberName, String address, String port) {
+        members.put(memberName, new Member(memberName, address, port));
+    }
+    public void addMember(Member member) {
+        members.put(member.getName(), member);
     }
 
-    //method:removeMember
     public void removeMember(String memberName) {
         members.remove(memberName);
     }
