@@ -36,6 +36,10 @@ public class Group implements Observer {
         return members.keySet().contains(memberName);
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public void update(Observable observable, Object o) {
 
