@@ -24,6 +24,10 @@ public class GroupManager {
         groups.remove(groupName);
     }
 
+    public Group getGroup(String groupName) {
+        return groups.get(groupName);
+    }
+
     public void getAvailableGroups() {
         //connect to nameserver
 
