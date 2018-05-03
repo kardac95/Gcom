@@ -1,6 +1,7 @@
 package GroupManagement;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public class GroupManager {
     private HashMap<String, Group> groups;
@@ -26,6 +27,10 @@ public class GroupManager {
 
     public Group getGroup(String groupName) {
         return groups.get(groupName);
+    }
+
+    public Set getGroups() {
+        return groups.keySet();
     }
 
     public void getAvailableGroups() {
