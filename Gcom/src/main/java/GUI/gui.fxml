@@ -13,21 +13,14 @@
          <children>
             <MenuBar>
               <menus>
-                <Menu mnemonicParsing="false" text="File">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
-                </Menu>
+                  <Menu mnemonicParsing="false" text="Debug">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Dropped packages" />
+                        <MenuItem mnemonicParsing="false" text="Rearranged packages" />
+                        <MenuItem mnemonicParsing="false" text="Delayed packages" />
+                        <MenuItem mnemonicParsing="false" text="Reset all" />
+                    </items>
+                  </Menu>
               </menus>
             </MenuBar>
             <TextField prefHeight="36.0" prefWidth="918.0" promptText="Host" />
