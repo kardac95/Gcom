@@ -1,5 +1,5 @@
-Connect all rmi parts to one class;
-Send Messages from each client;
-implement multicast;
+Connect all rmi parts to one class;*
+Send Messages from each client;*
+implement un reliablemulticast;*
 Implement interface for other layers;
 implement reliable multicast;
