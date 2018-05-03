@@ -17,13 +17,14 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        URL url = new File("src/main/java/GUI/gui.fxml").toURL();
+        URL url = new File("src/main/java/GUI/Start.fxml").toURL();
 
         FXMLLoader loader = new FXMLLoader(url);
         Parent root = loader.load();
 
         primaryStage.setTitle("GCom");
         Scene scene = new Scene(root);
+
         primaryStage.setScene(scene);
         primaryStage.show();
     }
