@@ -21,16 +21,36 @@
                         <MenuItem mnemonicParsing="false" text="Reset all" />
                     </items>
                   </Menu>
+                  <Menu mnemonicParsing="false" text="Tools">
+                    <items>
+                      <MenuItem fx:id="updateGroup" mnemonicParsing="false" onAction="#updateTree" text="Update groups" />
+                    </items>
+                  </Menu>
               </menus>
             </MenuBar>
             <TextField prefHeight="36.0" prefWidth="918.0" promptText="Host" />
             <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="1280.0" promptText="Port" />
-            <HBox prefHeight="61.0" prefWidth="1280.0" spacing="20.0">
+            <HBox prefHeight="58.0" prefWidth="1280.0" spacing="20.0">
                <children>
-                  <Button fx:id="myButton" mnemonicParsing="false" onAction="#setCrapbutton" prefHeight="51.0" prefWidth="132.0" text="Connect" />
+                  <Button fx:id="myButton" mnemonicParsing="false" onAction="#changeCirleColor" prefHeight="51.0" prefWidth="132.0" text="Connect" />
                   <Button mnemonicParsing="false" prefHeight="52.0" prefWidth="131.0" text="Disconnect" />
-                  <Circle fill="#ff1f1f" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Connected/Disconnected" textAlignment="JUSTIFY" wrappingWidth="169.84912109375" />
+                  <Circle fill="#ff3921" radius="16.0" stroke="BLACK" strokeType="INSIDE">
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin></Circle>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Connected/Disconnected" textAlignment="JUSTIFY" wrappingWidth="169.84912109375">
+                     <HBox.margin>
+                        <Insets top="18.0" />
+                     </HBox.margin></Text>
+                  <AnchorPane prefHeight="58.0" prefWidth="734.0">
+                     <children>
+                        <Text layoutX="648.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Groups" wrappingWidth="85.7294921875">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </AnchorPane>
                </children>
             </HBox>
          </children>
@@ -56,6 +76,13 @@
       </ScrollPane>
    </center>
    <right>
-      <TreeView fx:id="treeView" editable="true" prefHeight="423.0" prefWidth="245.0" showRoot="false" BorderPane.alignment="CENTER" />
+      <TreeView fx:id="treeView" editable="true" prefHeight="423.0" prefWidth="245.0" showRoot="false" BorderPane.alignment="CENTER">
+         <contextMenu>
+            <ContextMenu>
+              <items>
+                <MenuItem fx:id="joinMenuItem" mnemonicParsing="false" onAction="#connectFromTree" text="Join" />
+              </items>
+            </ContextMenu>
+         </contextMenu></TreeView>
    </right>
 </BorderPane>
