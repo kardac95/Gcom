@@ -1,8 +1,6 @@
 package GroupManagement;
 
-import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 public class Group implements Observer {
     private HashMap<String, Member> members;
@@ -28,6 +26,14 @@ public class Group implements Observer {
 
     public void removeMember(String memberName) {
         members.remove(memberName);
+    }
+
+    public Set getMembers() {
+        return members.keySet();
+    }
+
+    public boolean isMember(String memberName) {
+        return members.keySet().contains(memberName);
     }
 
     @Override
