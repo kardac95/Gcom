@@ -32,8 +32,16 @@ public class Group implements Observer {
         return members.keySet();
     }
 
+    public Member getMember(String name) {
+        return members.get(name);
+    }
+
     public boolean isMember(String memberName) {
         return members.keySet().contains(memberName);
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
