@@ -2,7 +2,7 @@ package GroupManagement;
 
 import java.util.*;
 
-public class Group implements Observer {
+public class Group {
     private HashMap<String, Member> members;
     private String name;
 
@@ -11,7 +11,6 @@ public class Group implements Observer {
         this.name = name;
         this.members = new HashMap<>();
     }
-
     public Group(String groupName, HashMap<String, Member> members) {
         this.name = groupName;
         this.members = members;
@@ -44,8 +43,7 @@ public class Group implements Observer {
         return name;
     }
 
-    @Override
-    public void update(Observable observable, Object o) {
+    public void messageGroup(String message) {
 
     }
 }

@@ -1,24 +1,40 @@
 package MessageOrdering;
 
-import javafx.util.Pair;
+import GroupManagement.Group;
+import GroupManagement.Member;
 
-public class Message {
-    private Pair<VectorClock,String > message;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
-    public Message(){
-        VectorClock vc = new VectorClock();
-        this.message = new Pair<>(vc,"");
+public class Message implements Serializable {
+    private String message;
+    private String sender;
+    private Group group;
+    private List<Integer> vectorClock;
+
+
+    public Message(Group group, String sender, String message, List<Integer> vectorClock) {
+        this.message = message;
+        this.sender = sender;
+        this.vectorClock = vectorClock;
+        this.group = group;
     }
 
     public String getMessage() {
-        return message.getValue();
+        return message;
     }
 
-    public VectorClock getVectorClock() {
-        return message.getKey();
+    public String getSender() {
+        return sender;
     }
 
-    public void setMessage(Pair<VectorClock, String> message) {
-        this.message = message;
+    public List getVectorClock() {
+        return vectorClock;
+    }
+
+    public Group getGroup() {
+        return group;
     }
 }
