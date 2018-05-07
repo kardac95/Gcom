@@ -1,6 +1,8 @@
 package Gcom.GroupManagement;
 
-public class Member {
+import java.io.Serializable;
+
+public class Member implements Serializable{
     private String name;
     private String address;
     private String port;
