@@ -80,24 +80,7 @@ public class Node {
             }
         });
     }
-    /*
-    public void connectToNode(int port) {
-        try {
-            if(connections.get(port) == null) {
-                Registry registry = LocateRegistry.getRegistry(port);
-                RemoteObject stub = (RemoteObject) registry.lookup("MessageService");
-                connections.put(port, stub);
-            }else {
-                System.out.println("Connection already established");
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (NotBoundException e) {
-            e.printStackTrace();
-        }
 
-    }
-*/
     public void connectToNode(Member member) {
         try {
             if(connections.get(member.getAddress()+member.getPort()) == null) {
