@@ -17,8 +17,6 @@ public class Main {
         Integer[] otherHosts = ArrayUtils.removeAllOccurences(hostPorts, myPort);
         Arrays.stream(otherHosts).forEach(System.out::println);
 
-
-
         Scanner sc = new Scanner(System.in);
         System.out.println("Write message");
         while(sc.hasNextLine()) {

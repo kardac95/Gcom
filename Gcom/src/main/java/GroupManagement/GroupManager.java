@@ -2,12 +2,18 @@ package GroupManagement;
 
 import java.util.HashMap;
 import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class GroupManager {
+    private ArrayBlockingQueue<Object> incomingQueue;
     private HashMap<String, Group> groups;
+    private ArrayBlockingQueue<Object> outgoingQueue;
+
 
     public GroupManager() {
         this.groups = new HashMap<>();
+        this.outgoingQueue = new ArrayBlockingQueue<>(10);
+        this.incomingQueue = new ArrayBlockingQueue<>(20);
     }
 
     public void createGroup(String groupName) {
@@ -19,6 +25,7 @@ public class GroupManager {
 
     public void joinGroup(String groupName, Member member) {
         groups.get(groupName).addMember(member);
+
     }
 
     public void removeGroup(String groupName) {

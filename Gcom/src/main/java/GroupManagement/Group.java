@@ -6,7 +6,6 @@ public class Group {
     private HashMap<String, Member> members;
     private String name;
 
-
     public Group(String name) {
         this.name = name;
         this.members = new HashMap<>();
