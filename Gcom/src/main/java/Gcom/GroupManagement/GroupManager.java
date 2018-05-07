@@ -7,9 +7,9 @@ import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class GroupManager {
-    private ArrayBlockingQueue<Object> incomingQueue;
+    private ArrayBlockingQueue<Message> incomingQueue;
     private HashMap<String, Group> groups;
-    private ArrayBlockingQueue<Object> outgoingQueue;
+    private ArrayBlockingQueue<Message> outgoingQueue;
 
 
     public GroupManager() {
@@ -25,10 +25,9 @@ public class GroupManager {
         groups.put(groupName, new Group(groupName, members));
     }
 
-    public void joinGroup(String groupName, Member member, Member contact) {
-        groups.get(groupName).addMember(member);
-        outgoingQueue.add(new Message(null, member, null, "connect", null));
-
+    public void joinGroup(Group group, Member member) {
+        outgoingQueue.add(new Message(group, member, null, "connect", null));
+        group.addMember(member);
     }
 
     public void removeGroup(String groupName) {
@@ -41,6 +40,10 @@ public class GroupManager {
 
     public Set getGroups() {
         return groups.keySet();
+    }
+
+    public void messageGroup(String message, Member sender) {
+
     }
 
     public void getAvailableGroups() {

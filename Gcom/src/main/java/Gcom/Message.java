@@ -37,4 +37,8 @@ public class Message implements Serializable {
     public Group getGroup() {
         return group;
     }
+
+    public String getType() {
+        return type;
+    }
 }
