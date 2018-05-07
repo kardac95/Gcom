@@ -33,18 +33,19 @@ public class connectController {
             FXMLLoader loader = new FXMLLoader(url);
             root = loader.load();
 
+            //SENDING
+            GuiController g = loader.getController();
+            g.setGUILogic(logic);
+            g.setUserName(logic.getUserName());
+            g.updateTree(logic);
+
             Scene scene=new Scene(root);
             appStage.setScene(scene);
             appStage.show();
         }
     }
 
-
-    public Logic getConnectILogic() {
-        return logic;
-    }
-
-    public void setLogic(Logic logic) {
+    public void setConLogic(Logic logic) {
         this.logic = logic;
     }
 

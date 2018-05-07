@@ -36,6 +36,11 @@
                         <Font size="24.0" />
                      </font>
                   </Text>
+                  <Text fx:id="UserName" layoutX="23.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="650.7294921875">
+                     <font>
+                        <Font size="27.0" />
+                     </font>
+                  </Text>
                </children>
             </AnchorPane>
          </children>

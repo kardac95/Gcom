@@ -22,6 +22,7 @@ public class GuiController {
     public Logic logic;
 
     public GuiController() {
+
     }
 
     @FXML Button myButton;
@@ -35,6 +36,7 @@ public class GuiController {
     @FXML MenuBar myMenuBar;
     @FXML Button sendButton;
     @FXML Circle myCircle;
+    @FXML Text UserName;
 
 
     @FXML
@@ -48,15 +50,21 @@ public class GuiController {
         System.out.println("Green");
     }
 
+    public void setUserName(String uName) {
+        UserName.setText(uName);
+    }
+
     public void changeSceneToConnect(ActionEvent event) throws IOException {
-        Stage appStage;
-        Parent root;
         if(event.getSource()==connectMenu)
         {
             URL url = new File("src/main/java/Gcom/GUI/Connect.fxml").toURL();
 
             FXMLLoader loader = new FXMLLoader(url);
             Parent GCOm = loader.load();
+
+            //SENDING
+            connectController g = loader.getController();
+            g.setConLogic(logic);
 
             Scene scene = new Scene(GCOm);
 
@@ -93,4 +101,7 @@ public class GuiController {
         System.out.println("TREEEEEEEEEEEEEEEEEEEe");
     }
 
+    public void setGUILogic(Logic logic) {
+        this.logic = logic;
+    }
 }
