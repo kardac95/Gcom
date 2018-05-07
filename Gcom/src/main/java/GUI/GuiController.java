@@ -1,10 +1,7 @@
 package GUI;
-
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -16,16 +13,15 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Observable;
 import java.util.Set;
 
 
-public class GuiController {
+public class GuiController extends Observable {
 
-    private Logic logic;
+    public Logic logic;
 
     public GuiController() {
-        this.logic = new Logic();
-
     }
 
     @FXML Button myButton;
@@ -36,12 +32,15 @@ public class GuiController {
     @FXML MenuItem joinMenuItem;
     @FXML TextArea sendArea;
     @FXML TextFlow receiveArea;
+    @FXML MenuBar myMenuBar;
     @FXML Button sendButton;
     @FXML Circle myCircle;
 
-    public void setTextInTextFlow () {
-        String myTextMessage = sendArea.getText();
-        Text newText = new Text(myTextMessage);
+
+    @FXML
+    public void setTextInTextFlow (String s) {
+       /* String myTextMessage = sendArea.getText();*/
+        Text newText = new Text(s);
         receiveArea.getChildren().add(newText);
     }
 
@@ -54,44 +53,23 @@ public class GuiController {
         Parent root;
         if(event.getSource()==connectMenu)
         {
-            //appStage=(Stage)sendButton.getScene().getWindow();
+            URL url = new File("src/main/java/GUI/Connect.fxml").toURL();
 
-            connectMenu = (MenuItem) event.getTarget();
-            ContextMenu cm = connectMenu.getParentPopup();
-            Scene scene1 = cm.getScene();
-            appStage = (Stage)scene1.getWindow();
-
-            URL url = new File("src/main/java/GUI/gui.fxml").toURL();
             FXMLLoader loader = new FXMLLoader(url);
-            root = loader.load();
+            Parent GCOm = loader.load();
 
+            Scene scene = new Scene(GCOm);
 
-            Scene scene=new Scene(root);
-            appStage.setScene(scene);
-            appStage.show();
+           // Stage window =  (Stage) ((Node)event.getSource()).getScene().getWindow();
+            Stage window = (Stage) myMenuBar.getScene().getWindow();
+            window.setTitle("GCom");
+            window.setScene(scene);
+            window.show();
         }
     }
 
-    public void changeSceneToGUI(ActionEvent event) throws IOException {
-        URL url = new File("src/main/java/GUI/gui.fxml").toURL();
-
-        FXMLLoader loader = new FXMLLoader(url);
-        Parent GCOm = loader.load();
-
-        Scene scene = new Scene(GCOm);
-
-        //This line gets stage inforamtion
-        Stage window =  (Stage) ((Node)event.getSource()).getScene().getWindow();
-        window.setTitle("GCom");
-        window.setScene(scene);
-        window.show();
-        Platform.runLater(this::updateTree);
-
-    }
-
-
-
-    public void updateTree() {
+    public void updateTree(Logic logic) {
+        this.logic = logic;
         Set groups = logic.getGM().getGroups();
 
         TreeItem<String> dummyroot = new TreeItem<>("MegaRoot");
@@ -114,4 +92,5 @@ public class GuiController {
         //TODO
         System.out.println("TREEEEEEEEEEEEEEEEEEEe");
     }
+
 }

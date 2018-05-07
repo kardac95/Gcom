@@ -13,10 +13,14 @@ import java.io.IOException;
 import java.net.URL;
 
 public class connectController {
-    @FXML Button connectButton;
+
+    public Logic logic;
 
     public connectController() {
+
     }
+
+    @FXML Button connectButton;
 
     public void changeSceneToGUI(ActionEvent event) throws IOException {
         Stage appStage;
@@ -34,4 +38,14 @@ public class connectController {
             appStage.show();
         }
     }
+
+
+    public Logic getConnectILogic() {
+        return logic;
+    }
+
+    public void setLogic(Logic logic) {
+        this.logic = logic;
+    }
+
 }
