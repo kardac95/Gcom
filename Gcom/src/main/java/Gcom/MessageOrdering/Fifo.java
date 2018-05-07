@@ -1,8 +1,10 @@
 package Gcom.MessageOrdering;
 
+import Gcom.GroupManagement.Member;
+
 public class Fifo extends Order {
-    public Fifo() {
-        super();
+    public Fifo(Member myInfo) {
+        super(myInfo);
     }
 
 }
