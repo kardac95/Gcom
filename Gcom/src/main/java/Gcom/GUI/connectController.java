@@ -1,4 +1,4 @@
-package GUI;
+package Gcom.GUI;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

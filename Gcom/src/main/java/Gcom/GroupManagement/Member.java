@@ -1,4 +1,4 @@
-package GroupManagement;
+package Gcom.GroupManagement;
 
 public class Member {
     private String name;

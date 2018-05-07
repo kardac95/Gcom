@@ -1,4 +1,4 @@
-package MessageOrdering;
+package Gcom.MessageOrdering;
 
 public class Fifo extends Order {
     public Fifo() {

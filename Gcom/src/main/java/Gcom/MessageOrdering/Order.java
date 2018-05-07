@@ -1,7 +1,9 @@
-package MessageOrdering;
+package Gcom.MessageOrdering;
 
-import GroupManagement.Group;
-import GroupManagement.Member;
+import Gcom.GroupManagement.Group;
+import Gcom.GroupManagement.Member;
+import Gcom.Message;
+
 import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -23,7 +25,7 @@ public class Order {
 
     void messageGroup(Group group, Member sender, String message){
         vectorClock.set(memberIndex, vectorClock.get(memberIndex) + 1);
-        outgoingQueue.add(new Message(group, sender.getName(), message, vectorClock));
+        outgoingQueue.add(new Message(group, sender, message, "message", vectorClock));
 
     }
 

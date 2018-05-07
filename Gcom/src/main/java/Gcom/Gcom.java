@@ -1,5 +1,7 @@
-import GroupManagement.GroupManager;
-import GroupManagement.Member;
+package Gcom;
+
+import Gcom.GroupManagement.GroupManager;
+import Gcom.GroupManagement.Member;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
