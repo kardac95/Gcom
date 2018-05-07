@@ -1,5 +1,6 @@
 Connect all rmi parts to one class;*
 Send Messages from each client;*
-implement un reliablemulticast;*
+implement unreliablemulticast;*
+Implement selectHost option;
 Implement interface for other layers;
 implement reliable multicast;

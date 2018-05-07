@@ -1,12 +1,9 @@
 package MessageOrdering;
 
 import GroupManagement.Group;
-import GroupManagement.Member;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class Message implements Serializable {
     private String message;
