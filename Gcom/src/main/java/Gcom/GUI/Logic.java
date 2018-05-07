@@ -1,7 +1,7 @@
-package GUI;
+package Gcom.GUI;
 
-import GroupManagement.GroupManager;
-import GroupManagement.Member;
+import Gcom.GroupManagement.GroupManager;
+import Gcom.GroupManagement.Member;
 
 public class Logic {
 

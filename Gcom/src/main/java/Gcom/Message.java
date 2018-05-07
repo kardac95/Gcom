@@ -1,32 +1,32 @@
-package MessageOrdering;
+package Gcom;
 
-import GroupManagement.Group;
-import GroupManagement.Member;
+import Gcom.GroupManagement.Group;
+import Gcom.GroupManagement.Member;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class Message implements Serializable {
+    private String type;
     private String message;
-    private String sender;
+    private Member sender;
     private Group group;
     private List<Integer> vectorClock;
 
 
-    public Message(Group group, String sender, String message, List<Integer> vectorClock) {
+    public Message(Group group, Member sender, String message, String type, List<Integer> vectorClock) {
         this.message = message;
         this.sender = sender;
         this.vectorClock = vectorClock;
         this.group = group;
+        this.type = type;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public String getSender() {
+    public Member getSender() {
         return sender;
     }
 

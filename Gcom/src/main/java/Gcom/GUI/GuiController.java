@@ -1,4 +1,6 @@
-package GUI;
+package Gcom.GUI;
+
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,11 +15,10 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Observable;
 import java.util.Set;
 
 
-public class GuiController extends Observable {
+public class GuiController {
 
     public Logic logic;
 
