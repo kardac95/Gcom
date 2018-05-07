@@ -1,9 +1,8 @@
-package communication.rmi;
+package Gcom.communication.rmi;
 
-import MessageOrdering.Message;
+import Gcom.MessageOrdering.Message;
 
 import java.rmi.*;
-import java.rmi.server.*;
 
 
 public interface RemoteObject extends Remote {

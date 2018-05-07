@@ -1,7 +1,7 @@
-package communication.rmi;
+package Gcom.communication.rmi;
 
-import GroupManagement.Member;
-import MessageOrdering.Message;
+import Gcom.GroupManagement.Member;
+import Gcom.MessageOrdering.Message;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;

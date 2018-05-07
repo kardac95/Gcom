@@ -1,4 +1,4 @@
-package GroupManagement;
+package Gcom.GroupManagement;
 
 import java.io.Serializable;
 import java.util.*;

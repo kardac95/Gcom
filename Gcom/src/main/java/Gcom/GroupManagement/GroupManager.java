@@ -1,4 +1,4 @@
-package GroupManagement;
+package Gcom.GroupManagement;
 
 import java.util.HashMap;
 import java.util.Set;

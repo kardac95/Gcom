@@ -1,8 +1,7 @@
-package communication.rmi;
-import GroupManagement.Group;
-import GroupManagement.Member;
-import MessageOrdering.Message;
-import org.apache.commons.lang3.ArrayUtils;
+package Gcom.communication.rmi;
+import Gcom.GroupManagement.Group;
+import Gcom.GroupManagement.Member;
+import Gcom.MessageOrdering.Message;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
