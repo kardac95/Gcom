@@ -29,7 +29,7 @@ public class connectController {
         {
             appStage=(Stage)connectButton.getScene().getWindow();
 
-            URL url = new File("src/main/java/GUI/gui.fxml").toURL();
+            URL url = new File("src/main/java/Gcom/GUI/gui.fxml").toURL();
             FXMLLoader loader = new FXMLLoader(url);
             root = loader.load();
 

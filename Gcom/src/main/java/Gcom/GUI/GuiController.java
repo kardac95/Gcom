@@ -1,6 +1,5 @@
 package Gcom.GUI;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -54,7 +53,7 @@ public class GuiController {
         Parent root;
         if(event.getSource()==connectMenu)
         {
-            URL url = new File("src/main/java/GUI/Connect.fxml").toURL();
+            URL url = new File("src/main/java/Gcom/GUI/Connect.fxml").toURL();
 
             FXMLLoader loader = new FXMLLoader(url);
             Parent GCOm = loader.load();
