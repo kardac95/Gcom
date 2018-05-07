@@ -1,7 +1,7 @@
 package Gcom.communication.rmi;
 import Gcom.GroupManagement.Group;
 import Gcom.GroupManagement.Member;
-import Gcom.MessageOrdering.Message;
+import Gcom.Message;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -59,7 +59,7 @@ public class Main {
                 n.connectToNode(m);
             });
             String message = sc.nextLine();
-            Message m = new Message(g, me.getName(), message, null);
+            Message m = new Message(g, me, message, "message", null);
             n.unReliableMulticast(m, otherHosts);
 
             while(n.getInQueue().peek() != null) {
