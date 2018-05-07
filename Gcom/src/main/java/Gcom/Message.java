@@ -22,6 +22,10 @@ public class Message implements Serializable {
         this.type = type;
     }
 
+    public void setVectorClock(List<Integer> vectorClock) {
+        this.vectorClock = vectorClock;
+    }
+
     public String getMessage() {
         return message;
     }

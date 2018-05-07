@@ -50,7 +50,8 @@ public class GroupManager {
         return groups.keySet();
     }
 
-    public void messageGroup(String message, Member sender) {
+    public void messageGroup(String message, Member sender, String groupName) {
+        order.addInQueue(new Message(groups.get(groupName), sender, message, "message", null));
     }
 
     public void getAvailableGroups() {

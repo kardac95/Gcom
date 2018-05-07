@@ -27,8 +27,16 @@ public class Group implements Serializable{
         members.remove(memberName);
     }
 
-    public Set getMembers() {
-        return members.keySet();
+    public Member[] getMembers() {
+        Set keySet = members.keySet();
+        Member[] kalleList = new Member[members.size() + 1];
+        int i = 0;
+        for (Object member : keySet) {
+            kalleList[i] = members.get(member);
+            i++;
+        }
+
+        return kalleList;
     }
 
     public Member getMember(String name) {
