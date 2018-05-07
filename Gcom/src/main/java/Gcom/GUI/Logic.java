@@ -3,19 +3,31 @@ package Gcom.GUI;
 import Gcom.GroupManagement.GroupManager;
 import Gcom.GroupManagement.Member;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 public class Logic {
 
     private GroupManager GM;
     private String userName;
     private String port;
+    private String localIp;
 
 
     public Logic(){
-        this.GM = new GroupManager();
+        this.GM = new GroupManager(new Member("Dzora","This is ip", "9000"));
         GM.createGroup("Best Group");
         GM.createGroup("Worst Group");
-        GM.joinGroup("Best Group", new Member("Dzora","Teg", "90421"));
-        GM.joinGroup("Worst Group", new Member("Kalle","08", "noob"));
+        GM.joinGroup(GM.getGroup("Best Group"), new Member("Dzora","Teg", "90421"));
+        GM.joinGroup(GM.getGroup("Worst Group"), new Member("Kalle","08", "noob"));
+
+        try {
+            InetAddress ipAddr = InetAddress.getLocalHost();
+            localIp = ipAddr.getHostAddress();
+            System.out.println(ipAddr.getHostAddress());
+        } catch (UnknownHostException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public GroupManager getGM() {
