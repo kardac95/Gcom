@@ -41,25 +41,23 @@ public class Node {
             e.printStackTrace();
         }
     }
-
-    public void sendMessage(String message, Integer port) {
+/*
+    public void unReliableUnicast(String message, Integer port) {
         try {
             connections.get(port).printMessage(message);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
-    
-    public void unReliableBroadcast(String message) {
-        connections.forEach((k,v) -> {
-            try {
-                v.printMessage(message);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        });
+*/
+    public void unReliableUnicast(Message message, Member m) {
+        try {
+            connections.get(m.getAddress() + m.getPort()).sendMessage(message);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
-
+/*
     public void unReliableMulticast(String message, Integer ports[]) {
         Arrays.stream(ports).forEach(p -> {
             try {
@@ -70,14 +68,10 @@ public class Node {
             }
         });
     }
-
+*/
     public void unReliableMulticast(Message message, Member[] members) {
         Arrays.stream(members).forEach(m -> {
-            try {
-                connections.get(m.getAddress() + m.getPort()).sendMessage(message);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+            unReliableUnicast(message, m);
         });
     }
 
@@ -96,6 +90,24 @@ public class Node {
             e.printStackTrace();
         }
     }
+    public void connectToNodes(Member[] members) {
+        Arrays.stream(members).forEach(member -> {
+            try {
+                if(connections.get(member.getAddress()+member.getPort()) == null) {
+                    Registry registry = LocateRegistry.getRegistry(member.getAddress(), Integer.parseInt(member.getPort()));
+                    RemoteObject stub = (RemoteObject) registry.lookup("MessageService");
+                    connections.put(member.getAddress()+member.getPort(), stub);
+                }else {
+                    System.out.println("Connection already established");
+                }
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (NotBoundException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
 
     public Queue<Message> getInQueue() {
         return inQueue;

@@ -42,8 +42,4 @@ public class Group implements Serializable{
     public String getName() {
         return name;
     }
-
-    public void messageGroup(String message) {
-
-    }
 }
