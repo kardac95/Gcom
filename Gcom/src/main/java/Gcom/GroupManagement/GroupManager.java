@@ -15,10 +15,13 @@ public class GroupManager {
     private ArrayBlockingQueue<Message> outgoingQueue;
 
 
-    public GroupManager(Member myInfo) {
+    public GroupManager() {
         this.groups = new HashMap<>();
         this.outgoingQueue = new ArrayBlockingQueue<>(10);
         this.incomingQueue = new ArrayBlockingQueue<>(20);
+    }
+
+    public void initOrdering(Member myInfo) {
         order = new OrderingObject();
         order.initOrdering(myInfo);
     }
@@ -30,9 +33,9 @@ public class GroupManager {
         groups.put(groupName, new Group(groupName, members));
     }
 
-    public void joinGroup(Group group, Member member) {
-        outgoingQueue.add(new Message(group, member, null, "connect", null));
-        group.addMember(member);
+    public void joinGroup(Group group, Member me) {
+        order.addInQueue(new Message(group, me, null, "connect", null));
+        group.addMember(me);
     }
 
     public void removeGroup(String groupName) {
@@ -48,7 +51,6 @@ public class GroupManager {
     }
 
     public void messageGroup(String message, Member sender) {
-
     }
 
     public void getAvailableGroups() {

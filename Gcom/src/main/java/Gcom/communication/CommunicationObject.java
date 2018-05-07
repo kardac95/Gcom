@@ -12,7 +12,7 @@ public class CommunicationObject implements Communication {
     Member myInfo;
 
     @Override
-    public void initCommunication(Member member) {
+    public void initCommunication(Member myInfo) {
         this.myInfo = myInfo;
         n = new Node(Integer.parseInt(myInfo.getPort()));
     }
