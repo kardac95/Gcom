@@ -15,11 +15,11 @@ public class Logic {
 
 
     public Logic(){
-        this.GM = new GroupManager(new Member("Dzora","This is ip", "9000"));
+        this.GM = new GroupManager();
         GM.createGroup("Best Group");
         GM.createGroup("Worst Group");
-        GM.joinGroup(GM.getGroup("Best Group"), new Member("Dzora","Teg", "90421"));
-        GM.joinGroup(GM.getGroup("Worst Group"), new Member("Kalle","08", "noob"));
+       // GM.joinGroup(GM.getGroup("Best Group"), new Member("Dzora","Teg", "90421"));
+       // GM.joinGroup(GM.getGroup("Worst Group"), new Member("Kalle","08", "noob"));
 
         try {
             InetAddress ipAddr = InetAddress.getLocalHost();
@@ -49,5 +49,14 @@ public class Logic {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public void initCommunication(Member member) {
+        GM.initOrdering(member);
+    }
+
+
+    public String getLocalIp() {
+        return localIp;
     }
 }
