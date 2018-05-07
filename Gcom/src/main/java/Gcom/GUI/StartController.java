@@ -24,6 +24,7 @@ public class StartController {
 
     @FXML Button continueToGuiButton;
     @FXML TextField userName;
+    @FXML TextField port;
 
 
     public String getUname(){
@@ -31,6 +32,10 @@ public class StartController {
         return uName;
     }
 
+    public String getPort() {
+        String portName = port.getText();
+        return portName;
+    }
 
     public void changeSceneToGUI(ActionEvent event) throws IOException {
         Stage appStage;
@@ -45,7 +50,9 @@ public class StartController {
 
             //SENDING TO GUI CONTROLLER
             GuiController g = loader.getController();
-            g.setTextInTextFlow(getUname());
+            logic.setUserName(getUname());
+            logic.setPort(getPort());
+            g.setUserName(getUname());
             g.updateTree(logic);
 
             Scene scene=new Scene(root);
