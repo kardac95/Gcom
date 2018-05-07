@@ -2,6 +2,7 @@ package Gcom.communication.rmi;
 import Gcom.GroupManagement.Group;
 import Gcom.GroupManagement.Member;
 import Gcom.Message;
+import Gcom.communication.rmi.Node;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
