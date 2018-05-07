@@ -20,8 +20,8 @@ public class Gcom {
         }
     }
 
-    public boolean joinGroup(String groupName) {
-        GM.joinGroup(groupName, member);
+    public boolean joinGroup(String groupName, Member contact) {
+        GM.joinGroup(groupName, member, contact);
         return false;
     }
 

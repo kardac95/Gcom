@@ -1,5 +1,7 @@
 package Gcom.GroupManagement;
 
+import Gcom.Message;
+
 import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -23,8 +25,9 @@ public class GroupManager {
         groups.put(groupName, new Group(groupName, members));
     }
 
-    public void joinGroup(String groupName, Member member) {
+    public void joinGroup(String groupName, Member member, Member contact) {
         groups.get(groupName).addMember(member);
+        outgoingQueue.add(new Message(null, member, null, "connect", null));
 
     }
 
