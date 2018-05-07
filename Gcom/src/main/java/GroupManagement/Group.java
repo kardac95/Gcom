@@ -1,8 +1,9 @@
 package GroupManagement;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Group {
+public class Group implements Serializable{
     private HashMap<String, Member> members;
     private String name;
 

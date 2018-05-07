@@ -1,21 +1,28 @@
 package communication.rmi;
 
+import GroupManagement.Member;
+import MessageOrdering.Message;
+
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Node {
     private Thread server;
-    private Map<Integer, RemoteObject> connections;
+    private Map<String, RemoteObject> connections;
     private Registry registry;
+    private Queue<Message> inQueue;
 
     public Node(int myPort) {
         connections = new HashMap<>();
+        inQueue = new LinkedBlockingQueue<>();
         server = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -28,7 +35,7 @@ public class Node {
     private void initServer(int port) {
         try {
             registry = LocateRegistry.createRegistry(port);
-            RemoteObject impl = new RemoteObjectImpl();
+            RemoteMessageService impl = new RemoteMessageService();
             registry.rebind("MessageService", impl);
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -64,6 +71,16 @@ public class Node {
         });
     }
 
+    public void unReliableMulticast(Message message, Member[] members) {
+        Arrays.stream(members).forEach(m -> {
+            try {
+                connections.get(m.getAddress() + m.getPort()).sendMessage(message);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+    /*
     public void connectToNode(int port) {
         try {
             if(connections.get(port) == null) {
@@ -80,5 +97,44 @@ public class Node {
         }
 
     }
+*/
+    public void connectToNode(Member member) {
+        try {
+            if(connections.get(member.getAddress()+member.getPort()) == null) {
+                Registry registry = LocateRegistry.getRegistry(member.getAddress(), Integer.parseInt(member.getPort()));
+                RemoteObject stub = (RemoteObject) registry.lookup("MessageService");
+                connections.put(member.getAddress()+member.getPort(), stub);
+            }else {
+                System.out.println("Connection already established");
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public Queue<Message> getInQueue() {
+        return inQueue;
+    }
+
+    private class RemoteMessageService extends UnicastRemoteObject implements RemoteObject {
+        public RemoteMessageService() throws RemoteException {
+            super();
+        }
+
+        @Override
+        public boolean printMessage(String msg) {
+            System.out.println(msg);
+            return true;
+        }
+
+        @Override
+        public boolean sendMessage(Message message) throws RemoteException {
+            System.out.println("Received Message");
+            inQueue.add(message);
+            return true;
+        }
+
+    }
 }
