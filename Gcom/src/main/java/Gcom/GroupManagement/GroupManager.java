@@ -1,6 +1,11 @@
 package Gcom.GroupManagement;
 
+import Gcom.Message;
+import Gcom.MessageOrdering.Ordering;
+import Gcom.MessageOrdering.OrderingObject;
+
 import java.util.HashMap;
+import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -8,12 +13,15 @@ public class GroupManager {
     private ArrayBlockingQueue<Object> incomingQueue;
     private HashMap<String, Group> groups;
     private ArrayBlockingQueue<Object> outgoingQueue;
+    private Ordering order;
 
 
-    public GroupManager() {
+    public GroupManager(Member myInfo) {
         this.groups = new HashMap<>();
         this.outgoingQueue = new ArrayBlockingQueue<>(10);
         this.incomingQueue = new ArrayBlockingQueue<>(20);
+        order = new OrderingObject();
+        order.initOrdering(myInfo);
     }
 
     public void createGroup(String groupName) {
