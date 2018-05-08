@@ -52,7 +52,11 @@ public class Group implements Serializable{
     }
 
     public void setMembers(Member[] members) {
-        //this.members.replaceAll();
+        Set keySet = this.members.keySet();
+        keySet.forEach(m -> this.members.remove(m));
 
+        for (Member m : members) {
+            this.members.put(m.getName(), m);
+        }
     }
 }
