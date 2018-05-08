@@ -32,7 +32,7 @@ public class Group implements Serializable{
         Member[] memberList = new Member[members.size() + 1];
         int i = 0;
         for (Object member : keySet) {
-            memberList[i] = members.get(member);
+            memberList[i] = members.get(member.toString());
             i++;
         }
 
