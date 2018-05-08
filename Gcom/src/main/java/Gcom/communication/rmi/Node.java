@@ -76,20 +76,7 @@ public class Node {
     }
     public void connectToNodes(Member[] members) {
         Arrays.stream(members).forEach(member -> {
-            try {
-                if(connections.get(member.getAddress()+member.getPort()) == null) {
-                    Registry registry = LocateRegistry.getRegistry(member.getAddress(), Integer.parseInt(member.getPort()));
-                    RemoteObject stub = (RemoteObject) registry.lookup("MessageService");
-                    connections.put(member.getAddress()+member.getPort(), stub);
-                    System.out.println("Connecting with " + member.getName());
-                }else {
-                    System.out.println("Connection already established");
-                }
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            } catch (NotBoundException e) {
-                e.printStackTrace();
-            }
+            connectToNode(member);
         });
     }
 

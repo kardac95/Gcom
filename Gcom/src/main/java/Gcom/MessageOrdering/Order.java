@@ -56,23 +56,6 @@ public class Order {
                     System.out.println("Order outQueue type: " + m.getType());
                     System.out.println("Order outQueue message: " + m.getMessage());
                     outgoingQueue.add(m);
-
-                    /*comm.getCommQueueLock().lock();
-                    try {
-                        while(comm.getInQueue().isEmpty()) {
-                            comm.getCommQueueCondition().await();
-                        }
-                    } catch (InterruptedException ignored) {
-                    } finally {
-                        comm.getCommQueueLock().unlock();
-                    }
-                    System.out.println("Order Down");
-                    Message m = comm.getInQueue().poll();
-                    if(m.getType().equals("join")) {
-                        comm.connectToMembers(m.getGroup().getMembers());
-                    }
-                    System.out.println(m.getMessage());
-                    outgoingQueue.add(m);*/
                 }
             }
         });
@@ -91,30 +74,17 @@ public class Order {
                     System.out.println("Order inQueue type: " + m.getType());
                     System.out.println("Order inQueue message: " + m.getMessage());
                     if(m.getGroup() != null) {
+                        System.out.println(m.getGroup().getMembers().length);
                         Arrays.stream(m.getGroup().getMembers()).forEach(i -> {
                             System.out.println("Order inQueue Members name: " + i.getName());
                             System.out.println("Order inQueue Members address: " + i.getAddress());
                             System.out.println("Order inQueue Members port: " + i.getPort());
-
                         });
                     }
-                    send(m);
-
-                    /*
-                    lock.lock();
-                    try {
-                        while(incomingQueue.isEmpty()) {
-                            condition.await();
-                        }
-                    } catch (InterruptedException ignored) {
-                    } finally {
-                        lock.unlock();
+                    if(m.getType().equals("join")) {
+                        comm.connectToMembers(m.getGroup().getMembers());
                     }
-                    System.out.println("Order Down");
-                    Message m = incomingQueue.poll();
-                    System.out.println(m.getMessage());
                     send(m);
-                */
                 }
 
             }

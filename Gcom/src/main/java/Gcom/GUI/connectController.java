@@ -18,6 +18,7 @@ public class connectController {
 
     public Logic logic;
 
+
     public connectController() {
 
     }
@@ -34,21 +35,16 @@ public class connectController {
         if(event.getSource()==connectButton)
         {
             appStage=(Stage)connectButton.getScene().getWindow();
-
             URL url = new File("src/main/java/Gcom/GUI/gui.fxml").toURL();
             FXMLLoader loader = new FXMLLoader(url);
             root = loader.load();
-
             //SENDING
             GuiController g = loader.getController();
             logic.getGM().joinGroupRequest(new Member(
                                                 hostUserName.getText(),
                                                 hostName.getText(),
                                                 port.getText()),
-                                                    new Member(logic.getUserName(),
-                                                            logic.getLocalIp(),
-                                                            logic.getPort()),
-                    hostGroupName.getText());
+                                        hostGroupName.getText());
 
             g.setGUILogic(logic);
             g.setUserName(logic.getUserName());
@@ -63,6 +59,7 @@ public class connectController {
 
     public void setConLogic(Logic logic) {
         this.logic = logic;
+        hostName.setText(logic.getLocalIp());
     }
 
 }

@@ -15,8 +15,9 @@ public class Logic {
 
 
 
-    public Logic(){
-        this.GM = new GroupManager();
+    public Logic(String userName, String port){
+        this.userName = userName;
+        this.port = port;
 
         try {
             InetAddress ipAddr = InetAddress.getLocalHost();
@@ -25,6 +26,9 @@ public class Logic {
         } catch (UnknownHostException ex) {
             ex.printStackTrace();
         }
+
+        this.GM = new GroupManager(new Member(userName, localIp, port));
+
     }
 
     public GroupManager getGM() {

@@ -3,11 +3,12 @@ package Gcom.GroupManagement;
 import Gcom.Message;
 import Gcom.MessageOrdering.Ordering;
 import Gcom.MessageOrdering.OrderingObject;
+
 import java.util.HashMap;
 import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
-
 
 public class GroupManager {
     private Queue<Message> incomingQueue;
@@ -15,74 +16,51 @@ public class GroupManager {
     private Ordering order;
     public Queue<Message> outgoingQueue;
     private Thread monitorOutThread;
+    private Member me;
 
 
-    public GroupManager() {
+    public GroupManager(Member me) {
         this.groups = new HashMap<>();
-        this.outgoingQueue = new LinkedBlockingQueue<>(10);
-        this.incomingQueue = new LinkedBlockingQueue<>(20);
+        this.outgoingQueue = new LinkedBlockingQueue<>();
+        this.incomingQueue = new LinkedBlockingQueue<>();
+        this.me = me;
+
+        initOrdering(me);
     }
 
     public void initOrdering(Member myInfo) {
         order = new OrderingObject();
         order.initOrdering(myInfo);
-        monitorOutThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(true) {
-                    Message m = null;
-                    try {
-                        m = order.getOutMessage();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    if(m.getType().equals("connect")) {
-                        groups.get(m.getMessage()).addMember(m.getSender());
-                        m =  new Message(
-                                groups.get(m.getMessage()),
-                                m.getRecipient(),
-                                "Faggot has joined the group!",
-                                "join",
-                                null);
-                        order.addInQueue(m);
-                    } else if(m.getType().equals("join")) {
-                        groups.get(m.getGroup().getName()).setMembers(m.getGroup().getMembers());
-                    }
-
-                    System.out.println("Group manager receive");
-                    System.out.println(m.getType());
-                    System.out.println(m.getMessage());
-                    outgoingQueue.add(m);
-
-                    /*lock.lock();
-                    try {
-                        while(order.outQueueIsEmpty()) {
-                            condition.await();
-                        }
-                    } catch (InterruptedException ignored) {
-                    } finally {
-                        lock.unlock();
-                    }
-                    Message m = order.getOutMessage();
-                    if(m.getType().equals("connect")) {
-                        groups.get(m.getMessage()).addMember(m.getSender());
-                        order.addInQueue(
-                                new Message(
-                                        groups.get(m.getMessage()),
-                                        m.getRecipient(),
-                                        "Faggot has joined the group!",
-                                        "join",
-                                        null));
-                    } else if(m.getType().equals("join")) {
-                        groups.get(m.getGroup().getName()).setMembers(m.getGroup().getMembers());
-                    }
-
-                    System.out.println("Group manager receive");
-                    System.out.println(m.getType());
-                    System.out.println(m.getMessage());
-                    outgoingQueue.add(m);*/
+        monitorOutThread = new Thread(() -> {
+            while(true) {
+                Message m = null;
+                try {
+                    m = order.getOutMessage();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+
+                if(m.getType().equals("connect")) {
+                    groups.get(m.getMessage()).addMember(m.getSender());
+                    m =  new Message(
+                            groups.get(m.getMessage()),
+                            m.getRecipient(),
+                            "Faggot has joined the group!",
+                            "join",
+                            null);
+                    order.addInQueue(m);
+                } else if(m.getType().equals("join")) {
+                    if(groups.get(m.getGroup().getName()) == null) {
+                        groups.put(m.getGroup().getName(), m.getGroup());
+                    }else {
+                        groups.get(m.getGroup().getName()).setMembers(m.getGroup().getMembers());
+                    }
+                }
+
+                System.out.println("Group manager receive");
+                System.out.println(m.getType());
+                System.out.println(m.getMessage());
+                outgoingQueue.add(m);
             }
         });
         monitorOutThread.start();
@@ -90,12 +68,21 @@ public class GroupManager {
 
     public void createGroup(String groupName) {
         groups.put(groupName, new Group(groupName));
+        groups.get(groupName).addMember(me);
     }
-    public void createGroup(String groupName, HashMap<String, Member> members) {
+    public void createGroup(String groupName, ConcurrentHashMap<String, Member> members) {
         groups.put(groupName, new Group(groupName, members));
     }
 
-    public void joinGroupRequest(Member recipient, Member me, String groupName) {
+    public void joinGroupRequest(Member recipient, String groupName) {
+        System.out.println("My information: \n" +   me.getName() + "\n" +
+                                                    me.getPort() + "\n" +
+                                                    me.getAddress() + "\n");
+
+        System.out.println("Recipient information: \n" +
+                            recipient.getName() + "\n" +
+                            recipient.getPort() + "\n" +
+                            recipient.getAddress() + "\n");
         order.addInQueue(new Message(recipient, me, groupName, "connect", null));
         System.out.println("JOINGREQ");
     }
@@ -115,7 +102,7 @@ public class GroupManager {
 
     public Group[] getGroups() {
         Set keySet = groups.keySet();
-        Group[] groupList = new Group[groups.size() + 1];
+        Group[] groupList = new Group[groups.size()];
         int i = 0;
         for (Object group : keySet) {
             groupList[i] = groups.get(group.toString());

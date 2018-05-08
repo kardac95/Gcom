@@ -20,6 +20,7 @@ public class CommunicationObject implements Communication {
     public void initCommunication(Member myInfo) {
         this.myInfo = myInfo;
         n = new Node(Integer.parseInt(myInfo.getPort()));
+        //n.connectToNode(myInfo);
     }
 
     @Override

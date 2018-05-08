@@ -64,7 +64,6 @@ public class GuiController {
     }
 
     public void addGroupTab() {
-
         TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();
         Tab tab = new Tab();
         tab.setText(item.getValue());
@@ -130,15 +129,10 @@ public class GuiController {
         TreeItem<String> dummyroot = new TreeItem<>("MegaRoot");
 
         for (Group group : groups) {
-            if(group == null) {
-                continue;
-            }
-            String groupName = group.getName();
-            Member[] members = logic.getGM().getGroup(group.getName()).getMembers();
-            TreeItem<String> root = new TreeItem<>(groupName);
-            for (Object member : members) {
-                String memberName = (String) member;
-                root.getChildren().add(new TreeItem<>(memberName));
+            Member[] members = group.getMembers();
+            TreeItem<String> root = new TreeItem<>(group.getName());
+            for (Member member : members) {
+                root.getChildren().add(new TreeItem<>(member.getName()));
             }
             dummyroot.getChildren().add(root);
         }

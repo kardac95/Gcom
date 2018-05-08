@@ -2,16 +2,17 @@ package Gcom.GroupManagement;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Group implements Serializable{
-    private HashMap<String, Member> members;
+    private Map<String, Member> members;
     private String name;
 
     public Group(String name) {
         this.name = name;
-        this.members = new HashMap<>();
+        this.members = new ConcurrentHashMap<>();
     }
-    public Group(String groupName, HashMap<String, Member> members) {
+    public Group(String groupName, ConcurrentHashMap<String, Member> members) {
         this.name = groupName;
         this.members = members;
     }
@@ -29,7 +30,7 @@ public class Group implements Serializable{
 
     public Member[] getMembers() {
         Set keySet = members.keySet();
-        Member[] memberList = new Member[members.size() + 1];
+        Member[] memberList = new Member[members.size()];
         int i = 0;
         for (Object member : keySet) {
             memberList[i] = members.get(member.toString());
@@ -52,11 +53,20 @@ public class Group implements Serializable{
     }
 
     public void setMembers(Member[] members) {
-        Set keySet = this.members.keySet();
+        /*Set keySet = this.members.keySet();
         keySet.forEach(m -> this.members.remove(m));
 
-        for (Member m : members) {
+        Arrays.stream(members).forEach(m -> {
             this.members.put(m.getName(), m);
-        }
+        });
+        */
+        ((ConcurrentHashMap<String,Member>)this.members).forEach(members.length, (s, member) -> {
+            this.members.remove(s);
+        });
+
+        Arrays.stream(members).forEach(member -> {
+            ((ConcurrentHashMap<String,Member>)this.members).put(member.getName(), member);
+        });
+
     }
 }

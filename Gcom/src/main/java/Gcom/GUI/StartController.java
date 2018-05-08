@@ -20,7 +20,7 @@ public class StartController {
     public Logic logic;
 
     public StartController() {
-        this.logic = new Logic();
+        //this.logic = new Logic();
     }
 
     @FXML Button continueToGuiButton;
@@ -51,11 +51,15 @@ public class StartController {
 
             //SENDING TO GUI CONTROLLER
             GuiController g = loader.getController();
-            logic.setUserName(getUname());
+
+            this.logic = new Logic(getUname(), getPort());
+
+            /*logic.setUserName(getUname());
             logic.setPort(getPort());
+            */
             g.setUserName(getUname());
             g.updateTree(logic);
-            logic.initCommunication(new Member(getUname(),logic.getLocalIp(),getPort()));
+            //logic.initCommunication(new Member(getUname(),logic.getLocalIp(),getPort()));
 
             Scene scene=new Scene(root);
             appStage.setScene(scene);
