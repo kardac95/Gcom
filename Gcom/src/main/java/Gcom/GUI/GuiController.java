@@ -64,10 +64,22 @@ public class GuiController {
     }
 
     public void addGroupTab() {
-        Tab tab = new Tab();
-        Group[] groups = logic.getGM().getGroups();
 
-        //tabPane.
+        TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();
+        Tab tab = new Tab();
+        tab.setText(item.getValue());
+
+        for (Tab tabs: tabPane.getTabs()) {
+            if(tabs.getText().equals(item.getValue())) {
+                return;
+            }
+        }
+        tabPane.getTabs().add(tab);
+
+        ScrollPane sp = new ScrollPane();
+        TextFlow tx = new TextFlow();
+        tab.setContent(sp);
+        sp.setContent(tx);
     }
 
     public void changeSceneToConnect(ActionEvent event) throws IOException {
@@ -93,8 +105,7 @@ public class GuiController {
 
 
     public void changeSceneToGroup(ActionEvent event) throws IOException {
-        if(event.getSource()==updateGroup)
-        {
+        if(event.getSource()==updateGroup) {
             URL url = new File("src/main/java/Gcom/GUI/CreateGroup.fxml").toURL();
 
             FXMLLoader loader = new FXMLLoader(url);

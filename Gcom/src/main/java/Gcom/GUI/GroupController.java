@@ -40,7 +40,6 @@ public class GroupController {
             g.setUserName(logic.getUserName());
             g.setGUILogic(logic);
             g.updateTree(logic);
-
             Scene scene=new Scene(root);
             appStage.setScene(scene);
             appStage.show();

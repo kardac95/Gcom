@@ -53,6 +53,7 @@ public class connectController {
             g.setGUILogic(logic);
             g.setUserName(logic.getUserName());
             g.updateTree(logic);
+            g.addGroupTab();
 
             Scene scene=new Scene(root);
             appStage.setScene(scene);
