@@ -18,7 +18,12 @@ public class OrderingObject implements Ordering{
     }
 
     @Override
-    public Message getOutQueue() {
+    public Message getOutMessage() {
         return o.getNextOutgoingMessage();
+    }
+
+    @Override
+    public boolean outQueueIsEmpty() {
+        return o.outQueueIsEmpty();
     }
 }

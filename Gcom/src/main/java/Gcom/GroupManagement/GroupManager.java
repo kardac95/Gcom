@@ -4,15 +4,20 @@ import Gcom.Message;
 import Gcom.MessageOrdering.Ordering;
 import Gcom.MessageOrdering.OrderingObject;
 import java.util.HashMap;
-import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class GroupManager {
     private ArrayBlockingQueue<Message> incomingQueue;
     private HashMap<String, Group> groups;
     private Ordering order;
-    private ArrayBlockingQueue<Message> outgoingQueue;
+    public ArrayBlockingQueue<Message> outgoingQueue;
+    private Thread monitorOutThread;
+    private Lock lock = new ReentrantLock();
+    private Condition condition = lock.newCondition();
 
 
     public GroupManager() {
@@ -24,6 +29,23 @@ public class GroupManager {
     public void initOrdering(Member myInfo) {
         order = new OrderingObject();
         order.initOrdering(myInfo);
+        monitorOutThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    lock.lock();
+                    try {
+                        while(order.outQueueIsEmpty()) {
+                            condition.await();
+                        }
+                    } catch (InterruptedException ignored) {
+                    } finally {
+                        lock.unlock();
+                    }
+                    outgoingQueue.add(order.getOutMessage());
+                }
+            }
+        });
     }
 
     public void createGroup(String groupName) {
