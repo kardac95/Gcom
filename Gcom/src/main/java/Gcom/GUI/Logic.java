@@ -14,6 +14,7 @@ public class Logic {
     private String localIp;
 
 
+
     public Logic(){
         this.GM = new GroupManager();
 
@@ -51,8 +52,8 @@ public class Logic {
         GM.initOrdering(member);
     }
 
-
     public String getLocalIp() {
         return localIp;
     }
+
 }

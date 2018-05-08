@@ -64,7 +64,7 @@
          <contextMenu>
             <ContextMenu>
               <items>
-                <MenuItem fx:id="joinMenuItem" mnemonicParsing="false" onAction="#connectFromTree" text="Join" />
+                <MenuItem fx:id="joinMenuItem" mnemonicParsing="false" onAction="#addGroupTab" text="Join" />
               </items>
             </ContextMenu>
          </contextMenu></TreeView>
