@@ -42,9 +42,13 @@ public class GuiController {
 
     @FXML
     public void setTextInTextFlow (String s) {
-       /* String myTextMessage = sendArea.getText();*/
-        Text newText = new Text(s);
+        String myTextMessage = sendArea.getText();
+        Text newText = new Text(myTextMessage);
         receiveArea.getChildren().add(newText);
+    }
+
+    public void sendMessage() {
+
     }
 
     public void changeCirleColor(){

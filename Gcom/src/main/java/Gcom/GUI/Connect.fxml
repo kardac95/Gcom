@@ -9,13 +9,14 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gcom.GUI.connectController">
    <children>
-      <TextField layoutX="205.0" layoutY="200.0" promptText="Port" />
+      <TextField fx:id="port" layoutX="205.0" layoutY="200.0" promptText="Port" />
       <Button fx:id="connectButton" layoutX="230.0" layoutY="261.0" mnemonicParsing="false" onAction="#changeSceneToGUI" prefHeight="34.0" prefWidth="120.0" text="Connect" />
-      <TextField layoutX="205.0" layoutY="130.0" promptText="Host" />
+      <TextField fx:id="hostName" layoutX="205.0" layoutY="141.0" promptText="Host" />
       <Text layoutX="175.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connect to a host">
          <font>
             <Font size="26.0" />
          </font>
       </Text>
+      <TextField fx:id="groupName" layoutX="388.0" layoutY="266.0" promptText="Group Name" />
    </children>
 </AnchorPane>
