@@ -55,6 +55,10 @@ public class GroupManager {
         groups.put(groupName, new Group(groupName, members));
     }
 
+    public void joinGroupRequest(Member me, String groupName) {
+        order.addInQueue(new Message(null, me, groupName, "connect", null));
+    }
+
     public void joinGroup(Group group, Member me) {
         order.addInQueue(new Message(group, me, null, "connect", null));
         group.addMember(me);
