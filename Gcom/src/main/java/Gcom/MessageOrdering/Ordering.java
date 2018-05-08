@@ -8,6 +8,6 @@ import java.util.Queue;
 public interface Ordering {
     public void initOrdering(Member myInfo);
     public void addInQueue(Message message);
-    public Message getOutMessage();
+    public Message getOutMessage() throws InterruptedException;
     public boolean outQueueIsEmpty();
 }

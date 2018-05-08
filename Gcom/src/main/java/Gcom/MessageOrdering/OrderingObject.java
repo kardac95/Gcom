@@ -18,7 +18,7 @@ public class OrderingObject implements Ordering{
     }
 
     @Override
-    public Message getOutMessage() {
+    public Message getOutMessage() throws InterruptedException {
         return o.getNextOutgoingMessage();
     }
 

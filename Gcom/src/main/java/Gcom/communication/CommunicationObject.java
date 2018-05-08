@@ -3,13 +3,18 @@ package Gcom.communication;
 import Gcom.GroupManagement.Member;
 import Gcom.Message;
 import Gcom.communication.rmi.Node;
+import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.Arrays;
 import java.util.Queue;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class CommunicationObject implements Communication {
 
-    Node n;
-    Member myInfo;
+    private Node n;
+    private Member myInfo;
 
     @Override
     public void initCommunication(Member myInfo) {
@@ -41,4 +46,5 @@ public class CommunicationObject implements Communication {
     public Queue<Message> getInQueue() {
         return n.getInQueue();
     }
+
 }

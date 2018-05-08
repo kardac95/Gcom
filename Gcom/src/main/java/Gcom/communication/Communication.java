@@ -4,6 +4,8 @@ import Gcom.GroupManagement.Member;
 import Gcom.Message;
 
 import java.util.Queue;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
 
 public interface Communication {
     public void initCommunication(Member myInfo);

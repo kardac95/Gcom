@@ -24,4 +24,10 @@ public class Member implements Serializable{
     public String getPort() {
         return port;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        Member m = (Member)o;
+        return (m.getAddress() + m.getPort()).equals(this.address + this.port);
+    }
 }

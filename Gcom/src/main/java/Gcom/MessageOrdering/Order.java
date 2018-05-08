@@ -6,8 +6,8 @@ import Gcom.communication.Communication;
 import Gcom.communication.CommunicationObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -20,10 +20,9 @@ public class Order {
     private Queue<Message> incomingQueue;
     private Communication comm;
 
-    private Lock lock = new ReentrantLock();
-    private Condition condition = lock.newCondition();
     private Thread inQueueMonitor;
     private Thread outQueueMonitor;
+
 
 
 
@@ -44,14 +43,28 @@ public class Order {
             @Override
             public void run() {
                 while(true) {
-                    lock.lock();
+                    Message m = null;
+                    try {
+                        m = ((LinkedBlockingQueue<Message>)comm.getInQueue()).take();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if(m.getType().equals("join")) {
+                        comm.connectToMembers(m.getGroup().getMembers());
+                    }
+                    System.out.println("Order outQueue type: " + m.getType());
+                    System.out.println("Order outQueue message: " + m.getMessage());
+                    outgoingQueue.add(m);
+
+                    /*comm.getCommQueueLock().lock();
                     try {
                         while(comm.getInQueue().isEmpty()) {
-                            condition.await();
+                            comm.getCommQueueCondition().await();
                         }
                     } catch (InterruptedException ignored) {
                     } finally {
-                        lock.unlock();
+                        comm.getCommQueueLock().unlock();
                     }
                     System.out.println("Order Down");
                     Message m = comm.getInQueue().poll();
@@ -59,7 +72,7 @@ public class Order {
                         comm.connectToMembers(m.getGroup().getMembers());
                     }
                     System.out.println(m.getMessage());
-                    outgoingQueue.add(m);
+                    outgoingQueue.add(m);*/
                 }
             }
         });
@@ -68,6 +81,26 @@ public class Order {
             @Override
             public void run() {
                 while(true) {
+                    Message m = null;
+                    try {
+                        m = ((LinkedBlockingQueue<Message>)incomingQueue).take();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Order Down");
+                    System.out.println("Order inQueue type: " + m.getType());
+                    System.out.println("Order inQueue message: " + m.getMessage());
+                    if(m.getGroup() != null) {
+                        Arrays.stream(m.getGroup().getMembers()).forEach(i -> {
+                            System.out.println("Order inQueue Members name: " + i.getName());
+                            System.out.println("Order inQueue Members address: " + i.getAddress());
+                            System.out.println("Order inQueue Members port: " + i.getPort());
+
+                        });
+                    }
+                    send(m);
+
+                    /*
                     lock.lock();
                     try {
                         while(incomingQueue.isEmpty()) {
@@ -81,11 +114,13 @@ public class Order {
                     Message m = incomingQueue.poll();
                     System.out.println(m.getMessage());
                     send(m);
+                */
                 }
 
             }
         });
         inQueueMonitor.start();
+        outQueueMonitor.start();
     }
 
     public void send(Message message){
@@ -109,23 +144,20 @@ public class Order {
         vectorClock.set(index, vectorClock.get(index) + 1);
     }
 
-    public Message getNextOutgoingMessage() {
-        return outgoingQueue.poll();
+    public Message getNextOutgoingMessage() throws InterruptedException {
+        return ((LinkedBlockingQueue<Message>)outgoingQueue).take();
     }
 
     public void addNextIncomingMessage(Message message) {
         incomingQueue.add(message);
-        lock.lock();
-        condition.signal();
-        lock.unlock();
     }
 
     protected boolean outQueueIsEmpty() {
         return outgoingQueue.isEmpty();
     }
 
-    public Message getNextIncommingMessage() {
-        return incomingQueue.poll();
+    public Message getNextIncommingMessage() throws InterruptedException {
+        return ((LinkedBlockingQueue<Message>)incomingQueue).take();
     }
 }
 
