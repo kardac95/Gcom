@@ -1,5 +1,6 @@
 package Gcom.GUI;
 
+import Gcom.GroupManagement.Group;
 import Gcom.GroupManagement.Member;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +16,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Set;
 
 
 public class GuiController {
@@ -38,6 +38,7 @@ public class GuiController {
     @FXML Button sendButton;
     @FXML Circle myCircle;
     @FXML Text UserName;
+    @FXML TabPane tabPane;
 
 
     @FXML
@@ -64,6 +65,9 @@ public class GuiController {
 
     public void addGroupTab() {
         Tab tab = new Tab();
+        Group[] groups = logic.getGM().getGroups();
+
+        //tabPane.
     }
 
     public void changeSceneToConnect(ActionEvent event) throws IOException {
@@ -111,13 +115,15 @@ public class GuiController {
 
     public void updateTree(Logic logic) {
         this.logic = logic;
-        Set groups = logic.getGM().getGroups();
-
+        Group[] groups = logic.getGM().getGroups();
         TreeItem<String> dummyroot = new TreeItem<>("MegaRoot");
 
-        for (Object group : groups) {
-            String groupName = (String) group;
-            Member[] members = logic.getGM().getGroup((String)group).getMembers();
+        for (Group group : groups) {
+            if(group == null) {
+                continue;
+            }
+            String groupName = group.getName();
+            Member[] members = logic.getGM().getGroup(group.getName()).getMembers();
             TreeItem<String> root = new TreeItem<>(groupName);
             for (Object member : members) {
                 String memberName = (String) member;

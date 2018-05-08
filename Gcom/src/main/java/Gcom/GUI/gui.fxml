@@ -70,33 +70,6 @@
          </contextMenu></TreeView>
    </right>
    <center>
-      <TabPane prefHeight="487.0" prefWidth="1035.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-        <tabs>
-          <Tab text="Best Group">
-               <content>
-                  <ScrollPane prefHeight="200.0" prefWidth="200.0">
-                     <content>
-                        <TextFlow fx:id="receiveArea" prefHeight="442.0" prefWidth="1034.0" />
-                     </content>
-                  </ScrollPane>
-               </content>
-               <graphic>
-                  <Circle fill="#1fff27" radius="8.0" stroke="BLACK" strokeType="INSIDE" />
-               </graphic>
-            </Tab>
-          <Tab text="Worst Group">
-               <content>
-                  <ScrollPane prefHeight="200.0" prefWidth="200.0">
-                     <content>
-                        <TextArea prefHeight="442.0" prefWidth="1034.0" />
-                     </content>
-                  </ScrollPane>
-               </content>
-               <graphic>
-                  <Circle fill="#ff1f1f" radius="8.0" stroke="BLACK" strokeType="INSIDE" />
-               </graphic>
-            </Tab>
-        </tabs>
-      </TabPane>
+      <TabPane fx:id="tabPane" prefHeight="487.0" prefWidth="1035.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
