@@ -43,6 +43,18 @@ public class GroupManager {
                         lock.unlock();
                     }
                     Message m = order.getOutMessage();
+                    if(m.getType().equals("connect")) {
+                        groups.get(m.getMessage()).addMember(m.getSender());
+                        order.addInQueue(
+                                new Message(
+                                        groups.get(m.getMessage()),
+                                        m.getRecipient(),
+                                        "Faggot has joined the group!",
+                                        "join",
+                                        null));
+                    } else if(m.getType().equals("join")) {
+                        groups.get(m.getGroup().getName()).setMembers(m.getGroup().getMembers());
+                    }
                     System.out.println("Group manager receive");
                     System.out.println(m.getType());
                     System.out.println(m.getMessage());
@@ -78,9 +90,16 @@ public class GroupManager {
         return groups.get(groupName);
     }
 
-    public Set getGroups() {
-        return groups.keySet();
-    }
+    public Group[] getGroups() {
+        Set keySet = groups.keySet();
+        Group[] groupList = new Group[groups.size() + 1];
+        int i = 0;
+        for (Object group : keySet) {
+            groupList[i] = groups.get(group.toString());
+            i++;
+        }
+
+        return groupList;    }
 
     public void messageGroup(String message, Member sender, String groupName) {
         order.addInQueue(new Message(groups.get(groupName), sender, message, "message", null));

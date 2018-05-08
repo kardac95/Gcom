@@ -50,4 +50,9 @@ public class Group implements Serializable{
     public String getName() {
         return name;
     }
+
+    public void setMembers(Member[] members) {
+        //this.members.replaceAll();
+
+    }
 }

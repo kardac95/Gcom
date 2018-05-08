@@ -8,6 +8,7 @@ import Gcom.communication.CommunicationObject;
 import java.util.ArrayList;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -22,6 +23,7 @@ public class Order {
     private Lock lock = new ReentrantLock();
     private Condition condition = lock.newCondition();
     private Thread inQueueMonitor;
+    private Thread outQueueMonitor;
 
 
 
@@ -31,11 +33,36 @@ public class Order {
         this.memberIndex = 0;
         vectorClock.add(memberIndex);
 
-        this.incomingQueue = new ArrayBlockingQueue<>(20);
+        this.incomingQueue = new LinkedBlockingQueue<>();
 
         this.comm = new CommunicationObject();
         this.comm.initCommunication(myInfo);
-        this.outgoingQueue = comm.getInQueue();
+        this.outgoingQueue = new LinkedBlockingQueue<>();
+
+        comm.getInQueue();
+        outQueueMonitor = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    lock.lock();
+                    try {
+                        while(comm.getInQueue().isEmpty()) {
+                            condition.await();
+                        }
+                    } catch (InterruptedException ignored) {
+                    } finally {
+                        lock.unlock();
+                    }
+                    System.out.println("Order Down");
+                    Message m = comm.getInQueue().poll();
+                    if(m.getType().equals("join")) {
+                        comm.connectToMembers(m.getGroup().getMembers());
+                    }
+                    System.out.println(m.getMessage());
+                    outgoingQueue.add(m);
+                }
+            }
+        });
 
         inQueueMonitor = new Thread(new Runnable() {
             @Override
@@ -66,7 +93,7 @@ public class Order {
             message.setVectorClock(vectorClock);
             comm.connectToMember(message.getRecipient());
             comm.unReliableUnicast(message, message.getRecipient());
-        } else {
+        } else{
             vectorClock.set(memberIndex, vectorClock.get(memberIndex) + 1);
             message.setVectorClock(vectorClock);
             comm.unReliableMulticast(message, message.getGroup().getMembers());

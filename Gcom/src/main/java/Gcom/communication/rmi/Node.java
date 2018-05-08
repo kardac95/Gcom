@@ -41,15 +41,7 @@ public class Node {
             e.printStackTrace();
         }
     }
-/*
-    public void unReliableUnicast(String message, Integer port) {
-        try {
-            connections.get(port).printMessage(message);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-*/
+
     public void unReliableUnicast(Message message, Member m) {
         try {
             connections.get(m.getAddress() + m.getPort()).sendMessage(message);
@@ -57,18 +49,7 @@ public class Node {
             e.printStackTrace();
         }
     }
-/*
-    public void unReliableMulticast(String message, Integer ports[]) {
-        Arrays.stream(ports).forEach(p -> {
-            try {
-                connections.get(p).printMessage(message);
-            } catch (RemoteException e) {
-                //e.printStackTrace();
-                System.err.println("hej");
-            }
-        });
-    }
-*/
+
     public void unReliableMulticast(Message message, Member[] members) {
         Arrays.stream(members).forEach(m -> {
             unReliableUnicast(message, m);
