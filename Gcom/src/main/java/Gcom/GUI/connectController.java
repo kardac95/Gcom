@@ -41,12 +41,11 @@ public class connectController {
 
             //SENDING
             GuiController g = loader.getController();
+            logic.getGM().joinGroupRequest(new Member(hostUserName.getText(),hostName.getText(),port.getText()),new Member(logic.getUserName(),logic.getLocalIp(),logic.getPort()),hostGroupName.getText());
             g.setGUILogic(logic);
             g.setUserName(logic.getUserName());
             g.updateTree(logic);
 
-            //logic.getGM().joinGroupRequest(new Member(null,hostName.getText(),port.getText()),groupName.getText());
-            logic.getGM().joinGroupRequest(new Member(hostUserName.getText(),hostName.getText(),port.getText()),new Member(logic.getUserName(),logic.getLocalIp(),logic.getPort()),hostGroupName.getText());
             Scene scene=new Scene(root);
             appStage.setScene(scene);
             appStage.show();

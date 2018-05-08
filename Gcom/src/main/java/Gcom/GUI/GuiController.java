@@ -48,7 +48,10 @@ public class GuiController {
     }
 
     public void sendMessage() {
-
+        String myTextMessage = sendArea.getText();
+        System.out.println(myTextMessage);
+        sendArea.clear();
+        //logic.getGM().messageGroup(myTextMessage, new Member(logic.getUserName(),logic.getLocalIp(),logic.getPort()),logic.getGM().getGroup(logic.getUserName()));
     }
 
     public void changeCirleColor(){
@@ -57,6 +60,10 @@ public class GuiController {
 
     public void setUserName(String uName) {
         UserName.setText(uName);
+    }
+
+    public void addGroupTab() {
+        Tab tab = new Tab();
     }
 
     public void changeSceneToConnect(ActionEvent event) throws IOException {
@@ -79,6 +86,7 @@ public class GuiController {
             window.show();
         }
     }
+
 
     public void changeSceneToGroup(ActionEvent event) throws IOException {
         if(event.getSource()==updateGroup)

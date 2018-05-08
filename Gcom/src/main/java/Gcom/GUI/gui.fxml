@@ -55,7 +55,7 @@
                   <TextArea fx:id="sendArea" prefHeight="149.0" prefWidth="1031.0" promptText="Type message" />
                </content>
             </ScrollPane>
-            <Button fx:id="sendButton" alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="67.0" prefWidth="180.0" snapToPixel="false" text="Send" />
+            <Button fx:id="sendButton" alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#sendMessage" prefHeight="67.0" prefWidth="180.0" snapToPixel="false" text="Send" />
          </children>
       </HBox>
    </bottom>

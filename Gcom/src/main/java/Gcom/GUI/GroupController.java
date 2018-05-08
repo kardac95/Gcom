@@ -36,9 +36,9 @@ public class GroupController {
 
             //SENDING
             GuiController g = loader.getController();
-            g.setGUILogic(logic);
-            g.setUserName(logic.getUserName());
             logic.getGM().createGroup(groupName.getText());
+            g.setUserName(logic.getUserName());
+            g.setGUILogic(logic);
             g.updateTree(logic);
 
             Scene scene=new Scene(root);
