@@ -97,6 +97,7 @@ public class Node {
                     Registry registry = LocateRegistry.getRegistry(member.getAddress(), Integer.parseInt(member.getPort()));
                     RemoteObject stub = (RemoteObject) registry.lookup("MessageService");
                     connections.put(member.getAddress()+member.getPort(), stub);
+                    System.out.println("Connecting with " + member.getName());
                 }else {
                     System.out.println("Connection already established");
                 }

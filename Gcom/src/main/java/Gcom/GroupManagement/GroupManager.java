@@ -43,7 +43,9 @@ public class GroupManager {
                         lock.unlock();
                     }
                     Message m = order.getOutMessage();
+                    System.out.println("Group manager receive");
                     System.out.println(m.getType());
+                    System.out.println(m.getMessage());
                     outgoingQueue.add(m);
                 }
             }
@@ -57,8 +59,8 @@ public class GroupManager {
         groups.put(groupName, new Group(groupName, members));
     }
 
-    public void joinGroupRequest(Member me, String groupName) {
-        order.addInQueue(new Message(null, me, groupName, "connect", null));
+    public void joinGroupRequest(Member recipient, Member me, String groupName) {
+        order.addInQueue(new Message(recipient, me, groupName, "connect", null));
     }
 
     public void joinGroup(Group group, Member me) {

@@ -50,7 +50,10 @@ public class Order {
                     } finally {
                         lock.unlock();
                     }
-                    send(incomingQueue.poll());
+                    System.out.println("Order Down");
+                    Message m = incomingQueue.poll();
+                    System.out.println(m.getMessage());
+                    send(m);
                 }
 
             }
