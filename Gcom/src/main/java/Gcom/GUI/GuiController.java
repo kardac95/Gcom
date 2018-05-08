@@ -1,5 +1,6 @@
 package Gcom.GUI;
 
+import Gcom.GroupManagement.Member;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -68,7 +69,27 @@ public class GuiController {
 
             Scene scene = new Scene(GCOm);
 
-           // Stage window =  (Stage) ((Node)event.getSource()).getScene().getWindow();
+            Stage window = (Stage) myMenuBar.getScene().getWindow();
+            window.setTitle("GCom");
+            window.setScene(scene);
+            window.show();
+        }
+    }
+
+    public void changeSceneToGroup(ActionEvent event) throws IOException {
+        if(event.getSource()==updateGroup)
+        {
+            URL url = new File("src/main/java/Gcom/GUI/CreateGroup.fxml").toURL();
+
+            FXMLLoader loader = new FXMLLoader(url);
+            Parent GCOm = loader.load();
+
+            //SENDING
+            GroupController g = loader.getController();
+            g.setGroupLogic(logic);
+
+            Scene scene = new Scene(GCOm);
+
             Stage window = (Stage) myMenuBar.getScene().getWindow();
             window.setTitle("GCom");
             window.setScene(scene);
@@ -84,7 +105,7 @@ public class GuiController {
 
         for (Object group : groups) {
             String groupName = (String) group;
-            Set members = logic.getGM().getGroup((String)group).getMembers();
+            Member[] members = logic.getGM().getGroup((String)group).getMembers();
             TreeItem<String> root = new TreeItem<>(groupName);
             for (Object member : members) {
                 String memberName = (String) member;
