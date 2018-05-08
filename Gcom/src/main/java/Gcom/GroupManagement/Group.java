@@ -29,14 +29,14 @@ public class Group implements Serializable{
 
     public Member[] getMembers() {
         Set keySet = members.keySet();
-        Member[] kalleList = new Member[members.size() + 1];
+        Member[] memberList = new Member[members.size() + 1];
         int i = 0;
         for (Object member : keySet) {
-            kalleList[i] = members.get(member);
+            memberList[i] = members.get(member);
             i++;
         }
 
-        return kalleList;
+        return memberList;
     }
 
     public Member getMember(String name) {
