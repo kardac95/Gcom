@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -21,6 +22,9 @@ public class connectController {
     }
 
     @FXML Button connectButton;
+    @FXML TextField groupName;
+    @FXML TextField hostName;
+    @FXML TextField port;
 
     public void changeSceneToGUI(ActionEvent event) throws IOException {
         Stage appStage;
