@@ -1,5 +1,6 @@
 package Gcom.GUI;
 
+import Gcom.GroupManagement.Member;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,8 @@ public class connectController {
     @FXML Button connectButton;
     @FXML TextField hostName;
     @FXML TextField port;
+    @FXML TextField hostUserName;
+    @FXML TextField hostGroupName;
 
     public void changeSceneToGUI(ActionEvent event) throws IOException {
         Stage appStage;
@@ -43,6 +46,7 @@ public class connectController {
             g.updateTree(logic);
 
             //logic.getGM().joinGroupRequest(new Member(null,hostName.getText(),port.getText()),groupName.getText());
+            logic.getGM().joinGroupRequest(new Member(hostUserName.getText(),hostName.getText(),port.getText()),new Member(logic.getUserName(),logic.getLocalIp(),logic.getPort()),hostGroupName.getText());
             Scene scene=new Scene(root);
             appStage.setScene(scene);
             appStage.show();

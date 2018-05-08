@@ -50,6 +50,7 @@ public class GroupManager {
                 }
             }
         });
+        monitorOutThread.start();
     }
 
     public void createGroup(String groupName) {
@@ -61,6 +62,7 @@ public class GroupManager {
 
     public void joinGroupRequest(Member recipient, Member me, String groupName) {
         order.addInQueue(new Message(recipient, me, groupName, "connect", null));
+        System.out.println("JOINGREQ");
     }
 
     public void joinGroup(Group group, Member me) {

@@ -39,6 +39,6 @@ public class CommunicationObject implements Communication {
 
     @Override
     public Queue<Message> getInQueue() {
-        return null;
+        return n.getInQueue();
     }
 }

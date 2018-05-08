@@ -58,6 +58,7 @@ public class Order {
 
             }
         });
+        inQueueMonitor.start();
     }
 
     public void send(Message message){
