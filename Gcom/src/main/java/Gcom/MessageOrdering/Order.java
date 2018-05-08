@@ -1,6 +1,5 @@
 package Gcom.MessageOrdering;
 
-import Gcom.GroupManagement.Group;
 import Gcom.GroupManagement.Member;
 import Gcom.Message;
 import Gcom.communication.Communication;
@@ -44,7 +43,7 @@ public class Order {
                     while(incomingQueue.isEmpty()) {
                         try {
                             condition.await();
-                        } catch (InterruptedException e) {
+                        } catch (InterruptedException ignored) {
                         } finally {
                             lock.unlock();
                         }
@@ -84,7 +83,6 @@ public class Order {
         lock.lock();
         condition.signal();
         lock.unlock();
-
     }
 
     public Message getNextIncommingMessage() {
