@@ -17,6 +17,5 @@
             <Font size="26.0" />
          </font>
       </Text>
-      <TextField fx:id="groupName" layoutX="388.0" layoutY="266.0" promptText="Group Name" />
    </children>
 </AnchorPane>

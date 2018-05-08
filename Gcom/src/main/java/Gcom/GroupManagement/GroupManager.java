@@ -42,7 +42,9 @@ public class GroupManager {
                     } finally {
                         lock.unlock();
                     }
-                    outgoingQueue.add(order.getOutMessage());
+                    Message m = order.getOutMessage();
+                    System.out.println(m.getType());
+                    outgoingQueue.add(m);
                 }
             }
         });

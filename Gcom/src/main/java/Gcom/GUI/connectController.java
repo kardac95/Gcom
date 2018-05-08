@@ -22,7 +22,6 @@ public class connectController {
     }
 
     @FXML Button connectButton;
-    @FXML TextField groupName;
     @FXML TextField hostName;
     @FXML TextField port;
 
@@ -43,6 +42,7 @@ public class connectController {
             g.setUserName(logic.getUserName());
             g.updateTree(logic);
 
+            //logic.getGM().joinGroupRequest(new Member(null,hostName.getText(),port.getText()),groupName.getText());
             Scene scene=new Scene(root);
             appStage.setScene(scene);
             appStage.show();

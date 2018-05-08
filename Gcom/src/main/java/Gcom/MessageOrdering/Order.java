@@ -60,6 +60,7 @@ public class Order {
     public void send(Message message){
         if(message.getType().equals("connect")) {
             message.setVectorClock(vectorClock);
+            comm.connectToMember(message.getGroup().getMember("TEMP"));
         } else {
             vectorClock.set(memberIndex, vectorClock.get(memberIndex) + 1);
             message.setVectorClock(vectorClock);
