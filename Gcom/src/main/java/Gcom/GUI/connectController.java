@@ -1,6 +1,7 @@
 package Gcom.GUI;
 
 import Gcom.GroupManagement.Member;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,7 +50,7 @@ public class connectController {
             g.setGUILogic(logic);
             g.setUserName(logic.getUserName());
             g.updateTree(logic);
-            g.addGroupTab();
+            //g.addGroupTab();
 
             Scene scene=new Scene(root);
             appStage.setScene(scene);

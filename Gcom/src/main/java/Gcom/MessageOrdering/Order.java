@@ -39,55 +39,49 @@ public class Order {
         this.outgoingQueue = new LinkedBlockingQueue<>();
 
         comm.getInQueue();
-        outQueueMonitor = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(true) {
-                    Message m = null;
-                    try {
-                        m = ((LinkedBlockingQueue<Message>)comm.getInQueue()).take();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    if(m.getType().equals("join")) {
-                        comm.connectToMembers(m.getGroup().getMembers());
-                    }
-                    System.out.println("Order outQueue type: " + m.getType());
-                    System.out.println("Order outQueue message: " + m.getMessage());
-                    outgoingQueue.add(m);
+        outQueueMonitor = new Thread(() -> {
+            while(true) {
+                Message m = null;
+                try {
+                    m = ((LinkedBlockingQueue<Message>)comm.getInQueue()).take();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+
+                if(m.getType().equals("join")) {
+                    comm.connectToMembers(m.getGroup().getMembers());
+                }
+                System.out.println("Order outQueue type: " + m.getType());
+                System.out.println("Order outQueue message: " + m.getMessage());
+                outgoingQueue.add(m);
             }
         });
 
-        inQueueMonitor = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(true) {
-                    Message m = null;
-                    try {
-                        m = ((LinkedBlockingQueue<Message>)incomingQueue).take();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.println("Order Down");
-                    System.out.println("Order inQueue type: " + m.getType());
-                    System.out.println("Order inQueue message: " + m.getMessage());
-                    if(m.getGroup() != null) {
-                        System.out.println(m.getGroup().getMembers().length);
-                        Arrays.stream(m.getGroup().getMembers()).forEach(i -> {
-                            System.out.println("Order inQueue Members name: " + i.getName());
-                            System.out.println("Order inQueue Members address: " + i.getAddress());
-                            System.out.println("Order inQueue Members port: " + i.getPort());
-                        });
-                    }
-                    if(m.getType().equals("join")) {
-                        comm.connectToMembers(m.getGroup().getMembers());
-                    }
-                    send(m);
+        inQueueMonitor = new Thread(() -> {
+            while(true) {
+                Message m = null;
+                try {
+                    m = ((LinkedBlockingQueue<Message>)incomingQueue).take();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-
+                System.out.println("Order Down");
+                System.out.println("Order inQueue type: " + m.getType());
+                System.out.println("Order inQueue message: " + m.getMessage());
+                if(m.getGroup() != null) {
+                    System.out.println(m.getGroup().getMembers().length);
+                    Arrays.stream(m.getGroup().getMembers()).forEach(i -> {
+                        System.out.println("Order inQueue Members name: " + i.getName());
+                        System.out.println("Order inQueue Members address: " + i.getAddress());
+                        System.out.println("Order inQueue Members port: " + i.getPort());
+                    });
+                }
+                if(m.getType().equals("join")) {
+                    comm.connectToMembers(m.getGroup().getMembers());
+                }
+                send(m);
             }
+
         });
         inQueueMonitor.start();
         outQueueMonitor.start();

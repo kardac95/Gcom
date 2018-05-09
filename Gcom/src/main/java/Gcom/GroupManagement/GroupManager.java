@@ -45,14 +45,14 @@ public class GroupManager {
                     m =  new Message(
                             groups.get(m.getMessage()),
                             m.getRecipient(),
-                            "Faggot has joined the group!",
+                            m.getSender() + " has joined the group!",
                             "join",
                             null);
                     order.addInQueue(m);
                 } else if(m.getType().equals("join")) {
-                    if(groups.get(m.getGroup().getName()) == null) {
+                    if (groups.get(m.getGroup().getName()) == null) {
                         groups.put(m.getGroup().getName(), m.getGroup());
-                    }else {
+                    } else {
                         groups.get(m.getGroup().getName()).setMembers(m.getGroup().getMembers());
                     }
                 }
@@ -109,6 +109,10 @@ public class GroupManager {
             i++;
         }
         return groupList;
+    }
+
+    public Queue<Message> getOutgoingQueue() {
+        return outgoingQueue;
     }
 
     public void messageGroup(String message, Member sender, String groupName) {

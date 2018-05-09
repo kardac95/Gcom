@@ -13,9 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Node {
     private Thread server;
@@ -23,26 +20,23 @@ public class Node {
     private Registry registry;
     private Queue<Message> inQueue;
 
-    public Node(int myPort) {
+    public Node(Member myInfo) {
         connections = new HashMap<>();
         inQueue = new LinkedBlockingQueue<>();
-        server = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                initServer(myPort);
-            }
-        });
+        server = new Thread(() -> initServer(myInfo));
         server.start();
     }
 
-    private void initServer(int port) {
+    private void initServer(Member myInfo) {
         try {
-            registry = LocateRegistry.createRegistry(port);
+            registry = LocateRegistry.createRegistry(Integer.parseInt(myInfo.getPort()));
             RemoteMessageService impl = new RemoteMessageService();
             registry.rebind("MessageService", impl);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+
+        connectToNode(myInfo);
     }
 
     public void unReliableUnicast(Message message, Member m) {

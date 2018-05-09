@@ -53,8 +53,10 @@ public class StartController {
             GuiController g = loader.getController();
 
             this.logic = new Logic(getUname(), getPort());
+            //new Thread(this.logic.updateTask(g));
 
-            /*logic.setUserName(getUname());
+            /*
+            logic.setUserName(getUname());
             logic.setPort(getPort());
             */
             g.setUserName(getUname());

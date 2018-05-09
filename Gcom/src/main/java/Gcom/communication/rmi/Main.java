@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 
 public class Main {
-    public static void main(String args[]) {
+    public static void main(String args[]) {/*
         String localIp = null;
         try {
             InetAddress ipAddr = InetAddress.getLocalHost();
@@ -67,6 +67,6 @@ public class Main {
                 System.out.println(n.getInQueue().poll().getMessage());
             }
         }
-    }
+    */}
 
 }
