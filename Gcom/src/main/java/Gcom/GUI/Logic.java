@@ -3,7 +3,6 @@ package Gcom.GUI;
 import Gcom.GroupManagement.GroupManager;
 import Gcom.GroupManagement.Member;
 import Gcom.Message;
-import javafx.concurrent.Task;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -50,11 +49,7 @@ public class Logic {
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void initCommunication(Member member) {
-        GM.initOrdering(member);
+        this.userName = userName ;
     }
 
     public String getLocalIp() {

@@ -1,6 +1,5 @@
 package Gcom.GUI;
 
-import Gcom.GroupManagement.Member;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -55,13 +54,8 @@ public class StartController {
             this.logic = new Logic(getUname(), getPort());
             //new Thread(this.logic.updateTask(g));
 
-            /*
-            logic.setUserName(getUname());
-            logic.setPort(getPort());
-            */
             g.setUserName(getUname());
             g.updateTree(logic);
-            //logic.initCommunication(new Member(getUname(),logic.getLocalIp(),getPort()));
 
             Scene scene=new Scene(root);
             appStage.setScene(scene);

@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -39,6 +40,8 @@ public class GuiController {
     @FXML Circle myCircle;
     @FXML Text UserName;
     @FXML TabPane tabPane;
+    @FXML Dialog dialog;
+    @FXML Dialog connectPop;
 
 
     @FXML
@@ -49,10 +52,30 @@ public class GuiController {
     }
 
     public void sendMessage() {
+        System.out.println("DIALOG");
         String myTextMessage = sendArea.getText();
         System.out.println(myTextMessage);
-        sendArea.clear();
+
+        dialog = new Dialog();
+        dialog.setTitle("GROUP");
+        dialog.setResizable(true);
+
+        TextField text1 = new TextField();
+        TextField text2 = new TextField();
+
+        GridPane grid = new GridPane();
+        grid.add(text1, 2, 1);
+        grid.add(text2, 2, 2);
+        dialog.getDialogPane().setContent(grid);
+        dialog.onCloseRequestProperty();
+        dialog.show();
+
+        //sendArea.clear();
         //logic.getGM().messageGroup(myTextMessage, new Member(logic.getUserName(),logic.getLocalIp(),logic.getPort()),logic.getGM().getGroup(logic.getUserName()));
+    }
+
+    public void popUP() {
+
     }
 
     public void changeCirleColor(){
@@ -66,13 +89,14 @@ public class GuiController {
     public void addGroupTab() {
         TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();
         Tab tab = new Tab();
-        tab.setText(item.getValue());
-
-        for (Tab tabs: tabPane.getTabs()) {
-            if(tabs.getText().equals(item.getValue())) {
-                return;
-            }
+        if(item != null) {
+            System.out.println("NOT NULL" + item.getValue());
+            tab.setText(item.getValue());
+        } else {
+            System.out.println("NULL");
         }
+
+
         tabPane.getTabs().add(tab);
 
         ScrollPane sp = new ScrollPane();
@@ -136,8 +160,9 @@ public class GuiController {
             }
             dummyroot.getChildren().add(root);
         }
-
+        System.out.println("UPDATE TREE");
         treeView.setRoot(dummyroot);
+        System.out.println("AFTERR UPDATE TREE");
     }
 
     public void connectFromTree() {

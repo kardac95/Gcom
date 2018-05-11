@@ -1,5 +1,6 @@
 package Gcom.GUI;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,9 +38,21 @@ public class GroupController {
             //SENDING
             GuiController g = loader.getController();
             logic.getGM().createGroup(groupName.getText());
+
             g.setUserName(logic.getUserName());
             g.setGUILogic(logic);
             g.updateTree(logic);
+
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("Run later");
+                    g.addGroupTab();
+                }
+            });
+
+
             Scene scene=new Scene(root);
             appStage.setScene(scene);
             appStage.show();
