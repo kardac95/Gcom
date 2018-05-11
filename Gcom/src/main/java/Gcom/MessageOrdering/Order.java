@@ -23,10 +23,6 @@ public class Order {
     private Thread inQueueMonitor;
     private Thread outQueueMonitor;
 
-
-
-
-
     public Order(Member myInfo) {
         this.vectorClock = new ArrayList<>();
         this.memberIndex = 0;
@@ -38,7 +34,6 @@ public class Order {
         this.comm.initCommunication(myInfo);
         this.outgoingQueue = new LinkedBlockingQueue<>();
 
-        comm.getInQueue();
         outQueueMonitor = new Thread(() -> {
             while(true) {
                 Message m = null;
