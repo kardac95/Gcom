@@ -40,22 +40,7 @@ public class GroupManager {
                     e.printStackTrace();
                 }
 
-                if(m.getType().equals("connect")) {
-                    groups.get(m.getMessage()).addMember(m.getSender());
-                    m =  new Message(
-                            groups.get(m.getMessage()),
-                            m.getRecipient(),
-                            m.getSender() + " has joined the group!",
-                            "join",
-                            null);
-                    order.addInQueue(m);
-                } else if(m.getType().equals("join")) {
-                    if (groups.get(m.getGroup().getName()) == null) {
-                        groups.put(m.getGroup().getName(), m.getGroup());
-                    } else {
-                        groups.get(m.getGroup().getName()).setMembers(m.getGroup().getMembers());
-                    }
-                }
+                messageTypeAction(m);
 
                 System.out.println("Group manager receive");
                 System.out.println(m.getType());
@@ -64,6 +49,31 @@ public class GroupManager {
             }
         });
         monitorOutThread.start();
+    }
+
+    private void messageTypeAction(Message m) {
+        switch(m.getType()) {
+            case "connect":
+                groups.get(m.getMessage()).addMember(m.getSender());
+                order.addInQueue(new Message(
+                        groups.get(m.getMessage()),
+                        m.getRecipient(),
+                        m.getSender() + " has joined the group!",
+                        "join",
+                        null));
+                break;
+            case "join":
+                if (groups.get(m.getGroup().getName()) == null) {
+                    groups.put(m.getGroup().getName(), m.getGroup());
+                } else {
+                    groups.get(m.getGroup().getName()).setMembers(m.getGroup().getMembers());
+                }
+                break;
+            case "message":
+                break;
+            default:
+                System.err.println("Unknown message type");
+        }
     }
 
     public void createGroup(String groupName) {
@@ -75,16 +85,8 @@ public class GroupManager {
     }
 
     public void joinGroupRequest(Member recipient, String groupName) {
-        System.out.println("My information: \n" +   me.getName() + "\n" +
-                                                    me.getPort() + "\n" +
-                                                    me.getAddress() + "\n");
-
-        System.out.println("Recipient information: \n" +
-                            recipient.getName() + "\n" +
-                            recipient.getPort() + "\n" +
-                            recipient.getAddress() + "\n");
+        System.out.println("joinGroupRequest - GroupManager layer");
         order.addInQueue(new Message(recipient, me, groupName, "connect", null));
-        System.out.println("JOINGREQ");
     }
 
     public void joinGroup(Group group, Member me) {
