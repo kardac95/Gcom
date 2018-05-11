@@ -62,16 +62,12 @@ public class Node {
             }else {
                 System.out.println("Connection already established");
             }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (NotBoundException e) {
+        } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
         }
     }
     public void connectToNodes(Member[] members) {
-        Arrays.stream(members).forEach(member -> {
-            connectToNode(member);
-        });
+        Arrays.stream(members).forEach(this::connectToNode);
     }
 
 
