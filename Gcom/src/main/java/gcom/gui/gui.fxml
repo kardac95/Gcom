@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gcom.gui.GuiController">
+   <top>
+      <VBox prefHeight="93.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+         <children>
+            <MenuBar fx:id="myMenuBar">
+              <menus>
+                  <Menu mnemonicParsing="false" text="Debug">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Dropped packages" />
+                        <MenuItem mnemonicParsing="false" text="Rearranged packages" />
+                        <MenuItem mnemonicParsing="false" text="Delayed packages" />
+                        <MenuItem mnemonicParsing="false" text="Reset all" />
+                    </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Tools">
+                    <items>
+                        <MenuItem fx:id="connectMenu" mnemonicParsing="false" onAction="#changeSceneToConnect" text="Connect" />
+                        <MenuItem fx:id="updateGroup" mnemonicParsing="false" onAction="#changeSceneToGroup" text="Create Group" />
+                      <MenuItem mnemonicParsing="false" text="Update groups" />
+                    </items>
+                  </Menu>
+              </menus>
+            </MenuBar>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Text layoutX="1167.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Groups">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="UserName" layoutX="23.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="650.7294921875">
+                     <font>
+                        <Font size="27.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </top>
+   <bottom>
+      <HBox alignment="CENTER_LEFT" prefHeight="151.0" prefWidth="1280.0" spacing="30.0" BorderPane.alignment="CENTER">
+         <children>
+            <ScrollPane prefHeight="85.0" prefWidth="1033.0">
+               <content>
+                  <TextArea fx:id="sendArea" prefHeight="149.0" prefWidth="1031.0" promptText="Type message" />
+               </content>
+            </ScrollPane>
+            <Button fx:id="sendButton" alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#sendMessage" prefHeight="67.0" prefWidth="180.0" snapToPixel="false" text="Send" />
+         </children>
+      </HBox>
+   </bottom>
+   <right>
+      <TreeView fx:id="treeView" editable="true" prefHeight="423.0" prefWidth="245.0" showRoot="false" BorderPane.alignment="CENTER">
+         <contextMenu>
+            <ContextMenu>
+              <items>
+                <MenuItem fx:id="joinMenuItem" mnemonicParsing="false" onAction="#addGroupTab" text="Join" />
+              </items>
+            </ContextMenu>
+         </contextMenu></TreeView>
+   </right>
+   <center>
+      <TabPane fx:id="tabPane" prefHeight="487.0" prefWidth="1035.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>
