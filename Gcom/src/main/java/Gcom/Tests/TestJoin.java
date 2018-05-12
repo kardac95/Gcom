@@ -2,15 +2,13 @@ package Gcom.Tests;
 
 import Gcom.GroupManagement.GroupManager;
 import Gcom.GroupManagement.Member;
-import Gcom.Message;
-import org.apache.commons.lang3.ArrayUtils;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.Scanner;
 
-public class TestJoin {
+public class TestJoin implements Serializable{
     public static void main(String[] args) {
         String myName = args[0];
         String myPort = args[1];
