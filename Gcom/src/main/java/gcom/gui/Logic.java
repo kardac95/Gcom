@@ -3,6 +3,7 @@ package gcom.gui;
 import gcom.groupmanagement.GroupManager;
 import gcom.groupmanagement.Member;
 import gcom.Message;
+import javafx.application.Platform;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -65,15 +66,19 @@ public class Logic {
     public Thread updateTask(GuiController g) {
         return new Thread(() -> {
             while(true) {
-                Message m;
+                Message m = null;
                 try {
                     m = ((LinkedBlockingQueue<Message>)this.GM.getOutgoingQueue()).take();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 System.out.println("Update!");
+                Platform.runLater(g::updateTree);
+                final Message message = m;
+                Platform.runLater(() -> {
+                    g.setTextInTextFlow(message);
+                });
 
-                g.updateTree(this);
             }
         });
     }
