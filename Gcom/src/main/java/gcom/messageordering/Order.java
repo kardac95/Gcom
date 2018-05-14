@@ -3,6 +3,7 @@ package gcom.messageordering;
 import gcom.Message;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 
@@ -17,7 +18,7 @@ public abstract class Order {
 
     public Order (String myId) {
         clock = new VectorClock(myId);
-        buffer = new ArrayList<>();
+        buffer = Collections.synchronizedList(new ArrayList<Message>());
     }
 
     public Order (List<Message> buffer) {

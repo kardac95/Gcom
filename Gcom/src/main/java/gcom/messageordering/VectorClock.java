@@ -6,8 +6,8 @@ import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class VectorClock {
-    String myId;
-    ConcurrentHashMap<String, Long> clock;
+    private String myId;
+    private ConcurrentHashMap<String, Long> clock;
 
     public VectorClock(String myId) {
         this.myId = myId;
@@ -16,10 +16,16 @@ public class VectorClock {
     }
 
     public void updateVectorClock(VectorClock receivingClock ) {
-        receivingClock.getClock().forEach((key, value) -> {
+        /*receivingClock.getClock().forEach((key, value) -> {
             Long clockValue = clock.get(key);
             clock.put(key, ((clockValue != null) && (clockValue > value)) ? clockValue:value);
-        });
+        });*/
+
+        clock.put(receivingClock.myId, receivingClock.getValue(receivingClock.myId));
+    }
+
+    public String getMyId() {
+        return myId;
     }
 
     public void inc() {
