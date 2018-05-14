@@ -2,21 +2,13 @@ package gcom.gui;
 
 import gcom.groupmanagement.Group;
 import gcom.groupmanagement.Member;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import javafx.stage.Stage;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
+import javafx.stage.Window;
 
 
 public class GuiController {
@@ -40,8 +32,16 @@ public class GuiController {
     @FXML Circle myCircle;
     @FXML Text UserName;
     @FXML TabPane tabPane;
-    @FXML Dialog dialog;
+    @FXML Dialog groupDialog;
+    @FXML Dialog connectDialog;
     @FXML Dialog connectPop;
+    @FXML TextField groupName;
+    @FXML Button groupButton;
+    @FXML TextField connectPort;
+    @FXML TextField connectHostIP;
+    @FXML TextField connectGroup;
+    @FXML TextField connectHostName;
+    @FXML Button connectButton;
 
 
     @FXML
@@ -52,34 +52,80 @@ public class GuiController {
     }
 
     public void sendMessage() {
-        System.out.println("DIALOG");
+        Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+        if(currentTab != null) {
+            System.out.println("tab is " + currentTab.getText());
+            logic.getGM().messageGroup(sendArea.getText(), logic.getMe(), currentTab.getText());
+        }
+
+    }
+
+    public void connectPopUP() {
+        connectDialog = new Dialog();
+        connectDialog.setTitle("CONNECT");
+        connectDialog.setResizable(true);
+        Text text1 = new Text("Connect to a host");
+        connectHostIP = new TextField("IP");
+        connectHostIP.setText(logic.getLocalIp());
+        connectPort = new TextField("Port");
+        connectHostName = new TextField("Name");
+        connectGroup = new TextField("Group");
+        connectButton = new Button("Connect");
+
+        GridPane grid = new GridPane();
+        grid.add(text1, 1 ,1);
+        grid.add(connectHostIP, 1, 2);
+        grid.add(connectPort,1,3);
+        grid.add(connectHostName,1,4);
+        grid.add(connectGroup,1,5);
+        grid.add(connectButton,1,6);
+        connectDialog.getDialogPane().setContent(grid);
+        Window window = connectDialog.getDialogPane().getScene().getWindow();
+        window.setOnCloseRequest(windowEvent -> connectDialog.hide());
+        connectButton.setOnAction(event -> connectToUser());
+        connectDialog.show();
+    }
+
+    public void connectToUser(){
+        logic.getGM().joinGroupRequest(new Member(
+                        connectHostName.getText(),
+                        connectHostIP.getText(),
+                        connectPort.getText()),
+                connectGroup.getText());
+
+        connectHostIP.clear();
+        connectPort.clear();
+        connectHostName.clear();
+        connectGroup.clear();
+
+    }
+
+    public void groupPopUP() {
         String myTextMessage = sendArea.getText();
         System.out.println(myTextMessage);
 
-        dialog = new Dialog();
-        dialog.setTitle("GROUP");
-        dialog.setResizable(true);
-
-        TextField text1 = new TextField();
-        TextField text2 = new TextField();
+        groupDialog = new Dialog();
+        groupDialog.setTitle("GROUP");
+        groupDialog.setResizable(true);
+        Text text1 = new Text("Create Group");
+        groupName = new TextField();
+        groupButton = new Button("Create");
 
         GridPane grid = new GridPane();
-        grid.add(text1, 2, 1);
-        grid.add(text2, 2, 2);
-        dialog.getDialogPane().setContent(grid);
-        dialog.onCloseRequestProperty();
-        dialog.show();
-
-        //sendArea.clear();
-        //logic.getGM().messageGroup(myTextMessage, new Member(logic.getUserName(),logic.getLocalIp(),logic.getPort()),logic.getGM().getGroup(logic.getUserName()));
+        grid.add(text1, 1 ,1);
+        grid.add(groupName, 1, 2);
+        grid.add(groupButton,1,3);
+        groupDialog.getDialogPane().setContent(grid);
+        Window window = groupDialog.getDialogPane().getScene().getWindow();
+        window.setOnCloseRequest(windowEvent -> groupDialog.hide());
+        groupButton.setOnAction(event -> createGroup());
+        groupDialog.show();
     }
 
-    public void popUP() {
-
-    }
-
-    public void changeCirleColor(){
-        System.out.println("Green");
+    public  void createGroup() {
+        logic.getGM().createGroup(groupName.getText());
+        groupName.clear();
+        updateTree(logic);
     }
 
     public void setUserName(String uName) {
@@ -96,7 +142,6 @@ public class GuiController {
             System.out.println("NULL");
         }
 
-
         tabPane.getTabs().add(tab);
 
         ScrollPane sp = new ScrollPane();
@@ -105,47 +150,7 @@ public class GuiController {
         sp.setContent(tx);
     }
 
-    public void changeSceneToConnect(ActionEvent event) throws IOException {
-        if(event.getSource()==connectMenu)
-        {
-            URL url = new File("src/main/java/gcom/gui/Connect.fxml").toURL();
 
-            FXMLLoader loader = new FXMLLoader(url);
-            Parent GCOm = loader.load();
-
-            //SENDING
-            connectController g = loader.getController();
-            g.setConLogic(logic);
-
-            Scene scene = new Scene(GCOm);
-
-            Stage window = (Stage) myMenuBar.getScene().getWindow();
-            window.setTitle("GCom");
-            window.setScene(scene);
-            window.show();
-        }
-    }
-
-
-    public void changeSceneToGroup(ActionEvent event) throws IOException {
-        if(event.getSource()==updateGroup) {
-            URL url = new File("src/main/java/gcom/gui/CreateGroup.fxml").toURL();
-
-            FXMLLoader loader = new FXMLLoader(url);
-            Parent GCOm = loader.load();
-
-            //SENDING
-            GroupController g = loader.getController();
-            g.setGroupLogic(logic);
-
-            Scene scene = new Scene(GCOm);
-
-            Stage window = (Stage) myMenuBar.getScene().getWindow();
-            window.setTitle("GCom");
-            window.setScene(scene);
-            window.show();
-        }
-    }
 
     public void updateTree(Logic logic) {
         this.logic = logic;
@@ -160,9 +165,7 @@ public class GuiController {
             }
             dummyroot.getChildren().add(root);
         }
-        System.out.println("UPDATE TREE");
         treeView.setRoot(dummyroot);
-        System.out.println("AFTERR UPDATE TREE");
     }
 
     public void connectFromTree() {

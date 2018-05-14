@@ -56,6 +56,7 @@ public class StartController {
 
             g.setUserName(getUname());
             g.updateTree(logic);
+            logic.updateTask(g);
 
             Scene scene=new Scene(root);
             appStage.setScene(scene);

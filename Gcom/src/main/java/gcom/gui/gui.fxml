@@ -23,8 +23,8 @@
                   </Menu>
                   <Menu mnemonicParsing="false" text="Tools">
                     <items>
-                        <MenuItem fx:id="connectMenu" mnemonicParsing="false" onAction="#changeSceneToConnect" text="Connect" />
-                        <MenuItem fx:id="updateGroup" mnemonicParsing="false" onAction="#changeSceneToGroup" text="Create Group" />
+                        <MenuItem fx:id="connectMenu" mnemonicParsing="false" onAction="#connectPopUP" text="Connect" />
+                        <MenuItem fx:id="updateGroup" mnemonicParsing="false" onAction="#groupPopUP" text="Create Group" />
                       <MenuItem mnemonicParsing="false" text="Update groups" />
                     </items>
                   </Menu>
