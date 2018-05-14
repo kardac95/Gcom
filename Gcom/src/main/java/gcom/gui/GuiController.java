@@ -48,7 +48,7 @@ public class GuiController {
         } else if(m.getType().equals("join")){
             color = "red";
         }
-        ((CustomTab)tabPane.getTabs().filtered((t) -> t.getText().equals(m.getGroup().getName())).get(0)).setText(m.getMessage(), color);
+        ((CustomTab)tabPane.getTabs().filtered((t) -> t.getText().equals(m.getGroup().getName())).get(0)).setText(m.getSender().getName() + "> " + m.getMessage(), color);
     }
 
     public void sendMessage() {
@@ -173,16 +173,18 @@ public class GuiController {
 
     public void monitorGroupManager() {
         new Thread(() -> {
-            Message m = null;
-            try {
-                m = ((LinkedBlockingQueue<Message>)logic.getGM().getOutgoingQueue()).take();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            while(true) {
+                Message m = null;
+                try {
+                    m = ((LinkedBlockingQueue<Message>)logic.getGM().getOutgoingQueue()).take();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Update!");
+                Platform.runLater(this::updateTree);
+                final Message message = m;
+                Platform.runLater(() -> this.setTextInTextFlow(message));
             }
-            System.out.println("Update!");
-            Platform.runLater(this::updateTree);
-            final Message message = m;
-            Platform.runLater(() -> this.setTextInTextFlow(message));
         }).start();
     }
 }
