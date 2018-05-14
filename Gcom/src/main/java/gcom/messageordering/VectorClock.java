@@ -1,6 +1,7 @@
 package gcom.messageordering;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -46,5 +47,22 @@ public class VectorClock {
             }
         }
         return true;
+    }
+
+    /* True if clock is before other, otherwise false */
+    public boolean isBefore(VectorClock other) {
+        boolean isBefore = false;
+
+        Set keySet = other.clock.keySet();
+
+        for (Object key : keySet) {
+            int cmp = Long.compare(clock.get(key), other.clock.get(key));
+            if (cmp > 0)
+                return false;
+            else if (cmp < 0)
+                isBefore = true;
+        }
+
+        return isBefore;
     }
 }
