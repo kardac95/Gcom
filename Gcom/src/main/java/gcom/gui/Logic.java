@@ -62,8 +62,8 @@ public class Logic {
         return localIp;
     }
 
-    public Runnable updateTask(GuiController g) {
-        return () -> {
+    public Thread updateTask(GuiController g) {
+        return new Thread(() -> {
             while(true) {
                 Message m;
                 try {
@@ -74,7 +74,7 @@ public class Logic {
                 System.out.println("Update!");
                 g.updateTree(this);
             }
-        };
+        });
     }
 
 }
