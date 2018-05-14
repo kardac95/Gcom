@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gcom.gui.GroupController">
+   <children>
+      <Text layoutX="213.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Group">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Text>
+      <TextField fx:id="groupName" layoutX="207.0" layoutY="164.0" prefHeight="30.0" prefWidth="187.0" promptText="Group Name" />
+      <Button fx:id="createButton" layoutX="234.0" layoutY="245.0" mnemonicParsing="false" onAction="#changeSceneToGUI" prefHeight="40.0" prefWidth="132.0" text="Create" />
+   </children>
+</AnchorPane>
