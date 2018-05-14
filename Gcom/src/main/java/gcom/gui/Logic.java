@@ -72,7 +72,6 @@ public class Logic {
                     e.printStackTrace();
                 }
                 System.out.println("Update!");
-
                 g.updateTree(this);
             }
         });
