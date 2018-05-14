@@ -11,6 +11,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Window;
 
+import java.util.concurrent.LinkedBlockingQueue;
+
 
 public class GuiController {
 
@@ -37,31 +39,16 @@ public class GuiController {
     @FXML TextField connectGroup;
     @FXML TextField connectHostName;
     @FXML Button connectButton;
-    @FXML TextFlow textFlow;
-
 
     @FXML
     public void setTextInTextFlow (Message m) {
-        System.out.println("group" + m.getGroup().getName());
-        System.out.println("Size of tablist is " + tabPane.getTabs().size());
-       /* tabPane.getTabs().forEach((t) -> {
-            System.out.println("tab" + t);
-        });*/
-        for (Tab t:tabPane.getTabs()) {
-            System.out.println("Tab is " + t.getText());
-            Text text = new Text(m.getMessage());
-            TextFlow tx = (TextFlow) tabPane.lookup("#textFlow");
-            tx.getChildren().add(text);
+        String color = "black";
+        if(m.getSender().equals(logic.getMe())) {
+            color = "green";
+        } else if(m.getType().equals("join")){
+            color = "red";
         }
-      /* // System.out.println(tabPane.getTabs().filtered((t) -> t.getText().equals(m.getGroup().getName())).size());
-        Tab tab = tabPane.getTabs().filtered((t) -> t.getText().equals(m.getGroup().getName())).get(0);
-        //ScrollPane sp = (ScrollPane) ((Parent)tab.getContent()).getChildrenUnmodifiable().get(0);
-        tab.
-        TextFlow tf = (TextFlow) ((Parent) sp.getContent()).getChildrenUnmodifiable().get(0);
-        Text text = new Text(m.getMessage());
-      //  tf.setText(tab.getText() + "\n" + m.getMessage());
-        tf.getChildren().add(text);*/
-
+        ((CustomTab)tabPane.getTabs().filtered((t) -> t.getText().equals(m.getGroup().getName())).get(0)).setText(m.getMessage(), color);
     }
 
     public void sendMessage() {
@@ -69,6 +56,8 @@ public class GuiController {
         if(currentTab != null) {
             System.out.println("tab is " + currentTab.getText());
             logic.getGM().messageGroup(sendArea.getText(), logic.getMe(), currentTab.getText());
+            sendArea.clear();
+            sendArea.setText("");
         }
 
     }
@@ -138,12 +127,12 @@ public class GuiController {
     }
 
     public  void createGroup() {
-        String groupname = groupName.getText();
-        logic.getGM().createGroup(groupname);
-        groupName.clear();
+        String groupName = this.groupName.getText();
+        logic.getGM().createGroup(groupName);
+        this.groupName.clear();
         updateTree();
 
-        Platform.runLater(() -> addGroupTab(groupname));
+        Platform.runLater(() -> addGroupTab(groupName));
 
     }
 
@@ -151,17 +140,12 @@ public class GuiController {
         UserName.setText(uName);
     }
 
-    public void addGroupTab(String groupname) {
-        Tab tab = new Tab();
-        tab.setText(groupname);
+    public void addGroupTab(String groupName) {
+        CustomTab tab = new CustomTab();
+        tab.setText(groupName);
+        tab.setContentTextFlow(new TextFlow());
         tabPane.getTabs().add(tab);
-        ScrollPane sp = new ScrollPane();
-        TextFlow tx = new TextFlow();
-        tab.setContent(sp);
-        sp.setContent(tx);
     }
-
-
 
     public void updateTree() {
         Group[] groups = logic.getGM().getGroups();
@@ -185,5 +169,20 @@ public class GuiController {
 
     public void setGUILogic(Logic logic) {
         this.logic = logic;
+    }
+
+    public void monitorGroupManager() {
+        new Thread(() -> {
+            Message m = null;
+            try {
+                m = ((LinkedBlockingQueue<Message>)logic.getGM().getOutgoingQueue()).take();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Update!");
+            Platform.runLater(this::updateTree);
+            final Message message = m;
+            Platform.runLater(() -> this.setTextInTextFlow(message));
+        }).start();
     }
 }
