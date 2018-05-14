@@ -23,8 +23,8 @@
                   </Menu>
                   <Menu mnemonicParsing="false" text="Tools">
                     <items>
-                        <MenuItem fx:id="connectMenu" mnemonicParsing="false" onAction="#changeSceneToConnect" text="Connect" />
-                        <MenuItem fx:id="updateGroup" mnemonicParsing="false" onAction="#changeSceneToGroup" text="Create Group" />
+                        <MenuItem fx:id="connectMenu" mnemonicParsing="false" onAction="#connectPopUP" text="Connect" />
+                        <MenuItem fx:id="updateGroup" mnemonicParsing="false" onAction="#groupPopUP" text="Create Group" />
                       <MenuItem mnemonicParsing="false" text="Update groups" />
                     </items>
                   </Menu>
@@ -60,14 +60,7 @@
       </HBox>
    </bottom>
    <right>
-      <TreeView fx:id="treeView" editable="true" prefHeight="423.0" prefWidth="245.0" showRoot="false" BorderPane.alignment="CENTER">
-         <contextMenu>
-            <ContextMenu>
-              <items>
-                <MenuItem fx:id="joinMenuItem" mnemonicParsing="false" onAction="#addGroupTab" text="Join" />
-              </items>
-            </ContextMenu>
-         </contextMenu></TreeView>
+      <TreeView fx:id="treeView" editable="true" prefHeight="423.0" prefWidth="245.0" showRoot="false" BorderPane.alignment="CENTER" />
    </right>
    <center>
       <TabPane fx:id="tabPane" prefHeight="487.0" prefWidth="1035.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" />

@@ -14,6 +14,7 @@ public class Logic {
     private String userName;
     private String port;
     private String localIp;
+    private Member me;
 
     public Logic(String userName, String port){
         this.userName = userName;
@@ -27,7 +28,9 @@ public class Logic {
             ex.printStackTrace();
         }
 
-        this.GM = new GroupManager(new Member(userName, localIp, port));
+        me = new Member(userName, localIp, port);
+
+        this.GM = new GroupManager(me);
 
     }
 
@@ -35,6 +38,9 @@ public class Logic {
         return GM;
     }
 
+    public Member getMe() {
+        return me;
+    }
 
     public String getPort() {
         return port;
@@ -56,8 +62,8 @@ public class Logic {
         return localIp;
     }
 
-    public Runnable updateTask(GuiController g) {
-        return () -> {
+    public Thread updateTask(GuiController g) {
+        return new Thread(() -> {
             while(true) {
                 Message m;
                 try {
@@ -65,11 +71,11 @@ public class Logic {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                System.out.println("Update!");
 
                 g.updateTree(this);
-                g.addGroupTab();
             }
-        };
+        });
     }
 
 }
