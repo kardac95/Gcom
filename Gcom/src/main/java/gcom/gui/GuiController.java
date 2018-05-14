@@ -2,6 +2,7 @@ package gcom.gui;
 
 import gcom.groupmanagement.Group;
 import gcom.groupmanagement.Member;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -123,27 +124,22 @@ public class GuiController {
     }
 
     public  void createGroup() {
-        logic.getGM().createGroup(groupName.getText());
+        String groupname = groupName.getText();
+        logic.getGM().createGroup(groupname);
         groupName.clear();
         updateTree(logic);
+
+        Platform.runLater(() -> addGroupTab(groupname));
     }
 
     public void setUserName(String uName) {
         UserName.setText(uName);
     }
 
-    public void addGroupTab() {
-        TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();
+    public void addGroupTab(String groupname) {
         Tab tab = new Tab();
-        if(item != null) {
-            System.out.println("NOT NULL" + item.getValue());
-            tab.setText(item.getValue());
-        } else {
-            System.out.println("NULL");
-        }
-
+        tab.setText(groupname);
         tabPane.getTabs().add(tab);
-
         ScrollPane sp = new ScrollPane();
         TextFlow tx = new TextFlow();
         tab.setContent(sp);
