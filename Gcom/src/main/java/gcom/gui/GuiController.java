@@ -6,6 +6,7 @@ import gcom.groupmanagement.Member;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -41,14 +42,20 @@ public class GuiController {
     @FXML Button connectButton;
 
     @FXML
-    public void setTextInTextFlow (Message m) {
-        String color = "black";
-        if(m.getSender().equals(logic.getMe())) {
-            color = "green";
-        } else if(m.getType().equals("join")){
-            color = "red";
-        }
-        ((CustomTab)tabPane.getTabs().filtered((t) -> t.getText().equals(m.getGroup().getName())).get(0)).setText(m.getSender().getName() + "> " + m.getMessage(), color);
+    public void setTextInTextFlow (final Message m) {
+        Platform.runLater(() -> {
+            String color = "magenta";
+            if(m.getSender().equals(logic.getMe())) {
+                color = "green";
+            } else if(m.getType().equals("join")){
+                color = "red";
+            }
+            System.out.println(tabPane.getTabs().size());
+            CustomTab tab = (CustomTab)tabPane.getTabs().filtered((t) -> t.getText().equals(m.getGroup().getName())).get(0);
+            tab.setText(m.getSender().getName() + "> ", color);
+            tab.setText(m.getMessage() + "\n", "black");
+
+        });
     }
 
     public void sendMessage() {
@@ -131,9 +138,7 @@ public class GuiController {
         logic.getGM().createGroup(groupName);
         this.groupName.clear();
         updateTree();
-
         Platform.runLater(() -> addGroupTab(groupName));
-
     }
 
     public void setUserName(String uName) {
@@ -172,19 +177,32 @@ public class GuiController {
     }
 
     public void monitorGroupManager() {
-        new Thread(() -> {
-            while(true) {
-                Message m = null;
-                try {
-                    m = ((LinkedBlockingQueue<Message>)logic.getGM().getOutgoingQueue()).take();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("Update!");
-                Platform.runLater(this::updateTree);
-                final Message message = m;
-                Platform.runLater(() -> this.setTextInTextFlow(message));
+      Thread t = new Thread(() -> {
+          while(true) {
+              Message m = null;
+              try {
+                  m = ((LinkedBlockingQueue<Message>)logic.getGM().getOutgoingQueue()).take();
+              } catch (InterruptedException e) {
+                  e.printStackTrace();
+              }
+              System.out.println("Update!");
+              Platform.runLater(this::updateTree);
+              final Message message = m;
+              Platform.runLater(() -> setTextInTextFlow(message));
+          }
+      });
+      t.setDaemon(true);
+      t.start();
+    }
+
+    @FXML
+    public void initialize() {
+        sendArea.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode().equals(KeyCode.ENTER)) {
+                System.out.println("Send");
+                sendMessage();
+                keyEvent.consume();
             }
-        }).start();
+        });
     }
 }

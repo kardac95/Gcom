@@ -21,7 +21,7 @@ public class CustomTab extends Tab {
     }
 
     public void setText(String text, String color) {
-        Text t = new Text(text + "\n");
+        Text t = new Text(text);
         t.setFill(Paint.valueOf(color));
         tf.getChildren().add(t);
     }
