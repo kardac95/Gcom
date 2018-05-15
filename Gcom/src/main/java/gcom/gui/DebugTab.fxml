@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gcom.gui.GuiController">
+   <children>
+      <Button layoutX="431.0" layoutY="292.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="76.0" text="Step" />
+      <ToggleButton layoutX="416.0" layoutY="71.0" mnemonicParsing="false" text="ToggleButton" />
+      <Text layoutX="402.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Causal/Unorder" wrappingWidth="133.6611328125">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <Button layoutX="431.0" layoutY="235.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="76.0" text="Stop" />
+      <Button layoutX="431.0" layoutY="348.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="76.0" text="Play" />
+      <Text layoutX="409.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message Flow" wrappingWidth="120.6611328125">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <ScrollPane prefHeight="500.0" prefWidth="241.0">
+         <content>
+            <ListView prefHeight="498.0" prefWidth="239.0" />
+         </content>
+      </ScrollPane>
+      <Button layoutX="285.0" layoutY="71.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="UP" />
+      <Button layoutX="285.0" layoutY="117.0" mnemonicParsing="false" text="Down" />
+   </children>
+</AnchorPane>

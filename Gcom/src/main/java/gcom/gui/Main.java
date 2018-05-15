@@ -30,4 +30,11 @@ public class Main extends Application {
 
         primaryStage.show();
     }
+    @Override
+    public void stop() {
+        System.exit(1);
+    }
+
+
+
 }
