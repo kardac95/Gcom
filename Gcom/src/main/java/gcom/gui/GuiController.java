@@ -172,19 +172,21 @@ public class GuiController {
     }
 
     public void monitorGroupManager() {
-        new Thread(() -> {
-            while(true) {
-                Message m = null;
-                try {
-                    m = ((LinkedBlockingQueue<Message>)logic.getGM().getOutgoingQueue()).take();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("Update!");
-                Platform.runLater(this::updateTree);
-                final Message message = m;
-                Platform.runLater(() -> this.setTextInTextFlow(message));
-            }
-        }).start();
+      Thread t = new Thread(() -> {
+          while(true) {
+              Message m = null;
+              try {
+                  m = ((LinkedBlockingQueue<Message>)logic.getGM().getOutgoingQueue()).take();
+              } catch (InterruptedException e) {
+                  e.printStackTrace();
+              }
+              System.out.println("Update!");
+              Platform.runLater(this::updateTree);
+              final Message message = m;
+              Platform.runLater(() -> setTextInTextFlow(message));
+          }
+      });
+      t.setDaemon(true);
+      t.start();
     }
 }
