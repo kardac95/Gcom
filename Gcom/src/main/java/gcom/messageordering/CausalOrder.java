@@ -21,6 +21,7 @@ public class CausalOrder extends Order {
                 this.clock.updateVectorClock(data.getVectorClock());
             } else {
                 this.buffer.add(data);
+                sortBuffer();
             }
 
         } else {
@@ -31,14 +32,14 @@ public class CausalOrder extends Order {
 
     private synchronized void sortBuffer() {
         new Thread(() -> {
-            for (int i = 0; i < buffer.size(); i++) {
+            /*for (int i = 0; i < buffer.size(); i++) {
                 for (int j = 0; j < buffer.size()-1; j++) {
                     if(buffer.get(j).getVectorClock().isBefore(buffer.get(j+1).getVectorClock())) {
                         Collections.swap(buffer, j, j+1);
                     }
                 }
-            }
-            //buffer.sort((m1, m2)-> m1.getVectorClock().isBefore(m2.getVectorClock()));
+            }*/
+            buffer.sort((m1, m2) -> (m1.getVectorClock().isBefore(m2.getVectorClock()) ? -1:1));
 
         }).start();
     }

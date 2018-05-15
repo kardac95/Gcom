@@ -75,10 +75,7 @@ public class Logic {
                 System.out.println("Update!");
                 Platform.runLater(g::updateTree);
                 final Message message = m;
-                Platform.runLater(() -> {
-                    g.setTextInTextFlow(message);
-                });
-
+                Platform.runLater(()-> g.setTextInTextFlow(message));
             }
         });
     }
