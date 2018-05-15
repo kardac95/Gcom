@@ -1,12 +1,12 @@
 package gcom.gui;
 
+import gcom.Message;
 import gcom.groupmanagement.Group;
 import gcom.groupmanagement.Member;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Window;
@@ -20,22 +20,16 @@ public class GuiController {
 
     }
 
-    @FXML Button myButton;
-    @FXML Button continueButton;
     @FXML MenuItem updateGroup;
     @FXML MenuItem connectMenu;
     @FXML TreeView <String> treeView;
-    @FXML MenuItem joinMenuItem;
     @FXML TextArea sendArea;
-    @FXML TextFlow receiveArea;
     @FXML MenuBar myMenuBar;
     @FXML Button sendButton;
-    @FXML Circle myCircle;
     @FXML Text UserName;
     @FXML TabPane tabPane;
     @FXML Dialog groupDialog;
     @FXML Dialog connectDialog;
-    @FXML Dialog connectPop;
     @FXML TextField groupName;
     @FXML Button groupButton;
     @FXML TextField connectPort;
@@ -43,13 +37,31 @@ public class GuiController {
     @FXML TextField connectGroup;
     @FXML TextField connectHostName;
     @FXML Button connectButton;
+    @FXML TextFlow textFlow;
 
 
     @FXML
-    public void setTextInTextFlow (String s) {
-        String myTextMessage = sendArea.getText();
-        Text newText = new Text(myTextMessage);
-        receiveArea.getChildren().add(newText);
+    public void setTextInTextFlow (Message m) {
+        System.out.println("group" + m.getGroup().getName());
+        System.out.println("Size of tablist is " + tabPane.getTabs().size());
+       /* tabPane.getTabs().forEach((t) -> {
+            System.out.println("tab" + t);
+        });*/
+        for (Tab t:tabPane.getTabs()) {
+            System.out.println("Tab is " + t.getText());
+            Text text = new Text(m.getMessage());
+            TextFlow tx = (TextFlow) tabPane.lookup("#textFlow");
+            tx.getChildren().add(text);
+        }
+      /* // System.out.println(tabPane.getTabs().filtered((t) -> t.getText().equals(m.getGroup().getName())).size());
+        Tab tab = tabPane.getTabs().filtered((t) -> t.getText().equals(m.getGroup().getName())).get(0);
+        //ScrollPane sp = (ScrollPane) ((Parent)tab.getContent()).getChildrenUnmodifiable().get(0);
+        tab.
+        TextFlow tf = (TextFlow) ((Parent) sp.getContent()).getChildrenUnmodifiable().get(0);
+        Text text = new Text(m.getMessage());
+      //  tf.setText(tab.getText() + "\n" + m.getMessage());
+        tf.getChildren().add(text);*/
+
     }
 
     public void sendMessage() {
@@ -94,6 +106,8 @@ public class GuiController {
                         connectPort.getText()),
                 connectGroup.getText());
 
+        addGroupTab(connectGroup.getText());
+
         connectHostIP.clear();
         connectPort.clear();
         connectHostName.clear();
@@ -127,9 +141,9 @@ public class GuiController {
         String groupname = groupName.getText();
         logic.getGM().createGroup(groupname);
         groupName.clear();
-        updateTree(logic);
-
+        updateTree();
         Platform.runLater(() -> addGroupTab(groupname));
+
     }
 
     public void setUserName(String uName) {
@@ -148,8 +162,7 @@ public class GuiController {
 
 
 
-    public void updateTree(Logic logic) {
-        this.logic = logic;
+    public void updateTree() {
         Group[] groups = logic.getGM().getGroups();
         TreeItem<String> dummyroot = new TreeItem<>("MegaRoot");
 

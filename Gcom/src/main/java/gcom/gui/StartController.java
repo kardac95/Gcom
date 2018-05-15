@@ -55,7 +55,8 @@ public class StartController {
             //new Thread(this.logic.updateTask(g));
 
             g.setUserName(getUname());
-            g.updateTree(logic);
+            g.setGUILogic(logic);
+            g.updateTree();
 
 
             Scene scene=new Scene(root);
