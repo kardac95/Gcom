@@ -6,6 +6,7 @@ import gcom.groupmanagement.Member;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -192,5 +193,16 @@ public class GuiController {
       });
       t.setDaemon(true);
       t.start();
+    }
+
+    @FXML
+    public void initialize() {
+        sendArea.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode().equals(KeyCode.ENTER)) {
+                System.out.println("Send");
+                sendMessage();
+                keyEvent.consume();
+            }
+        });
     }
 }
