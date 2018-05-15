@@ -1,5 +1,6 @@
 package gcom.gui;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +20,7 @@ public class StartController {
     public Logic logic;
 
     public StartController() {
-        //this.logic = new Logic();
+
     }
 
     @FXML Button continueToGuiButton;
@@ -61,9 +62,11 @@ public class StartController {
 
             Scene scene=new Scene(root);
             appStage.setScene(scene);
+            appStage.setOnCloseRequest(windowEvent -> Platform.exit());
             appStage.show();
             g.monitorGroupManager();
         }
     }
+
 
 }
