@@ -9,9 +9,11 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GroupManager {
     private Queue<Message> incomingQueue;
+    private AtomicBoolean debug;
     private HashMap<String, Group> groups;
     private Ordering order;
     public Queue<Message> outgoingQueue;
@@ -24,6 +26,7 @@ public class GroupManager {
         this.outgoingQueue = new LinkedBlockingQueue<>();
         this.incomingQueue = new LinkedBlockingQueue<>();
         this.me = me;
+        this.debug = new AtomicBoolean(false);
 
         initOrdering(me);
     }
@@ -119,6 +122,14 @@ public class GroupManager {
 
     public void messageGroup(String message, Member sender, String groupName) {
         order.addInQueue(new Message(groups.get(groupName), sender, message, "message", null));
+    }
+
+    public void setDebug(Boolean debug) {
+        this.debug.set(debug);
+    }
+
+    public Boolean isDebug() {
+        return debug.get();
     }
 
     public void getAvailableGroups() {

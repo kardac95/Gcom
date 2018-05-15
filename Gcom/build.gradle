@@ -24,4 +24,5 @@ dependencies {
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+    //compile files('~/edu/scenebuilder-kit-9.0.1.jar')
 }
