@@ -5,6 +5,8 @@ import gcom.groupmanagement.Group;
 import gcom.groupmanagement.Member;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
@@ -12,6 +14,10 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Window;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
@@ -40,8 +46,8 @@ public class GuiController {
     @FXML TextField connectGroup;
     @FXML TextField connectHostName;
     @FXML Button connectButton;
+    @FXML MenuItem debugStart;
 
-    @FXML
     public void setTextInTextFlow (final Message m) {
         Platform.runLater(() -> {
             String color = "magenta";
@@ -50,8 +56,11 @@ public class GuiController {
             } else if(m.getType().equals("join")){
                 color = "red";
             }
-            System.out.println(tabPane.getTabs().size());
+            if(tabPane == null) {
+                System.out.println("TABPANE NULL");
+            }
             CustomTab tab = (CustomTab)tabPane.getTabs().filtered((t) -> t.getText().equals(m.getGroup().getName())).get(0);
+            tab.getSp().vvalueProperty().bind(tab.getTf().heightProperty());
             tab.setText(m.getSender().getName() + "> ", color);
             tab.setText(m.getMessage() + "\n", "black");
 
@@ -74,11 +83,15 @@ public class GuiController {
         connectDialog.setTitle("CONNECT");
         connectDialog.setResizable(true);
         Text text1 = new Text("Connect to a host");
-        connectHostIP = new TextField("IP");
+        connectHostIP = new TextField();
+        connectHostIP.setPromptText("IP");
         connectHostIP.setText(logic.getLocalIp());
-        connectPort = new TextField("Port");
-        connectHostName = new TextField("Name");
-        connectGroup = new TextField("Group");
+        connectPort = new TextField();
+        connectPort.setPromptText("PORT");
+        connectHostName = new TextField();
+        connectHostName.setPromptText("Name");
+        connectGroup = new TextField();
+        connectGroup.setPromptText("Group");
         connectButton = new Button("Connect");
 
         GridPane grid = new GridPane();
@@ -100,7 +113,7 @@ public class GuiController {
                         connectHostName.getText(),
                         connectHostIP.getText(),
                         connectPort.getText()),
-                connectGroup.getText());
+                        connectGroup.getText());
 
         addGroupTab(connectGroup.getText());
 
@@ -112,9 +125,6 @@ public class GuiController {
     }
 
     public void groupPopUP() {
-        String myTextMessage = sendArea.getText();
-        System.out.println(myTextMessage);
-
         groupDialog = new Dialog();
         groupDialog.setTitle("GROUP");
         groupDialog.setResizable(true);
@@ -138,7 +148,8 @@ public class GuiController {
         logic.getGM().createGroup(groupName);
         this.groupName.clear();
         updateTree();
-        Platform.runLater(() -> addGroupTab(groupName));
+       // Platform.runLater(() -> addGroupTab(groupName));
+        addGroupTab(groupName);
     }
 
     public void setUserName(String uName) {
@@ -167,11 +178,6 @@ public class GuiController {
         treeView.setRoot(dummyroot);
     }
 
-    public void connectFromTree() {
-        //TODO
-        System.out.println("TREEEEEEEEEEEEEEEEEEEe");
-    }
-
     public void setGUILogic(Logic logic) {
         this.logic = logic;
     }
@@ -191,8 +197,25 @@ public class GuiController {
               Platform.runLater(() -> setTextInTextFlow(message));
           }
       });
-      t.setDaemon(true);
       t.start();
+    }
+
+    public void startDebuggerTab() {
+        URL url = null;
+        try {
+            url = new File("src/main/java/gcom/gui/DebugTab.fxml").toURL();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        FXMLLoader loader = new FXMLLoader(url);
+        try {
+            Parent groupTab = loader.load();
+            Tab tab = new Tab("Debugger");
+            groupTab.getChildrenUnmodifiable().add(groupTab);
+            tabPane.getTabs().add(tab);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -201,6 +224,7 @@ public class GuiController {
             if(keyEvent.getCode().equals(KeyCode.ENTER)) {
                 System.out.println("Send");
                 sendMessage();
+                sendArea.clear();
                 keyEvent.consume();
             }
         });

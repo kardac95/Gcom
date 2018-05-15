@@ -20,7 +20,7 @@ public class StartController {
     public Logic logic;
 
     public StartController() {
-        //this.logic = new Logic();
+
     }
 
     @FXML Button continueToGuiButton;
@@ -67,5 +67,6 @@ public class StartController {
             g.monitorGroupManager();
         }
     }
+
 
 }
