@@ -62,8 +62,8 @@ public class Logic {
     public String getLocalIp() {
         return localIp;
     }
-
-    public Thread updateTask(GuiController g) {
+    /*
+    public Thread monitorGroupManager(GuiController g) {
         return new Thread(() -> {
             while(true) {
                 Message m = null;
@@ -79,5 +79,6 @@ public class Logic {
             }
         });
     }
+   */
 
 }

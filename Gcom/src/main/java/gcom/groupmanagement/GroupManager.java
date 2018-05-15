@@ -58,7 +58,7 @@ public class GroupManager {
                 order.addInQueue(new Message(
                         groups.get(m.getMessage()),
                         m.getRecipient(),
-                        m.getSender() + " has joined the group!",
+                        m.getSender().getName() + " has joined the group!",
                         "join",
                         null));
                 break;
