@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gcom.gui.GuiController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="955.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gcom.gui.GuiController">
    <children>
       <Button layoutX="431.0" layoutY="292.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="76.0" text="Step" />
       <ToggleButton layoutX="416.0" layoutY="71.0" mnemonicParsing="false" text="ToggleButton" />
@@ -30,5 +30,11 @@
       </ScrollPane>
       <Button layoutX="285.0" layoutY="71.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="UP" />
       <Button layoutX="285.0" layoutY="117.0" mnemonicParsing="false" text="Down" />
+      <ComboBox layoutX="666.0" layoutY="71.0" prefWidth="150.0" promptText="Groups" />
+      <Text layoutX="627.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose a group to monitor">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

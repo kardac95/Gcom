@@ -56,6 +56,7 @@ public class StartController {
             //new Thread(this.logic.monitorGroupManager(g));
 
             g.setUserName(getUname());
+            g.init();
             g.setGUILogic(logic);
             g.updateTree();
 

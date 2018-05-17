@@ -6,7 +6,7 @@ import gcom.groupmanagement.Member;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
@@ -24,6 +24,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class GuiController {
 
     public Logic logic;
+    private Boolean debug = false;
 
     public GuiController() {
 
@@ -201,6 +202,7 @@ public class GuiController {
     }
 
     public void startDebuggerTab() {
+        debug = true;
         URL url = null;
         try {
             url = new File("src/main/java/gcom/gui/DebugTab.fxml").toURL();
@@ -209,19 +211,19 @@ public class GuiController {
         }
         FXMLLoader loader = new FXMLLoader(url);
         try {
-            Parent groupTab = loader.load();
+            Node groupTab = loader.load();
             Tab tab = new Tab("Debugger");
-            groupTab.getChildrenUnmodifiable().add(groupTab);
+          //  groupTab.getChildrenUnmodifiable().add(groupTab);
+            tab.setContent(groupTab);
             tabPane.getTabs().add(tab);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @FXML
-    public void initialize() {
+    public void init() {
         sendArea.setOnKeyPressed(keyEvent -> {
-            if(keyEvent.getCode().equals(KeyCode.ENTER)) {
+            if (keyEvent.getCode().equals(KeyCode.ENTER)) {
                 System.out.println("Send");
                 sendMessage();
                 sendArea.clear();
@@ -229,4 +231,5 @@ public class GuiController {
             }
         });
     }
+
 }
