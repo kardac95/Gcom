@@ -45,8 +45,9 @@ public class StartController {
         {
             appStage=(Stage)continueToGuiButton.getScene().getWindow();
 
-            URL url = new File("src/main/java/gcom/gui/gui.fxml").toURL();
-            FXMLLoader loader = new FXMLLoader(url);
+           /* URL url = new File("src/main/java/gcom/gui/gui.fxml").toURL();
+            FXMLLoader loader = new FXMLLoader(url);*/
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("gui.fxml"));
             root = loader.load();
 
             //SENDING TO gui CONTROLLER

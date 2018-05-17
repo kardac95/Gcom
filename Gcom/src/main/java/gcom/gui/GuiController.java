@@ -24,7 +24,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class GuiController {
 
     public Logic logic;
-    private Boolean debug = false;
 
     public GuiController() {
 
@@ -48,6 +47,7 @@ public class GuiController {
     @FXML TextField connectHostName;
     @FXML Button connectButton;
     @FXML MenuItem debugStart;
+    @FXML ComboBox<String> debugGroupBox;
 
     public void setTextInTextFlow (final Message m) {
         Platform.runLater(() -> {
@@ -77,6 +77,17 @@ public class GuiController {
             sendArea.setText("");
         }
 
+    }
+
+    public void fillDebugGroupBox() {
+        Group[] groups = logic.getGM().getGroups();
+        for (Group g : groups) {
+            System.out.println("wtf");
+            if(debugGroupBox == null) {
+                System.out.println("null");
+            }
+            //debugGroupBox.getItems().add(g.getName());
+        }
     }
 
     public void connectPopUP() {
@@ -151,6 +162,7 @@ public class GuiController {
         updateTree();
        // Platform.runLater(() -> addGroupTab(groupName));
         addGroupTab(groupName);
+        fillDebugGroupBox();
     }
 
     public void setUserName(String uName) {
@@ -201,15 +213,15 @@ public class GuiController {
       t.start();
     }
 
-    public void startDebuggerTab() {
-        debug = true;
-        URL url = null;
+    public void startDebuggerTab() throws IOException {
+     /*   URL url = null;
         try {
             url = new File("src/main/java/gcom/gui/DebugTab.fxml").toURL();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
         FXMLLoader loader = new FXMLLoader(url);
+
         try {
             Node groupTab = loader.load();
             Tab tab = new Tab("Debugger");
@@ -218,7 +230,14 @@ public class GuiController {
             tabPane.getTabs().add(tab);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
+
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("DebugTab.fxml"));
+        Node groupTab = loader.load();
+        Tab tab = new Tab("Debugger");
+        tab.setContent(groupTab);
+        tabPane.getTabs().add(tab);
+        fillDebugGroupBox();
     }
 
     public void init() {

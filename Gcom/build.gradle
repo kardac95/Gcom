@@ -9,7 +9,7 @@ task DistJar(type: Jar) {
     manifest {
         attributes 'TestRMI': 'Gradle Jar File Example',
                 'Implementation-Version': version,
-                'Main-Class': 'communication.rmi.Main'
+                'Main-Class': 'gcom.gui.Main'
     }
     baseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }

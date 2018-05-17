@@ -30,7 +30,7 @@
       </ScrollPane>
       <Button layoutX="285.0" layoutY="71.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="UP" />
       <Button layoutX="285.0" layoutY="117.0" mnemonicParsing="false" text="Down" />
-      <ComboBox layoutX="666.0" layoutY="71.0" prefWidth="150.0" promptText="Groups" />
+      <ComboBox fx:id="debugGroupBox" layoutX="666.0" layoutY="71.0" prefWidth="150.0" promptText="Groups" />
       <Text layoutX="627.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose a group to monitor">
          <font>
             <Font size="17.0" />

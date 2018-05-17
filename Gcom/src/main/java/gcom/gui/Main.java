@@ -18,9 +18,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        URL url = new File("src/main/java/gcom/gui/Start.fxml").toURL();
+      /*  URL url = new File("src/main/java/gcom/gui/Start.fxml").toURL();
 
-        FXMLLoader loader = new FXMLLoader(url);
+        FXMLLoader loader = new FXMLLoader(url);*/
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("Start.fxml"));
         Parent root = loader.load();
 
         primaryStage.setTitle("GCom");
