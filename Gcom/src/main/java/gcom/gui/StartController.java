@@ -18,6 +18,7 @@ public class StartController {
 
 
     public Logic logic;
+    private FXMLLoader loader;
 
     public StartController() {
 
@@ -45,9 +46,16 @@ public class StartController {
         {
             appStage=(Stage)continueToGuiButton.getScene().getWindow();
 
-           /* URL url = new File("src/main/java/gcom/gui/gui.fxml").toURL();
-            FXMLLoader loader = new FXMLLoader(url);*/
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("gui.fxml"));
+            String os = System.getProperty("os.name");
+
+            if(os.equals("Linux")) {
+                //These 2 lines are for Linux!
+                URL url = new File("src/main/java/gcom/gui/gui.fxml").toURL();
+                loader = new FXMLLoader(url);
+            } else if(os.equals("Windows")) {
+                //This line is for Windows!
+                loader = new FXMLLoader(Main.class.getResource("gui.fxml"));
+            }
             root = loader.load();
 
             //SENDING TO gui CONTROLLER

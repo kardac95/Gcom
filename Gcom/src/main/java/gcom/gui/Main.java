@@ -11,18 +11,27 @@ import java.net.URL;
 
 public class Main extends Application {
 
+    private FXMLLoader loader;
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws Exception{
 
-      /*  URL url = new File("src/main/java/gcom/gui/Start.fxml").toURL();
+        String os = System.getProperty("os.name");
 
-        FXMLLoader loader = new FXMLLoader(url);*/
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("Start.fxml"));
+        if(os.equals("Linux")) {
+            //These 2 lines are for Linux!
+            URL url = new File("src/main/java/gcom/gui/Start.fxml").toURL();
+            loader = new FXMLLoader(url);
+        } else if(os.equals("Windows")) {
+            //This line is for Windows!
+            loader = new FXMLLoader(Main.class.getResource("Start.fxml"));
+        }
         Parent root = loader.load();
+
 
         primaryStage.setTitle("GCom");
         Scene scene = new Scene(root);

@@ -16,7 +16,7 @@
             <Font size="17.0" />
          </font>
       </Text>
-      <Button layoutX="431.0" layoutY="235.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="76.0" text="Stop" />
+      <Button fx:id="stopMessageButton" layoutX="431.0" layoutY="235.0" mnemonicParsing="false" onAction="#test" prefHeight="30.0" prefWidth="76.0" text="Stop" />
       <Button layoutX="431.0" layoutY="348.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="76.0" text="Play" />
       <Text layoutX="409.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message Flow" wrappingWidth="120.6611328125">
          <font>

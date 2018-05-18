@@ -16,7 +16,6 @@ import javafx.stage.Window;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -24,6 +23,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class GuiController {
 
     public Logic logic;
+    private FXMLLoader loader;
 
     public GuiController() {
 
@@ -48,6 +48,11 @@ public class GuiController {
     @FXML Button connectButton;
     @FXML MenuItem debugStart;
     @FXML ComboBox<String> debugGroupBox;
+    @FXML Button stopMessageButton;
+
+    public void test()  {
+        System.out.println("Hej");
+    }
 
     public void setTextInTextFlow (final Message m) {
         Platform.runLater(() -> {
@@ -214,25 +219,17 @@ public class GuiController {
     }
 
     public void startDebuggerTab() throws IOException {
-     /*   URL url = null;
-        try {
-            url = new File("src/main/java/gcom/gui/DebugTab.fxml").toURL();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+
+        String os = System.getProperty("os.name");
+
+        if(os.equals("Linux")) {
+            //These 2 lines are for Linux!
+            URL url = new File("src/main/java/gcom/gui/DebugTab.fxml").toURL();
+            loader = new FXMLLoader(url);
+        } else if(os.equals("Windows")) {
+            //This line is for Windows!
+            loader = new FXMLLoader(Main.class.getResource("DebugTab.fxml"));
         }
-        FXMLLoader loader = new FXMLLoader(url);
-
-        try {
-            Node groupTab = loader.load();
-            Tab tab = new Tab("Debugger");
-          //  groupTab.getChildrenUnmodifiable().add(groupTab);
-            tab.setContent(groupTab);
-            tabPane.getTabs().add(tab);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("DebugTab.fxml"));
         Node groupTab = loader.load();
         Tab tab = new Tab("Debugger");
         tab.setContent(groupTab);
