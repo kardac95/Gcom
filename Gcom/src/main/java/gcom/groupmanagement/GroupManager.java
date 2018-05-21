@@ -20,7 +20,6 @@ public class GroupManager {
     private Thread monitorOutThread;
     private Member me;
 
-
     public GroupManager(Member me) {
         this.groups = new HashMap<>();
         this.outgoingQueue = new LinkedBlockingQueue<>();

@@ -24,7 +24,6 @@ public class GuiController {
 
     public Logic logic;
     private FXMLLoader loader;
-    private boolean debug = false;
 
     public GuiController() {
 
@@ -53,9 +52,14 @@ public class GuiController {
     @FXML ListView<String> debugListView;
     @FXML Button debugUP;
     @FXML Button debugDown;
+    @FXML Button clearDebug;
 
     public void test()  {
         System.out.println("Hej");
+    }
+
+    public void clearDebugging() {
+        debugListView.getItems().clear();
     }
 
     public void moveMessageUP() {
@@ -102,18 +106,6 @@ public class GuiController {
     }
 
     public void sendMessage() {
-       /* Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-        if(currentTab == null) {
-            return;
-        }
-        HBox hb = (HBox) currentTab.getGraphic();
-        Label l = (Label) hb.getChildren().get(0);
-        if(!(l.getText().equals("Debugger"))) {
-            System.out.println("tab is " + l.getText());
-            logic.getGM().messageGroup(sendArea.getText(), logic.getMe(), l.getText());
-            sendArea.clear();
-            sendArea.setText("");
-        }*/
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
         if(currentTab != null && !(currentTab.getText().equals("Debugger"))) {
             System.out.println("tab is " + currentTab.getText());
@@ -121,24 +113,37 @@ public class GuiController {
             sendArea.clear();
             sendArea.setText("");
         }
-
     }
+
+    public void leaveGroup(String group) {
+        System.out.println("THIS GROUP IS LEAVING " + group);
+    }
+
     public void fillListView(Message m) {
         if(debugListView == null) {
             return;
         }
-        debugListView.getItems().add(m.getMessage());
+        System.out.println(debugGroupBox.getSelectionModel().getSelectedItem());
+
+        String workingDebugTab = debugGroupBox.getSelectionModel().getSelectedItem();
+        if(workingDebugTab == null) {
+            return;
+        }
+        if(workingDebugTab.equals(m.getGroup().getName())) {
+            debugListView.getItems().add(m.getMessage());
+        }
     }
 
     public void fillDebugGroupBox() {
-
+        String current = debugGroupBox.getSelectionModel().getSelectedItem();
         debugGroupBox.getItems().clear();
-       // debugListView.getItems().clear();
 
         Group[] groups = logic.getGM().getGroups();
         for (Group g : groups) {
+            if(g.getName().equals(current)) {
+                debugGroupBox.getSelectionModel().select(current);
+            }
             debugGroupBox.getItems().add(g.getName());
-           // debugListView.getItems().add(g.getName());
         }
     }
 
@@ -227,19 +232,10 @@ public class GuiController {
 
     public void addGroupTab(String groupName) {
         CustomTab tab = new CustomTab();
-        /*Button exit = new Button();
-        Label label = new Label();
-        Label emptyLabel = new Label(" ");
-        exit.setPadding(Insets.EMPTY);
-        exit.setPrefSize(15,5);
-        exit.setText("x");
-        label.setText(groupName);
-        HBox hbox = new HBox(label,emptyLabel,exit);
-        hbox.setAlignment(Pos.CENTER);
-        tab.setGraphic(hbox);*/
         tab.setText(groupName);
         tab.setContentTextFlow(new TextFlow());
         tabPane.getTabs().add(tab);
+        tab.setOnClosed(event -> leaveGroup(groupName));
     }
 
     public void updateTree() {
@@ -284,9 +280,7 @@ public class GuiController {
 
         String os = System.getProperty("os.name");
 
-        if(debug) {
-            return;
-        }
+
         if(os.equals("Linux")) {
             //These 2 lines are for Linux!
             URL url = new File("src/main/java/gcom/gui/DebugTab.fxml").toURL();
@@ -306,15 +300,11 @@ public class GuiController {
 
         Tab tab = new Tab("Debugger");
         tab.setContent(groupTab);
-        tabPane.getTabs().add(tab);
-        debug = true;
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                fillDebugGroupBox();
-            }
-        });
+        /*tab.setOnClosed(event -> {
 
+        });*/
+        tabPane.getTabs().add(tab);
+        Platform.runLater(this::fillDebugGroupBox);
     }
 
     public void init() {
@@ -326,6 +316,7 @@ public class GuiController {
                 keyEvent.consume();
             }
         });
+        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
     }
 
 }

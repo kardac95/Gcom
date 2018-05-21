@@ -8,6 +8,7 @@ import gcom.communication.CommunicationObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Queue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ModuleCommunication {
@@ -16,6 +17,8 @@ public class ModuleCommunication {
     private Queue<Message> outgoingQueue;
     private Queue<Message> incomingQueue;
     private Communication comm;
+
+    private CopyOnWriteArrayList<Message> debugBuffer;
 
     private Thread inQueueMonitor;
     private Thread outQueueMonitor;
@@ -81,6 +84,13 @@ public class ModuleCommunication {
         });
         inQueueMonitor.start();
         outQueueMonitor.start();
+    }
+
+    public void startDebugger() {
+        debugBuffer = new CopyOnWriteArrayList<>();
+        new Thread(() -> {
+
+       });
     }
 
     public void send(Message message){
