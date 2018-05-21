@@ -19,8 +19,6 @@ public class ModuleCommunication {
     private Queue<Message> incomingQueue;
     private Communication comm;
 
-    private CopyOnWriteArrayList<Message> debugBuffer;
-
     private Thread inQueueMonitor;
     private Thread outQueueMonitor;
 
@@ -83,13 +81,6 @@ public class ModuleCommunication {
         });
         inQueueMonitor.start();
         outQueueMonitor.start();
-    }
-
-    public void startDebugger() {
-        debugBuffer = new CopyOnWriteArrayList<>();
-        new Thread(() -> {
-
-       });
     }
 
     public void send(Message message){
