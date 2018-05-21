@@ -32,6 +32,7 @@ public class ModuleCommunication {
         this.comm.initCommunication(myInfo);
         this.outgoingQueue = new LinkedBlockingQueue<>();
         this.order = new CausalOrder(myInfo.getAddress()+myInfo.getPort());
+        //this.order = new Unorderd();
 
         outQueueMonitor = new Thread(() -> {
             while(true) {
@@ -41,9 +42,10 @@ public class ModuleCommunication {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
+                System.out.println("Receive queue");
                 if(m.getType().equals("join")) {
                     comm.connectToMembers(m.getGroup().getMembers());
+                    order.clock.aidsMethod(m.getGroup().getMembers());
                 }
                 /*
                 System.out.println("ModuleCommunication outQueue type: " + m.getType());
@@ -61,9 +63,12 @@ public class ModuleCommunication {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                System.out.println("Outgoing queue");
+                /*
                 System.out.println("ModuleCommunication Down");
                 System.out.println("ModuleCommunication inQueue type: " + m.getType());
                 System.out.println("ModuleCommunication inQueue message: " + m.getMessage());
+                */
                 if(m.getGroup() != null) {
                     System.out.println("Group members: " + m.getGroup().getMembers().length);
                     /*
@@ -78,6 +83,11 @@ public class ModuleCommunication {
                 if(m.getType().equals("join")) {
                     comm.connectToMembers(m.getGroup().getMembers());
                 }
+                if(m.getType().equals("message")) {
+                    order.clock.inc();
+                    m.setVectorClock(order.clock);
+                }
+                System.out.println("Message Type: " + m.getType());
                 send(m);
             }
 
@@ -95,15 +105,11 @@ public class ModuleCommunication {
 
     public void send(Message message){
         if(message.getType().equals("connect")) {
+
             comm.connectToMember(message.getRecipient());
             comm.unReliableUnicast(message, message.getRecipient());
+
         } else{
-            if(message == null) {
-                System.err.println("message is null");
-            }
-            if(message.getGroup() == null) {
-                System.err.println("Group is null");
-            }
             comm.unReliableMulticast(message, message.getGroup().getMembers());
         }
     }
