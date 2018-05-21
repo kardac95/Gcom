@@ -284,7 +284,7 @@ public class GuiController {
 
         String os = System.getProperty("os.name");
 
-        if(debug == true) {
+        if(debug) {
             return;
         }
         if(os.equals("Linux")) {
