@@ -1,11 +1,15 @@
 package gcom.messageordering;
 
+import gcom.groupmanagement.Member;
+
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class VectorClock {
+public class VectorClock implements Serializable {
     private String myId;
     private ConcurrentHashMap<String, Long> clock;
 
@@ -16,11 +20,6 @@ public class VectorClock {
     }
 
     public void updateVectorClock(VectorClock receivingClock ) {
-        /*receivingClock.getClock().forEach((key, value) -> {
-            Long clockValue = clock.get(key);
-            clock.put(key, ((clockValue != null) && (clockValue > value)) ? clockValue:value);
-        });*/
-
         clock.put(receivingClock.myId, receivingClock.getValue(receivingClock.myId));
     }
 
@@ -42,6 +41,14 @@ public class VectorClock {
 
     private Map<String, Long> getClock() {
         return clock;
+    }
+
+    public void aidsMethod(Member[] kyslords) {
+        Arrays.stream(kyslords).forEach(kyslord -> {
+            if(!clock.containsKey(kyslord.getAddress()+kyslord.getPort())) {
+                clock.put(kyslord.getAddress()+kyslord.getPort(), 0L);
+            }
+        });
     }
 
     @Override
