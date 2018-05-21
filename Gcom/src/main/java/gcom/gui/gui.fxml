@@ -16,7 +16,6 @@
                   <Menu mnemonicParsing="false" text="Debug">
                     <items>
                         <MenuItem fx:id="debugStart" mnemonicParsing="false" onAction="#startDebuggerTab" text="Start debugging" />
-                        <MenuItem mnemonicParsing="false" text="Stop debugging" />
                     </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Tools">

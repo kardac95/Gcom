@@ -4,8 +4,6 @@ import gcom.Message;
 import gcom.groupmanagement.Group;
 import gcom.groupmanagement.Member;
 import javafx.application.Platform;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -54,9 +52,14 @@ public class GuiController {
     @FXML ListView<String> debugListView;
     @FXML Button debugUP;
     @FXML Button debugDown;
+    @FXML Button clearDebug;
 
     public void test()  {
         System.out.println("Hej");
+    }
+
+    public void clearDebugging() {
+        debugListView.getItems().clear();
     }
 
     public void moveMessageUP() {
@@ -110,24 +113,37 @@ public class GuiController {
             sendArea.clear();
             sendArea.setText("");
         }
-
     }
+
+    public void leaveGroup(String group) {
+        System.out.println("THIS GROUP IS LEAVING " + group);
+    }
+
     public void fillListView(Message m) {
         if(debugListView == null) {
             return;
         }
-        debugListView.getItems().add(m.getMessage());
+        System.out.println(debugGroupBox.getSelectionModel().getSelectedItem());
+
+        String workingDebugTab = debugGroupBox.getSelectionModel().getSelectedItem();
+        if(workingDebugTab == null) {
+            return;
+        }
+        if(workingDebugTab.equals(m.getGroup().getName())) {
+            debugListView.getItems().add(m.getMessage());
+        }
     }
 
     public void fillDebugGroupBox() {
-
+        String current = debugGroupBox.getSelectionModel().getSelectedItem();
         debugGroupBox.getItems().clear();
-       // debugListView.getItems().clear();
 
         Group[] groups = logic.getGM().getGroups();
         for (Group g : groups) {
+            if(g.getName().equals(current)) {
+                debugGroupBox.getSelectionModel().select(current);
+            }
             debugGroupBox.getItems().add(g.getName());
-           // debugListView.getItems().add(g.getName());
         }
     }
 
@@ -218,10 +234,8 @@ public class GuiController {
         CustomTab tab = new CustomTab();
         tab.setText(groupName);
         tab.setContentTextFlow(new TextFlow());
-        tab.setOnClosed(event -> {
-
-        });
         tabPane.getTabs().add(tab);
+        tab.setOnClosed(event -> leaveGroup(groupName));
     }
 
     public void updateTree() {

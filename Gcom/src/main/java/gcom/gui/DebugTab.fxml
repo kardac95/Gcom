@@ -37,5 +37,6 @@
             <Font size="17.0" />
          </font>
       </Text>
+      <Button fx:id="clearDebug" layoutX="861.0" layoutY="71.0" mnemonicParsing="false" onAction="#clearDebugging" prefHeight="25.0" prefWidth="106.0" text="Clear" />
    </children>
 </AnchorPane>
