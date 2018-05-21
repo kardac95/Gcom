@@ -8,6 +8,7 @@ import gcom.communication.CommunicationObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Queue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ModuleCommunication {
@@ -17,6 +18,8 @@ public class ModuleCommunication {
     private Queue<Message> outgoingQueue;
     private Queue<Message> incomingQueue;
     private Communication comm;
+
+    private CopyOnWriteArrayList<Message> debugBuffer;
 
     private Thread inQueueMonitor;
     private Thread outQueueMonitor;
@@ -82,6 +85,13 @@ public class ModuleCommunication {
         outQueueMonitor.start();
     }
 
+    public void startDebugger() {
+        debugBuffer = new CopyOnWriteArrayList<>();
+        new Thread(() -> {
+
+       });
+    }
+
     public void send(Message message){
         if(message.getType().equals("connect")) {
             //message.setVectorClock(vectorClock);
@@ -102,8 +112,6 @@ public class ModuleCommunication {
     public void incrementVectorClock(int index) {
         vectorClock.set(index, vectorClock.get(index) + 1);
     }
-
-
 
     public Message getNextIncommingMessage() throws InterruptedException {
         return ((LinkedBlockingQueue<Message>)incomingQueue).take();
