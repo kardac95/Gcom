@@ -1,5 +1,7 @@
 package gcom.messageordering;
 
+import gcom.debugger.Debug;
+import gcom.debugger.DebugObject;
 import gcom.groupmanagement.Member;
 import gcom.Message;
 import gcom.communication.Communication;
@@ -17,6 +19,7 @@ public class ModuleCommunication {
     private Queue<Message> outgoingQueue;
     private Queue<Message> incomingQueue;
     private Communication comm;
+    private Debug debugger;
 
     private Thread inQueueMonitor;
     private Thread outQueueMonitor;
@@ -27,8 +30,9 @@ public class ModuleCommunication {
         this.comm = new CommunicationObject();
         this.comm.initCommunication(myInfo);
         this.outgoingQueue = new LinkedBlockingQueue<>();
-        this.order = new CausalOrder(myInfo.getAddress()+myInfo.getPort());
-        //this.order = new Unorderd();
+        //this.order = new CausalOrder(myInfo.getAddress()+myInfo.getPort());
+        this.order = new Unorderd();
+        debugger = new DebugObject(comm);
 
         outQueueMonitor = new Thread(() -> {
             while(true) {
@@ -39,7 +43,7 @@ public class ModuleCommunication {
                     e.printStackTrace();
                 }*/
 
-                Message m = comm.getNextMessage();
+                Message m = debugger.getNextMessage();//comm.getNextMessage();
                 System.out.println("Receive queue");
                 if(m.getType().equals("join")) {
                     comm.connectToMembers(m.getGroup().getMembers());
@@ -86,8 +90,8 @@ public class ModuleCommunication {
                     comm.connectToMembers(m.getGroup().getMembers());
                 }
                 if(m.getType().equals("message")) {
-                    order.clock.inc();
-                    m.setVectorClock(order.clock);
+//                    order.clock.inc();
+//                    m.setVectorClock(order.clock);
                 }
                 System.out.println("Message Type: " + m.getType());
                 send(m);
@@ -121,6 +125,10 @@ public class ModuleCommunication {
 
     public Message getNextIncommingMessage() throws InterruptedException {
         return ((LinkedBlockingQueue<Message>)incomingQueue).take();
+    }
+
+    public Debug getDebugger() {
+        return debugger;
     }
 
     public Message getNextOutgoingMessage() throws InterruptedException {

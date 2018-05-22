@@ -10,15 +10,15 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="1035.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gcom.gui.GuiController">
    <children>
-      <Button layoutX="431.0" layoutY="292.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="76.0" text="Step" />
+      <Button fx:id="debugStepButton" layoutX="431.0" layoutY="292.0" mnemonicParsing="false" onAction="#step" prefHeight="30.0" prefWidth="76.0" text="Step" />
       <ToggleButton layoutX="416.0" layoutY="71.0" mnemonicParsing="false" text="ToggleButton" />
       <Text layoutX="402.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Causal/Unorder" wrappingWidth="133.6611328125">
          <font>
             <Font size="17.0" />
          </font>
       </Text>
-      <Button fx:id="stopMessageButton" layoutX="431.0" layoutY="235.0" mnemonicParsing="false" onAction="#test" prefHeight="30.0" prefWidth="76.0" text="Stop" />
-      <Button layoutX="431.0" layoutY="348.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="76.0" text="Play" />
+      <Button fx:id="stopMessageButton" layoutX="431.0" layoutY="235.0" mnemonicParsing="false" onAction="#stop" prefHeight="30.0" prefWidth="76.0" text="Stop" />
+      <Button fx:id="debugPlayButton" layoutX="431.0" layoutY="348.0" mnemonicParsing="false" onAction="#play" prefHeight="30.0" prefWidth="76.0" text="Play" />
       <Text layoutX="409.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message Flow" wrappingWidth="120.6611328125">
          <font>
             <Font size="17.0" />

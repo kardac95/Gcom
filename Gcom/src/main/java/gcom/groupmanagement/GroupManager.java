@@ -1,6 +1,7 @@
 package gcom.groupmanagement;
 
 import gcom.Message;
+import gcom.debugger.Debug;
 import gcom.messageordering.Ordering;
 import gcom.messageordering.OrderingObject;
 
@@ -13,7 +14,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GroupManager {
     private Queue<Message> incomingQueue;
-    private AtomicBoolean debug;
     private HashMap<String, Group> groups;
     private Ordering order;
     public Queue<Message> outgoingQueue;
@@ -25,8 +25,6 @@ public class GroupManager {
         this.outgoingQueue = new LinkedBlockingQueue<>();
         this.incomingQueue = new LinkedBlockingQueue<>();
         this.me = me;
-        this.debug = new AtomicBoolean(false);
-
         initOrdering(me);
     }
 
@@ -129,12 +127,9 @@ public class GroupManager {
         order.addInQueue(new Message(group, group.getMember(memberName), memberName + " has disconnected from the group!", "disconnect", null));
     }
 
-    public void setDebug(Boolean debug) {
-        this.debug.set(debug);
-    }
 
-    public Boolean isDebug() {
-        return debug.get();
+    public Debug getDebugger() {
+        return order.getDebug();
     }
 
     public void getAvailableGroups() {

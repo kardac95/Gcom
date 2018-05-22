@@ -17,6 +17,8 @@ import javafx.stage.Window;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
@@ -53,9 +55,19 @@ public class GuiController {
     @FXML Button debugUP;
     @FXML Button debugDown;
     @FXML Button clearDebug;
+    @FXML Button debugPlayButton;
+    @FXML Button debugStepButton;
 
-    public void test()  {
-        System.out.println("Hej");
+    public void stop()  {
+        logic.getGM().getDebugger().stop();
+    }
+
+    public void play() {
+        logic.getGM().getDebugger().play();
+    }
+
+    public void step() {
+        logic.getGM().getDebugger().step();
     }
 
     public void clearDebugging() {
@@ -70,6 +82,7 @@ public class GuiController {
             debugListView.getItems().set(curIndex,moveIitem);
             debugListView.getItems().set(curIndex -1 , item);
             debugListView.getSelectionModel().select(curIndex -1 );
+            logic.getGM().getDebugger().moveMessage(curIndex, curIndex-1);
         }
     }
 
@@ -81,6 +94,7 @@ public class GuiController {
             debugListView.getItems().set(curIndex,moveItem);
             debugListView.getItems().set(curIndex +1 , item);
             debugListView.getSelectionModel().select(curIndex +1 );
+            logic.getGM().getDebugger().moveMessage(curIndex, curIndex +1);
         }
     }
 
@@ -125,19 +139,28 @@ public class GuiController {
 
     }
 
-    public void fillListView(Message m) {
+    public void fillListView() {
+        CopyOnWriteArrayList <Message> debugBuffer = (CopyOnWriteArrayList<Message>) ((CopyOnWriteArrayList<Message>) logic.getGM().getDebugger().getDebugBuffer()).clone();
+
         if(debugListView == null) {
             return;
         }
+
         System.out.println(debugGroupBox.getSelectionModel().getSelectedItem());
 
         String workingDebugTab = debugGroupBox.getSelectionModel().getSelectedItem();
         if(workingDebugTab == null) {
             return;
         }
-        if(workingDebugTab.equals(m.getGroup().getName())) {
-            debugListView.getItems().add(m.getMessage() +" ["+m.getVectorClock().getValue(m.getVectorClock().getMyId())+"]");
-        }
+        debugListView.getItems().clear();
+
+        debugBuffer.forEach((m) -> {
+            if(workingDebugTab.equals(m.getGroup().getName())) {
+                //debugListView.getItems().add(m.getMessage() +" ["+m.getVectorClock().getValue(m.getVectorClock().getMyId())+"]");
+                debugListView.getItems().add(m.getMessage());
+            }
+
+        });
     }
 
     public void fillDebugGroupBox() {
@@ -277,10 +300,13 @@ public class GuiController {
               Platform.runLater(this::updateTree);
               final Message message = m;
               Platform.runLater(() -> setTextInTextFlow(message));
-              Platform.runLater(() -> fillListView(message));
           }
       });
       t.start();
+    }
+
+    private void monitorDebugBuffer() {
+        logic.getGM().getDebugger().monitorDebugBuffer(() -> Platform.runLater(this::fillListView)).start();
     }
 
     public void startDebuggerTab() throws IOException {
@@ -305,10 +331,10 @@ public class GuiController {
 
         Tab tab = new Tab("Debugger");
         tab.setContent(groupTab);
-        /*tab.setOnClosed(event -> {
-
-        });*/
+        tab.setOnClosed(event -> logic.getGM().getDebugger().StopDebugger());
         tabPane.getTabs().add(tab);
+        monitorDebugBuffer();
+        logic.getGM().getDebugger().startDebugger();
         Platform.runLater(this::fillDebugGroupBox);
     }
 
