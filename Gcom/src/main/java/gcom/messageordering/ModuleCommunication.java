@@ -2,13 +2,10 @@ package gcom.messageordering;
 
 import gcom.groupmanagement.Member;
 import gcom.Message;
-import gcom.communication.Communication;
 import gcom.communication.CommunicationObject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Queue;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ModuleCommunication {
@@ -16,7 +13,7 @@ public class ModuleCommunication {
     private Integer memberIndex;
     private Queue<Message> outgoingQueue;
     private Queue<Message> incomingQueue;
-    private Communication comm;
+    private CommunicationObject comm;
 
     private Thread inQueueMonitor;
     private Thread outQueueMonitor;
@@ -47,10 +44,10 @@ public class ModuleCommunication {
                 System.out.println("Receive queue");
                 if(m.getType().equals("join")) {
                     comm.connectToMembers(m.getGroup().getMembers());
-                    order.clock.aidsMethod(m.getGroup().getMembers());
+                    order.clock.addNewMemberClock(m.getGroup().getMembers(), m.getVectorClock());
                 } else if(m.getType().equals("disconnect")) {
                     /* Disconnect sending member */
-                    //comm.disconnectMember(m.getSender());
+                    comm.disconnectMember(m.getSender());
                 }
                 /*
                 System.out.println("ModuleCommunication outQueue type: " + m.getType());
@@ -73,6 +70,7 @@ public class ModuleCommunication {
                 //System.out.println("Outgoing queue");
 
                 //System.out.println("ModuleCommunication Down");
+                /*
                 System.out.println("ModuleCommunication inQueue type: " + m.getType());
                 System.out.println("ModuleCommunication inQueue message: " + m.getMessage());
                 */
@@ -89,6 +87,17 @@ public class ModuleCommunication {
                 }
                 if(m.getType().equals("join")) {
                     comm.connectToMembers(m.getGroup().getMembers());
+
+                    Member[] members = m.getGroup().getMembers();
+
+                    for (Member member : members) {
+                        if(order.clock.getClock().containsKey(member.getAddress()+member.getPort())) {
+                            order.clock.getClock().put(member.getAddress()+member.getPort(), 0L);
+                            m.setVectorClock(order.clock);
+                        }
+                    }
+
+                    m.setVectorClock(order.clock);
                 }
                 if(m.getType().equals("message")) {
                     order.clock.inc();

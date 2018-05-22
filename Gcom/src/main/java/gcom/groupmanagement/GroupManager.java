@@ -1,6 +1,7 @@
 package gcom.groupmanagement;
 
 import gcom.Message;
+import gcom.messageordering.CausalOrder;
 import gcom.messageordering.Ordering;
 import gcom.messageordering.OrderingObject;
 
@@ -57,6 +58,7 @@ public class GroupManager {
         switch(m.getType()) {
             case "connect":
                 groups.get(m.getMessage()).addMember(m.getSender());
+
                 order.addInQueue(new Message(
                         groups.get(m.getMessage()),
                         m.getRecipient(),
