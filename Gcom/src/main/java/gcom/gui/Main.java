@@ -22,7 +22,7 @@ public class Main extends Application {
 
         String os = System.getProperty("os.name");
 
-        if(os.equals("Linux")) {
+        if(os.equals("Linux") || os.equals("Windows 10")) {
             //These 2 lines are for Linux!
             URL url = new File("src/main/java/gcom/gui/Start.fxml").toURL();
             loader = new FXMLLoader(url);

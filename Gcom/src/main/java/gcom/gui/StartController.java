@@ -48,7 +48,7 @@ public class StartController {
 
             String os = System.getProperty("os.name");
 
-            if(os.equals("Linux")) {
+            if(os.equals("Linux") || os.equals("Windows 10")) {
                 //These 2 lines are for Linux!
                 URL url = new File("src/main/java/gcom/gui/gui.fxml").toURL();
                 loader = new FXMLLoader(url);

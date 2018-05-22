@@ -17,9 +17,9 @@ public class Debugger {
     private Communication comm;
     private BlockingQueue<Message> deliverQueue;
 
-    public Debugger(Communication comm, BlockingQueue<Message> deliverQueue) {
+    public Debugger(Communication comm) {
         this.comm = comm;
-        this.deliverQueue = deliverQueue;
+        this.deliverQueue = new LinkedBlockingQueue<>();
         debug = new AtomicBoolean(false);
         debugBuffer = new CopyOnWriteArrayList<>();
         debugMonitor = initDebugMonitor();
@@ -28,13 +28,14 @@ public class Debugger {
 
     private Thread initDebugMonitor(){
         return new Thread(()-> {
-            Message m = null;
+            /*Message m = null;
             try {
                 m = ((LinkedBlockingQueue<Message>)comm.getInQueue()).take();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
+            */
+            Message m = comm.getNextMessage();
             if(debug.get()) {
                 debugBuffer.add(m);
                 if(play.get()) {
@@ -66,6 +67,16 @@ public class Debugger {
             deliverQueue.add(debugBuffer.remove(0));
         }
 
+    }
+
+    public Message getNextMessage() {
+        Message m = null;
+        try {
+            m = deliverQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return m;
     }
 
     public void setPlay(boolean play) {
