@@ -5,6 +5,7 @@ import gcom.Message;
 import gcom.communication.rmi.Node;
 
 import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class CommunicationObject implements Communication {
 
@@ -41,6 +42,17 @@ public class CommunicationObject implements Communication {
     @Override
     public Queue<Message> getInQueue() {
         return n.getInQueue();
+    }
+
+    @Override
+    public Message getNextMessage() {
+        Message m = null;
+        try {
+            ((LinkedBlockingQueue<Message>)n.getInQueue()).take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return m;
     }
 
 }

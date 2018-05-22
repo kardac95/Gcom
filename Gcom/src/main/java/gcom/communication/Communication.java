@@ -12,4 +12,5 @@ public interface Communication {
     public void unReliableUnicast(Message message, Member recipient);
     public void unReliableMulticast(Message message, Member[] recipients);
     public Queue<Message> getInQueue();
+    public Message getNextMessage();
 }

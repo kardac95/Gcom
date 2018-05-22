@@ -34,12 +34,15 @@ public class ModuleCommunication {
 
         outQueueMonitor = new Thread(() -> {
             while(true) {
-                Message m = null;
+                /*Message m = null;
                 try {
                     m = ((LinkedBlockingQueue<Message>)comm.getInQueue()).take();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
+                }*/
+
+                Message m = comm.getNextMessage();
+
                 System.out.println("Receive queue");
                 if(m.getType().equals("join")) {
                     comm.connectToMembers(m.getGroup().getMembers());
@@ -55,12 +58,14 @@ public class ModuleCommunication {
 
         inQueueMonitor = new Thread(() -> {
             while(true) {
-                Message m = null;
+                /*Message m = null;
                 try {
                     m = ((LinkedBlockingQueue<Message>)incomingQueue).take();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                */
+                Message m = comm.getNextMessage();
                 System.out.println("Outgoing queue");
                 /*
                 System.out.println("ModuleCommunication Down");
