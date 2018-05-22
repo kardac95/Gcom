@@ -218,9 +218,10 @@ public class GuiController {
         groupDialog.show();
     }
 
-    public  void createGroup() {
+    public void createGroup() {
         String groupName = this.groupName.getText();
         if(groupName.equals("Debugger")) {
+            System.err.println("Debugger is a reserved name.");
             return;
         }
         logic.getGM().createGroup(groupName);
@@ -285,9 +286,7 @@ public class GuiController {
     public void startDebuggerTab() throws IOException {
 
         String os = System.getProperty("os.name");
-
-
-        if(os.equals("Linux")) {
+        if(os.equals("Linux") || os.equals("Windows 10")) {
             //These 2 lines are for Linux!
             URL url = new File("src/main/java/gcom/gui/DebugTab.fxml").toURL();
             loader = new FXMLLoader(url);
