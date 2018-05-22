@@ -50,7 +50,7 @@ public class ModuleCommunication {
                     order.clock.aidsMethod(m.getGroup().getMembers());
                 } else if(m.getType().equals("disconnect")) {
                     /* Disconnect sending member */
-
+                    //comm.disconnectMember(m.getSender());
                 }
                 /*
                 System.out.println("ModuleCommunication outQueue type: " + m.getType());
@@ -62,6 +62,7 @@ public class ModuleCommunication {
 
         inQueueMonitor = new Thread(() -> {
             while(true) {
+
                 Message m = null;
                 try {
                     m = ((LinkedBlockingQueue<Message>)incomingQueue).take();
@@ -70,11 +71,11 @@ public class ModuleCommunication {
                 }
 
                 //System.out.println("Outgoing queue");
-
+                /*
                 //System.out.println("ModuleCommunication Down");
                 System.out.println("ModuleCommunication inQueue type: " + m.getType());
                 System.out.println("ModuleCommunication inQueue message: " + m.getMessage());
-
+                */
                 if(m.getGroup() != null) {
                     System.out.println("Group members: " + m.getGroup().getMembers().length);
                     /*
@@ -109,7 +110,11 @@ public class ModuleCommunication {
             comm.unReliableUnicast(message, message.getRecipient());
 
         } else{
-            comm.unReliableMulticast(message, message.getGroup().getMembers());
+            if(message.getGroup() == null) {
+                System.err.println("Trying to send null message");
+            } else {
+                comm.unReliableMulticast(message, message.getGroup().getMembers());
+            }
         }
     }
 

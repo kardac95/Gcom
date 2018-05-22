@@ -24,7 +24,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class GuiController {
 
-    public Logic logic;
+    private Logic logic;
     private FXMLLoader loader;
 
     public GuiController() {
@@ -59,7 +59,8 @@ public class GuiController {
     @FXML Button debugStepButton;
 
     public void stop()  {
-        logic.getGM().getDebugger().stop();
+        System.out.println("Logic over here:   " + logic);
+        //logic.getGM().getDebugger().stop();
     }
 
     public void play() {
@@ -67,6 +68,7 @@ public class GuiController {
     }
 
     public void step() {
+        System.out.println("Logic over here:   " + logic);
         logic.getGM().getDebugger().step();
     }
 
@@ -82,7 +84,7 @@ public class GuiController {
             debugListView.getItems().set(curIndex,moveIitem);
             debugListView.getItems().set(curIndex -1 , item);
             debugListView.getSelectionModel().select(curIndex -1 );
-            logic.getGM().getDebugger().moveMessage(curIndex, curIndex-1);
+            logic.getGM().getDebugger().moveMessage(curIndex, curIndex -1);
         }
     }
 
@@ -141,15 +143,16 @@ public class GuiController {
 
     public void fillListView() {
         CopyOnWriteArrayList <Message> debugBuffer = (CopyOnWriteArrayList<Message>) ((CopyOnWriteArrayList<Message>) logic.getGM().getDebugger().getDebugBuffer()).clone();
-
+        System.out.println("UPDATE DEBUGGER");
+        //List<Message> debugBuffer = logic.getGM().getDebugger().getDebugBuffer();
         if(debugListView == null) {
+            System.out.println("RETURN");
             return;
         }
 
-        System.out.println(debugGroupBox.getSelectionModel().getSelectedItem());
-
         String workingDebugTab = debugGroupBox.getSelectionModel().getSelectedItem();
         if(workingDebugTab == null) {
+            System.out.println("RETURN");
             return;
         }
         debugListView.getItems().clear();
@@ -166,6 +169,7 @@ public class GuiController {
     public void fillDebugGroupBox() {
         String current = debugGroupBox.getSelectionModel().getSelectedItem();
         debugGroupBox.getItems().clear();
+        System.out.println("Fill me Logic over here:   " + logic);
 
         Group[] groups = logic.getGM().getGroups();
         for (Group g : groups) {
@@ -261,6 +265,7 @@ public class GuiController {
     }
 
     public void addGroupTab(String groupName) {
+        System.out.println("Logic over here:   " + logic);
         CustomTab tab = new CustomTab();
         tab.setText(groupName);
         tab.setContentTextFlow(new TextFlow());
