@@ -123,6 +123,12 @@ public class GroupManager {
         order.addInQueue(new Message(groups.get(groupName), sender, message, "message", null));
     }
 
+    public void leaveGroup(String groupName, String memberName) {
+        Group group = groups.get(groupName);
+        group.removeMember(memberName);
+        order.addInQueue(new Message(group, group.getMember(memberName), memberName + " has disconnected from the group!", "disconnect", null));
+    }
+
     public void setDebug(Boolean debug) {
         this.debug.set(debug);
     }

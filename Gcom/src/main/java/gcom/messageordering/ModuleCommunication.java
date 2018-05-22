@@ -23,9 +23,7 @@ public class ModuleCommunication {
 
     public ModuleCommunication(Member myInfo) {
         this.memberIndex = 0;
-
         this.incomingQueue = new LinkedBlockingQueue<>();
-
         this.comm = new CommunicationObject();
         this.comm.initCommunication(myInfo);
         this.outgoingQueue = new LinkedBlockingQueue<>();
@@ -44,6 +42,9 @@ public class ModuleCommunication {
                 if(m.getType().equals("join")) {
                     comm.connectToMembers(m.getGroup().getMembers());
                     order.clock.aidsMethod(m.getGroup().getMembers());
+                } else if(m.getType().equals("disconnect")) {
+                    /* Disconnect sending member */
+
                 }
                 /*
                 System.out.println("ModuleCommunication outQueue type: " + m.getType());

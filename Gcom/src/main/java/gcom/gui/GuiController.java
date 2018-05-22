@@ -116,7 +116,9 @@ public class GuiController {
     }
 
     public void leaveGroup(String group) {
-        System.out.println("THIS GROUP IS LEAVING " + group);
+        System.out.println("Leaving this group: " + group);
+        Group gr = this.logic.getGM().getGroup(group);
+        this.logic.getGM().leaveGroup(gr.getName(), this.logic.getUserName());
     }
 
     public void fillListView(Message m) {
@@ -212,9 +214,10 @@ public class GuiController {
         groupDialog.show();
     }
 
-    public  void createGroup() {
+    public void createGroup() {
         String groupName = this.groupName.getText();
         if(groupName.equals("Debugger")) {
+            System.err.println("Debugger is a reserved name.");
             return;
         }
         logic.getGM().createGroup(groupName);
