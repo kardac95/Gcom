@@ -66,6 +66,13 @@ public class Node {
             e.printStackTrace();
         }
     }
+
+    public void disconnectFromNode(Member member) {
+        if(connections.containsKey(member.getAddress()+member.getPort())) {
+            connections.remove(member.getAddress()+member.getPort());
+        }
+    }
+
     public void connectToNodes(Member[] members) {
         Arrays.stream(members).forEach(this::connectToNode);
     }

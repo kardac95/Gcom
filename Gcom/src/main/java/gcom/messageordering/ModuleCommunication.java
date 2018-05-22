@@ -16,7 +16,7 @@ public class ModuleCommunication {
     private Integer memberIndex;
     private Queue<Message> outgoingQueue;
     private Queue<Message> incomingQueue;
-    private Communication comm;
+    private CommunicationObject comm;
 
     private Thread inQueueMonitor;
     private Thread outQueueMonitor;
@@ -40,14 +40,17 @@ public class ModuleCommunication {
                 }*/
 
                 Message m = comm.getNextMessage();
-
+                if(m == null) {
+                    System.err.println("Received message is null");
+                    continue;
+                }
                 System.out.println("Receive queue");
                 if(m.getType().equals("join")) {
                     comm.connectToMembers(m.getGroup().getMembers());
                     order.clock.aidsMethod(m.getGroup().getMembers());
                 } else if(m.getType().equals("disconnect")) {
                     /* Disconnect sending member */
-
+                    //comm.disconnectMember(m.getSender());
                 }
                 /*
                 System.out.println("ModuleCommunication outQueue type: " + m.getType());
@@ -59,14 +62,15 @@ public class ModuleCommunication {
 
         inQueueMonitor = new Thread(() -> {
             while(true) {
-                /*Message m = null;
+
+                Message m = null;
                 try {
                     m = ((LinkedBlockingQueue<Message>)incomingQueue).take();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                */
-                Message m = comm.getNextMessage();
+
+
                 System.out.println("Outgoing queue");
                 /*
                 System.out.println("ModuleCommunication Down");
@@ -107,7 +111,11 @@ public class ModuleCommunication {
             comm.unReliableUnicast(message, message.getRecipient());
 
         } else{
-            comm.unReliableMulticast(message, message.getGroup().getMembers());
+            if(message.getGroup() == null) {
+                System.err.println("Trying to send null message");
+            } else {
+                comm.unReliableMulticast(message, message.getGroup().getMembers());
+            }
         }
     }
 

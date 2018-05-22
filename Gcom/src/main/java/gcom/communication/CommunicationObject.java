@@ -29,6 +29,10 @@ public class CommunicationObject implements Communication {
         n.connectToNodes(members);
     }
 
+    public void disconnectMember(Member member) {
+        n.disconnectFromNode(member);
+    }
+
     @Override
     public void unReliableUnicast(Message message, Member recipient) {
         n.unReliableUnicast(message, recipient);
