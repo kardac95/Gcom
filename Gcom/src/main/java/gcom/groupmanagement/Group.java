@@ -40,6 +40,10 @@ public class Group implements Serializable{
         return memberList;
     }
 
+    public boolean isEmpty() {
+        return members.isEmpty();
+    }
+
     public Member getMember(String name) {
         return members.get(name);
     }
