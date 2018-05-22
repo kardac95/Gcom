@@ -77,8 +77,8 @@ public class GuiController {
         String item = debugListView.getSelectionModel().getSelectedItem();
         int curIndex = debugListView.getItems().indexOf(item);
         if(curIndex != debugListView.getItems().size() -1) {
-            String moveIitem = debugListView.getItems().get(curIndex + 1);
-            debugListView.getItems().set(curIndex,moveIitem);
+            String moveItem = debugListView.getItems().get(curIndex + 1);
+            debugListView.getItems().set(curIndex,moveItem);
             debugListView.getItems().set(curIndex +1 , item);
             debugListView.getSelectionModel().select(curIndex +1 );
         }
@@ -116,9 +116,13 @@ public class GuiController {
     }
 
     public void leaveGroup(String group) {
-        System.out.println("Leaving this group: " + group);
-        Group gr = this.logic.getGM().getGroup(group);
-        this.logic.getGM().leaveGroup(gr.getName(), this.logic.getUserName());
+        System.out.println("THIS GROUP IS LEAVING " + group);
+       // logic.getGM().messageGroup(logic.getUserName() + " is leaving!", logic.getMe(),group);
+        Platform.runLater(() -> logic.getGM().getGroup(group).removeMember(logic.getUserName()));
+        Platform.runLater(() -> logic.getGM().removeGroup(group));
+        fillDebugGroupBox();
+        updateTree();
+
     }
 
     public void fillListView(Message m) {
@@ -132,7 +136,7 @@ public class GuiController {
             return;
         }
         if(workingDebugTab.equals(m.getGroup().getName())) {
-            debugListView.getItems().add(m.getMessage());
+            debugListView.getItems().add(m.getMessage() +" ["+m.getVectorClock().getValue(m.getVectorClock().getMyId())+"]");
         }
     }
 

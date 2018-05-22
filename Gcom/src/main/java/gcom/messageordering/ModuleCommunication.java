@@ -16,7 +16,7 @@ public class ModuleCommunication {
     private Integer memberIndex;
     private Queue<Message> outgoingQueue;
     private Queue<Message> incomingQueue;
-    private CommunicationObject comm;
+    private Communication comm;
 
     private Thread inQueueMonitor;
     private Thread outQueueMonitor;
@@ -70,10 +70,9 @@ public class ModuleCommunication {
                     e.printStackTrace();
                 }
 
+                //System.out.println("Outgoing queue");
 
-                System.out.println("Outgoing queue");
-                /*
-                System.out.println("ModuleCommunication Down");
+                //System.out.println("ModuleCommunication Down");
                 System.out.println("ModuleCommunication inQueue type: " + m.getType());
                 System.out.println("ModuleCommunication inQueue message: " + m.getMessage());
                 */

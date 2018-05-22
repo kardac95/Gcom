@@ -16,7 +16,6 @@ public class CommunicationObject implements Communication {
     public void initCommunication(Member myInfo) {
         this.myInfo = myInfo;
         n = new Node(myInfo);
-        //n.connectToNode(myInfo);
     }
 
     @Override
@@ -50,12 +49,16 @@ public class CommunicationObject implements Communication {
 
     @Override
     public Message getNextMessage() {
+        System.out.println("getting the goddamn call...");
         Message m = null;
         try {
-            ((LinkedBlockingQueue<Message>)n.getInQueue()).take();
+            m = ((LinkedBlockingQueue<Message>)n.getInQueue()).take();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            System.err.println("12314");
         }
+        System.out.println(m.getType());
+        System.out.println("delivering shit");
         return m;
     }
 
