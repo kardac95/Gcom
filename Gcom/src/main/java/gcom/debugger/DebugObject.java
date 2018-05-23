@@ -3,7 +3,9 @@ package gcom.debugger;
 import gcom.Message;
 import gcom.communication.Communication;
 
-public class DebugObject implements Debug{
+import java.util.List;
+
+public class DebugObject implements Debug {
     Debugger debug;
 
     public DebugObject(Communication comm) {
@@ -11,7 +13,7 @@ public class DebugObject implements Debug{
     }
 
     @Override
-    public void StartDebugger() {
+    public void startDebugger() {
         debug.setDebug(true);
     }
 
@@ -36,17 +38,27 @@ public class DebugObject implements Debug{
     }
 
     @Override
+    public List getDebugBuffer() {
+        return debug.getDebugBuffer();
+    }
+
+    @Override
     public void play() {
-        debug.setPlay(true);
+        debug.play();
     }
 
     @Override
     public void stop() {
-        debug.setPlay(false);
+        debug.setDebug(true);
     }
 
     @Override
     public void step() {
         debug.step();
+    }
+
+    @Override
+    public Thread monitorDebugBuffer(Runnable updateFunction) {
+        return debug.monitorDebugBuffer(updateFunction);
     }
 }

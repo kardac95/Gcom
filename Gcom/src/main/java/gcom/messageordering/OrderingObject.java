@@ -1,5 +1,6 @@
 package gcom.messageordering;
 
+import gcom.debugger.Debug;
 import gcom.groupmanagement.Member;
 import gcom.Message;
 
@@ -18,6 +19,11 @@ public class OrderingObject implements Ordering{
     @Override
     public Message getOutMessage() throws InterruptedException {
         return o.getNextOutgoingMessage();
+    }
+
+    @Override
+    public Debug getDebug() {
+        return o.getDebugger();
     }
 
     @Override

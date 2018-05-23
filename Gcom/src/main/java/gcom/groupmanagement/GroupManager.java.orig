@@ -1,7 +1,11 @@
 package gcom.groupmanagement;
 
 import gcom.Message;
-
+<<<<<<< HEAD
+import gcom.messageordering.CausalOrder;
+=======
+import gcom.debugger.Debug;
+>>>>>>> 930185c7b8b8d72b6a681f52e1e04c02fc881fd0
 import gcom.messageordering.Ordering;
 import gcom.messageordering.OrderingObject;
 

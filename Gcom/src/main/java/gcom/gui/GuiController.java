@@ -17,12 +17,13 @@ import javafx.stage.Window;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
 public class GuiController {
 
-    public Logic logic;
+    private Logic logic;
     private FXMLLoader loader;
 
     public GuiController() {
@@ -48,41 +49,6 @@ public class GuiController {
     @FXML Button connectButton;
     @FXML MenuItem debugStart;
     @FXML ComboBox<String> debugGroupBox;
-    @FXML Button stopMessageButton;
-    @FXML ListView<String> debugListView;
-    @FXML Button debugUP;
-    @FXML Button debugDown;
-    @FXML Button clearDebug;
-
-    public void test()  {
-        System.out.println("Hej");
-    }
-
-    public void clearDebugging() {
-        debugListView.getItems().clear();
-    }
-
-    public void moveMessageUP() {
-        String item = debugListView.getSelectionModel().getSelectedItem();
-        int curIndex = debugListView.getItems().indexOf(item);
-        if(curIndex != 0) {
-            String moveIitem = debugListView.getItems().get(curIndex - 1);
-            debugListView.getItems().set(curIndex,moveIitem);
-            debugListView.getItems().set(curIndex -1 , item);
-            debugListView.getSelectionModel().select(curIndex -1 );
-        }
-    }
-
-    public void moveMessageDown() {
-        String item = debugListView.getSelectionModel().getSelectedItem();
-        int curIndex = debugListView.getItems().indexOf(item);
-        if(curIndex != debugListView.getItems().size() -1) {
-            String moveItem = debugListView.getItems().get(curIndex + 1);
-            debugListView.getItems().set(curIndex,moveItem);
-            debugListView.getItems().set(curIndex +1 , item);
-            debugListView.getSelectionModel().select(curIndex +1 );
-        }
-    }
 
     public void setTextInTextFlow (final Message m) {
             String color = "magenta";
@@ -127,24 +93,10 @@ public class GuiController {
 
     }
 
-    public void fillListView(Message m) {
-        if(debugListView == null) {
-            return;
-        }
-        System.out.println(debugGroupBox.getSelectionModel().getSelectedItem());
-
-        String workingDebugTab = debugGroupBox.getSelectionModel().getSelectedItem();
-        if(workingDebugTab == null) {
-            return;
-        }
-        if(workingDebugTab.equals(m.getGroup().getName())) {
-            debugListView.getItems().add(m.getMessage() +" ["+m.getVectorClock().getValue(m.getVectorClock().getMyId())+"]");
-        }
-    }
-
     public void fillDebugGroupBox() {
         String current = debugGroupBox.getSelectionModel().getSelectedItem();
         debugGroupBox.getItems().clear();
+        System.out.println("Fill me Logic over here from debug:   " + logic);
 
         Group[] groups = logic.getGM().getGroups();
         for (Group g : groups) {
@@ -240,6 +192,7 @@ public class GuiController {
     }
 
     public void addGroupTab(String groupName) {
+        System.out.println("Logic over here:   " + logic);
         CustomTab tab = new CustomTab();
         tab.setText(groupName);
         tab.setContentTextFlow(new TextFlow());
@@ -282,7 +235,6 @@ public class GuiController {
               Platform.runLater(this::updateTree);
               final Message message = m;
               Platform.runLater(() -> setTextInTextFlow(message));
-              Platform.runLater(() -> fillListView(message));
           }
       });
       t.start();
@@ -290,7 +242,7 @@ public class GuiController {
 
     public void startDebuggerTab() throws IOException {
 
-        String os = System.getProperty("os.name");
+        /*String os = System.getProperty("os.name");
         if(os.equals("Linux") || os.equals("Windows 10")) {
             //These 2 lines are for Linux!
             URL url = new File("src/main/java/gcom/gui/DebugTab.fxml").toURL();
@@ -310,11 +262,25 @@ public class GuiController {
 
         Tab tab = new Tab("Debugger");
         tab.setContent(groupTab);
-        /*tab.setOnClosed(event -> {
-
-        });*/
+        tab.setOnClosed(event -> logic.getGM().getDebugger().StopDebugger());
         tabPane.getTabs().add(tab);
+        monitorDebugBuffer();
+        logic.getGM().getDebugger().startDebugger();
         Platform.runLater(this::fillDebugGroupBox);
+        */
+        String os = System.getProperty("os.name");
+        if(os.equals("Linux") || os.equals("Windows 10")) {
+            //These 2 lines are for Linux!
+            URL url = new File("src/main/java/gcom/gui/DebugTab.fxml").toURL();
+            loader = new FXMLLoader(url);
+        } else if(os.equals("Windows")) {
+            //This line is for Windows!
+            loader = new FXMLLoader(Main.class.getResource("DebugTab.fxml"));
+        }
+        Parent groupTab = loader.load();
+        DebugTabController dtc = loader.getController();
+        dtc.initialize(logic, tabPane);
+        dtc.startDebuggerTab(groupTab, loader);
     }
 
     public void init() {

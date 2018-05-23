@@ -16,8 +16,6 @@ import java.net.URL;
 
 public class StartController {
 
-
-    public Logic logic;
     private FXMLLoader loader;
 
     public StartController() {
@@ -40,11 +38,10 @@ public class StartController {
     }
 
     public void changeSceneToGUI(ActionEvent event) throws IOException {
-        Stage appStage;
-        Parent root;
+
         if(event.getSource()==continueToGuiButton)
         {
-            appStage=(Stage)continueToGuiButton.getScene().getWindow();
+            Stage appStage=(Stage)continueToGuiButton.getScene().getWindow();
 
             String os = System.getProperty("os.name");
 
@@ -56,27 +53,25 @@ public class StartController {
                 //This line is for Windows!
                 loader = new FXMLLoader(Main.class.getResource("gui.fxml"));
             }
-            root = loader.load();
+            Parent root = loader.load();
 
             //SENDING TO gui CONTROLLER
             GuiController g = loader.getController();
 
-            this.logic = new Logic(getUname(), getPort());
             //new Thread(this.logic.monitorGroupManager(g));
-
             g.setUserName(getUname());
             g.init();
-            g.setGUILogic(logic);
+            g.setGUILogic(new Logic(getUname(), getPort()));
             g.updateTree();
 
-
-            Scene scene=new Scene(root);
-            appStage.setScene(scene);
+            appStage.setScene(new Scene(root));
             appStage.setOnCloseRequest(windowEvent -> Platform.exit());
             appStage.show();
             g.monitorGroupManager();
+
+
+            //Controller c = new Controller(new Logic(getUname(), getPort()));
+            //c.startGuiController((Stage)continueToGuiButton.getScene().getWindow());
         }
     }
-
-
 }
