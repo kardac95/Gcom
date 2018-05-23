@@ -38,14 +38,14 @@ public class VectorClock implements Serializable {
         clock.remove(id);
     }
 
-    private Map<String, Long> getClock() {
+    public Map<String, Long> getClock() {
         return clock;
     }
 
-    public void aidsMethod(Member[] kyslords) {
-        Arrays.stream(kyslords).forEach(kyslord -> {
-            if(!clock.containsKey(kyslord.getAddress()+kyslord.getPort())) {
-                clock.put(kyslord.getAddress()+kyslord.getPort(), 0L);
+    public void addNewMemberClock(Member[] newMembers, VectorClock newClock) {
+        Arrays.stream(newMembers).forEach(m -> {
+            if(!clock.containsKey(m.getAddress()+m.getPort())) {
+                clock.put(m.getAddress()+m.getPort(), newClock.getValue(m.getAddress()+m.getPort()));
             }
         });
     }

@@ -15,12 +15,12 @@ public class ModuleCommunication {
     private Integer memberIndex;
     private Queue<Message> outgoingQueue;
     private Queue<Message> incomingQueue;
-
+<<<<<<< HEAD
     private CommunicationObject comm;
-
-    
+=======
+    private Communication comm;
     private Debug debugger;
-
+>>>>>>> 930185c7b8b8d72b6a681f52e1e04c02fc881fd0
 
     private Thread inQueueMonitor;
     private Thread outQueueMonitor;
@@ -104,8 +104,8 @@ public class ModuleCommunication {
                     m.setVectorClock(order.clock);
                 }
                 if(m.getType().equals("message")) {
-                    order.clock.inc();
-                    m.setVectorClock(order.clock);
+//                    order.clock.inc();
+//                    m.setVectorClock(order.clock);
                 }
                 System.out.println("Message Type: " + m.getType());
                 send(m);
