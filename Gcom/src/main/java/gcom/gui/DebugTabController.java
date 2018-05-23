@@ -19,6 +19,7 @@ public class DebugTabController {
     private Logic logic;
     private FXMLLoader loader;
     private TabPane tabPane;
+    private String selectedGroup;
 
     @FXML ListView<String> debugListView;
     @FXML Button debugUP;
@@ -38,14 +39,14 @@ public class DebugTabController {
     }
 
     public void fillDebugGroupBox() {
-        String current = debugGroupBox.getSelectionModel().getSelectedItem();
+        selectedGroup = debugGroupBox.getSelectionModel().getSelectedItem();
         debugGroupBox.getItems().clear();
         System.out.println("Fill me Logic over here fill debug:   " + logic);
 
         Group[] groups = logic.getGM().getGroups();
         for (Group g : groups) {
-            if(g.getName().equals(current)) {
-                debugGroupBox.getSelectionModel().select(current);
+            if(g.getName().equals(selectedGroup)) {
+                debugGroupBox.getSelectionModel().select(selectedGroup);
             }
             debugGroupBox.getItems().add(g.getName());
         }
@@ -73,12 +74,12 @@ public class DebugTabController {
     }
 
     public void play() {
-        logic.getGM().getDebugger().play();
+        logic.getGM().getDebugger().play(selectedGroup);
     }
 
     public void step() {
         System.out.println("Logic over here:   " + logic);
-        logic.getGM().getDebugger().step();
+        logic.getGM().getDebugger().step(selectedGroup);
     }
 
     public void clearDebugging() {
@@ -93,7 +94,7 @@ public class DebugTabController {
             debugListView.getItems().set(curIndex,moveItem);
             debugListView.getItems().set(curIndex -1 , item);
             debugListView.getSelectionModel().select(curIndex -1 );
-            logic.getGM().getDebugger().moveMessage(curIndex, curIndex -1);
+            logic.getGM().getDebugger().moveMessage(selectedGroup,curIndex, curIndex -1);
         }
     }
 
@@ -105,14 +106,12 @@ public class DebugTabController {
             debugListView.getItems().set(curIndex,moveItem);
             debugListView.getItems().set(curIndex +1 , item);
             debugListView.getSelectionModel().select(curIndex +1 );
-            logic.getGM().getDebugger().moveMessage(curIndex, curIndex +1);
+            logic.getGM().getDebugger().moveMessage(selectedGroup, curIndex, curIndex +1);
         }
     }
 
     public void fillListView() {
-        List <Message>debugBuffer = logic.getGM().getDebugger().getDebugBuffer();
-        System.out.println("UPDATE DEBUGGER");
-        //List<Message> debugBuffer = logic.getGM().getDebugger().getDebugBuffer();
+        List <Message>debugBuffer = logic.getGM().getDebugger().getDebugBuffer(selectedGroup);
         if(debugListView == null) {
             System.out.println("RETURN");
             return;

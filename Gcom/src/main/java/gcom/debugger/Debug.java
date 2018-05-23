@@ -8,13 +8,13 @@ public interface Debug {
 
     void startDebugger();
     void StopDebugger();
-    void removeMessage(int i);
-    void moveMessage(int src, int dest);
+    void removeMessage(String group, int i);
+    void moveMessage(String group, int src, int dest);
     Message getNextMessage();
-    List getDebugBuffer();
-    void play();
+    List getDebugBuffer(String group);
+    void play(String group);
     void stop();
-    void step();
+    void step(String group);
     Thread monitorDebugBuffer(Runnable updateFunction);
 
 }

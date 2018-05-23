@@ -23,13 +23,13 @@ public class DebugObject implements Debug {
     }
 
     @Override
-    public void removeMessage(int i) {
-        debug.removeMessage(i);
+    public void removeMessage(String group, int i) {
+        debug.removeMessage(group, i);
     }
 
     @Override
-    public void moveMessage(int src, int dest) {
-        debug.moveMessage(src, dest);
+    public void moveMessage(String group, int src, int dest) {
+        debug.moveMessage(group, src, dest);
     }
 
     @Override
@@ -38,13 +38,13 @@ public class DebugObject implements Debug {
     }
 
     @Override
-    public List getDebugBuffer() {
-        return debug.getDebugBuffer();
+    public List getDebugBuffer(String group) {
+        return debug.getDebugBuffer(group);
     }
 
     @Override
-    public void play() {
-        debug.play();
+    public void play(String group) {
+        debug.play(group);
     }
 
     @Override
@@ -53,8 +53,8 @@ public class DebugObject implements Debug {
     }
 
     @Override
-    public void step() {
-        debug.step();
+    public void step(String group) {
+        debug.step(group);
     }
 
     @Override

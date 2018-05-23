@@ -6,6 +6,7 @@ import gcom.communication.Communication;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -19,6 +20,7 @@ public class Debugger {
     private AtomicBoolean debug;
     private Communication comm;
     private BlockingQueue<Message> deliverQueue;
+    private ConcurrentHashMap<String, CopyOnWriteArrayList<Message>> groupBuffer;
 
     private Lock bufferLock;
     private Condition bufferCond;
@@ -29,19 +31,31 @@ public class Debugger {
         this.deliverQueue = new LinkedBlockingQueue<>();
         this.debug = new AtomicBoolean(false);
         this.bufferLock = new ReentrantLock();
-        bufferStateChanged = new AtomicBoolean(false);
-        bufferCond = bufferLock.newCondition();
-        debugBuffer = new CopyOnWriteArrayList<>();
-        debugMonitor = initDebugMonitor();
-        debugMonitor.start();
+        this.groupBuffer = new ConcurrentHashMap<>();
+        this.bufferStateChanged = new AtomicBoolean(false);
+        this.bufferCond = bufferLock.newCondition();
+        this.debugBuffer = new CopyOnWriteArrayList<>();
+        this.debugMonitor = initDebugMonitor();
+        this.debugMonitor.start();
     }
 
     private Thread initDebugMonitor(){
         return new Thread(()-> {
             while (true) {
                 Message m = comm.getNextMessage();
+
                 if (debug.get()) {
-                    addDebugBuffer(m);
+                    if(m.getRecipient() != null) {
+                        groupBuffer.put(m.getMessage(), new CopyOnWriteArrayList<>());
+                        addDebugBuffer(m.getMessage(), m);
+                    }else {
+                        if(groupBuffer.get(m.getGroup().getName()) == null) {
+                            System.err.println("Damn This doesn̈́t work : " + m.getGroup().getName());
+                            groupBuffer.put(m.getGroup().getName(), new CopyOnWriteArrayList<>());
+                            System.err.println(groupBuffer.get(m.getGroup().getName()));
+                        }
+                        addDebugBuffer(m.getGroup().getName(), m);
+                    }
                 } else {
                     deliverQueue.add(m);
                 }
@@ -68,37 +82,34 @@ public class Debugger {
         });
     }
 
-    private void addDebugBuffer(Message m) {
+    private void addDebugBuffer(String groupName, Message m) {
         bufferLock.lock();
-        debugBuffer.add(m);
+        groupBuffer.get(groupName).add(m);
         bufferStateChanged.set(true);
         bufferCond.signal();
         bufferLock.unlock();
     }
 
-    private void removeDebugBuffer(Message m) {
+    public void removeMessage(String group, int i) {
         bufferLock.lock();
-        debugBuffer.add(m);
+        groupBuffer.get(group).remove(i);
         bufferStateChanged.set(true);
         bufferCond.signal();
         bufferLock.unlock();
+
     }
 
-    public void removeMessage(int i) {
-        debugBuffer.remove(i);
+    public void moveMessage(String group, int i, int j) {
+        Collections.swap(groupBuffer.get(group), i,  j);
     }
 
-    public void moveMessage(int i, int j) {
-        Collections.swap(debugBuffer, i,  j);
-    }
-
-    public void step() {
+    public void step(String group) {
 
         if(!debugBuffer.isEmpty()) {
             //put the first element in a deliver queue.
             //remove the first element from the list.
             bufferLock.lock();
-            deliverQueue.add(debugBuffer.remove(0));
+            deliverQueue.add(groupBuffer.get(group).remove(0));
             bufferStateChanged.set(true);
             bufferCond.signal();
             bufferLock.unlock();
@@ -116,14 +127,14 @@ public class Debugger {
         return m;
     }
 
-    public List getDebugBuffer() {
-        return debugBuffer;
+    public List getDebugBuffer(String group) {
+        return groupBuffer.get(group);
     }
 
-    public void play() {
+    public void play(String group) {
         debugBuffer.forEach(message -> {
             bufferLock.lock();
-            deliverQueue.add(debugBuffer.remove(0));
+            deliverQueue.add(groupBuffer.get(group).remove(0));
             bufferStateChanged.set(true);
             bufferCond.signal();
             bufferLock.unlock();
