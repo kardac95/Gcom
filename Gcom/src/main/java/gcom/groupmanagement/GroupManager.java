@@ -1,7 +1,7 @@
 package gcom.groupmanagement;
 
 import gcom.Message;
-
+import gcom.debugger.Debug;
 import gcom.messageordering.Ordering;
 import gcom.messageordering.OrderingObject;
 
@@ -10,7 +10,6 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GroupManager {
     private Queue<Message> incomingQueue;

@@ -63,6 +63,7 @@ public class StartController {
             g.init();
             g.setGUILogic(new Logic(getUname(), getPort()));
             g.updateTree();
+            g.addWelcomeTab();
 
             appStage.setScene(new Scene(root));
             appStage.setOnCloseRequest(windowEvent -> Platform.exit());

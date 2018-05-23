@@ -130,6 +130,10 @@ public class DebugTabController {
         });
     }
 
+    public ComboBox<String> getDebugGroupBox() {
+        return debugGroupBox;
+    }
+
     public void initialize(Logic logic, TabPane tabPane) {
         this.logic = logic;
         this.tabPane = tabPane;
