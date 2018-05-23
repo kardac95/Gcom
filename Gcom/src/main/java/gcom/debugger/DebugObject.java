@@ -44,12 +44,12 @@ public class DebugObject implements Debug {
 
     @Override
     public void play() {
-        debug.setPlay(true);
+        debug.play();
     }
 
     @Override
     public void stop() {
-        debug.setPlay(false);
+        debug.setDebug(true);
     }
 
     @Override

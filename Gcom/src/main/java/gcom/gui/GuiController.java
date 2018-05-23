@@ -17,7 +17,6 @@ import javafx.stage.Window;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -50,55 +49,6 @@ public class GuiController {
     @FXML Button connectButton;
     @FXML MenuItem debugStart;
     @FXML ComboBox<String> debugGroupBox;
-    @FXML Button stopMessageButton;
-    @FXML ListView<String> debugListView;
-    @FXML Button debugUP;
-    @FXML Button debugDown;
-    @FXML Button clearDebug;
-    @FXML Button debugPlayButton;
-    @FXML Button debugStepButton;
-
-    public void stop()  {
-        System.out.println("Logic over here:   " + logic);
-        //logic.getGM().getDebugger().stop();
-    }
-
-    public void play() {
-        logic.getGM().getDebugger().play();
-    }
-
-    public void step() {
-        System.out.println("Logic over here:   " + logic);
-        logic.getGM().getDebugger().step();
-    }
-
-    public void clearDebugging() {
-        debugListView.getItems().clear();
-    }
-
-    public void moveMessageUP() {
-        String item = debugListView.getSelectionModel().getSelectedItem();
-        int curIndex = debugListView.getItems().indexOf(item);
-        if(curIndex != 0) {
-            String moveIitem = debugListView.getItems().get(curIndex - 1);
-            debugListView.getItems().set(curIndex,moveIitem);
-            debugListView.getItems().set(curIndex -1 , item);
-            debugListView.getSelectionModel().select(curIndex -1 );
-            logic.getGM().getDebugger().moveMessage(curIndex, curIndex -1);
-        }
-    }
-
-    public void moveMessageDown() {
-        String item = debugListView.getSelectionModel().getSelectedItem();
-        int curIndex = debugListView.getItems().indexOf(item);
-        if(curIndex != debugListView.getItems().size() -1) {
-            String moveItem = debugListView.getItems().get(curIndex + 1);
-            debugListView.getItems().set(curIndex,moveItem);
-            debugListView.getItems().set(curIndex +1 , item);
-            debugListView.getSelectionModel().select(curIndex +1 );
-            logic.getGM().getDebugger().moveMessage(curIndex, curIndex +1);
-        }
-    }
 
     public void setTextInTextFlow (final Message m) {
         Platform.runLater(() -> {
@@ -141,35 +91,10 @@ public class GuiController {
 
     }
 
-    public void fillListView() {
-        CopyOnWriteArrayList <Message> debugBuffer = (CopyOnWriteArrayList<Message>) ((CopyOnWriteArrayList<Message>) logic.getGM().getDebugger().getDebugBuffer()).clone();
-        System.out.println("UPDATE DEBUGGER");
-        //List<Message> debugBuffer = logic.getGM().getDebugger().getDebugBuffer();
-        if(debugListView == null) {
-            System.out.println("RETURN");
-            return;
-        }
-
-        String workingDebugTab = debugGroupBox.getSelectionModel().getSelectedItem();
-        if(workingDebugTab == null) {
-            System.out.println("RETURN");
-            return;
-        }
-        debugListView.getItems().clear();
-
-        debugBuffer.forEach((m) -> {
-            if(workingDebugTab.equals(m.getGroup().getName())) {
-                //debugListView.getItems().add(m.getMessage() +" ["+m.getVectorClock().getValue(m.getVectorClock().getMyId())+"]");
-                debugListView.getItems().add(m.getMessage());
-            }
-
-        });
-    }
-
     public void fillDebugGroupBox() {
         String current = debugGroupBox.getSelectionModel().getSelectedItem();
         debugGroupBox.getItems().clear();
-        System.out.println("Fill me Logic over here:   " + logic);
+        System.out.println("Fill me Logic over here from debug:   " + logic);
 
         Group[] groups = logic.getGM().getGroups();
         for (Group g : groups) {
@@ -310,13 +235,9 @@ public class GuiController {
       t.start();
     }
 
-    private void monitorDebugBuffer() {
-        logic.getGM().getDebugger().monitorDebugBuffer(() -> Platform.runLater(this::fillListView)).start();
-    }
-
     public void startDebuggerTab() throws IOException {
 
-        String os = System.getProperty("os.name");
+        /*String os = System.getProperty("os.name");
         if(os.equals("Linux") || os.equals("Windows 10")) {
             //These 2 lines are for Linux!
             URL url = new File("src/main/java/gcom/gui/DebugTab.fxml").toURL();
@@ -341,6 +262,20 @@ public class GuiController {
         monitorDebugBuffer();
         logic.getGM().getDebugger().startDebugger();
         Platform.runLater(this::fillDebugGroupBox);
+        */
+        String os = System.getProperty("os.name");
+        if(os.equals("Linux") || os.equals("Windows 10")) {
+            //These 2 lines are for Linux!
+            URL url = new File("src/main/java/gcom/gui/DebugTab.fxml").toURL();
+            loader = new FXMLLoader(url);
+        } else if(os.equals("Windows")) {
+            //This line is for Windows!
+            loader = new FXMLLoader(Main.class.getResource("DebugTab.fxml"));
+        }
+        Parent groupTab = loader.load();
+        DebugTabController dtc = loader.getController();
+        dtc.initialize(logic, tabPane);
+        dtc.startDebuggerTab(groupTab, loader);
     }
 
     public void init() {

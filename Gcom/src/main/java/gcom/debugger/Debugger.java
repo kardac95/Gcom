@@ -17,7 +17,6 @@ public class Debugger {
     private CopyOnWriteArrayList <Message> debugBuffer;
     private Thread debugMonitor;
     private AtomicBoolean debug;
-    private AtomicBoolean play;
     private Communication comm;
     private BlockingQueue<Message> deliverQueue;
 
@@ -29,7 +28,6 @@ public class Debugger {
         this.comm = comm;
         this.deliverQueue = new LinkedBlockingQueue<>();
         this.debug = new AtomicBoolean(false);
-        this.play = new AtomicBoolean(false);
         this.bufferLock = new ReentrantLock();
         bufferStateChanged = new AtomicBoolean(false);
         bufferCond = bufferLock.newCondition();
@@ -44,12 +42,6 @@ public class Debugger {
                 Message m = comm.getNextMessage();
                 if (debug.get()) {
                     addDebugBuffer(m);
-                    if (play.get()) {
-                        debugBuffer.forEach(message -> {
-                            deliverQueue.add(message);
-                            removeDebugBuffer(m);
-                        });
-                    }
                 } else {
                     deliverQueue.add(m);
                 }
@@ -128,8 +120,15 @@ public class Debugger {
         return debugBuffer;
     }
 
-    public void setPlay(boolean play) {
-        this.play.set(play);
+    public void play() {
+        debugBuffer.forEach(message -> {
+            bufferLock.lock();
+            deliverQueue.add(debugBuffer.remove(0));
+            bufferStateChanged.set(true);
+            bufferCond.signal();
+            bufferLock.unlock();
+        });
+        this.debug.set(false);
     }
 
     public void setDebug(boolean debug) {

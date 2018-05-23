@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="1035.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gcom.gui.GuiController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="1035.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gcom.gui.DebugTabController">
    <children>
       <Button fx:id="debugStepButton" layoutX="431.0" layoutY="292.0" mnemonicParsing="false" onAction="#step" prefHeight="30.0" prefWidth="76.0" text="Step" />
       <ToggleButton layoutX="416.0" layoutY="71.0" mnemonicParsing="false" text="ToggleButton" />
