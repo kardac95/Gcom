@@ -34,4 +34,9 @@ public abstract class Order {
     public VectorClock getClock() {
         return clock;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
 }

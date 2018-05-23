@@ -1,9 +1,1 @@
-Connect all rmi parts to one class;*
-Send Messages from each client;*
-implement unreliable multicast;*
-implement Threadsafe append to in queue
-implement check if message can be sent
-
-Implement selectHost option;
-Implement interface for other layers;
 implement reliable multicast;

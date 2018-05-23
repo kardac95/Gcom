@@ -37,26 +37,21 @@ public class ModuleCommunication {
 
         outQueueMonitor = new Thread(() -> {
             while(true) {
-                /*Message m = null;
-                try {
-                    m = ((LinkedBlockingQueue<Message>)comm.getInQueue()).take();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }*/
-
                 Message m = debugger.getNextMessage();//comm.getNextMessage();
                 System.out.println("Receive queue");
-                if(m.getType().equals("join")) {
-                 /*   comm.connectToMembers(m.getGroup().getMembers());
-                    order.clock.addNewMemberClock(m.getGroup().getMembers(), m.getVectorClock());*/
-                } else if(m.getType().equals("disconnect")) {
-                    /* Disconnect sending member */
-                    comm.disconnectMember(m.getSender());
+
+                switch (m.getType()) {
+                    case "join":
+                        comm.connectToMembers(m.getGroup().getMembers());
+                    /*   order.clock.addNewMemberClock(m.getGroup().getMembers(), m.getVectorClock());*/
+                        break;
+                    case "disconnect":
+                        /* Disconnect sending member */
+                        comm.disconnectMember(m.getSender());
+                        break;
+                    default:
+                        break;
                 }
-                /*
-                System.out.println("ModuleCommunication outQueue type: " + m.getType());
-                System.out.println("ModuleCommunication outQueue message: " + m.getMessage());
-                */
                 order.Ordering(m, outgoingQueue);
             }
         });
@@ -71,27 +66,14 @@ public class ModuleCommunication {
                     e.printStackTrace();
                 }
 
-                //System.out.println("Outgoing queue");
-                /*
-                //System.out.println("ModuleCommunication Down");
-                /*
-                System.out.println("ModuleCommunication inQueue type: " + m.getType());
-                System.out.println("ModuleCommunication inQueue message: " + m.getMessage());
-                */
                 if(m.getGroup() != null) {
                     System.out.println("Group members: " + m.getGroup().getMembers().length);
-                    /*
-                    Arrays.stream(m.getGroup().getMembers()).forEach(i -> {
-                        System.out.println("ModuleCommunication inQueue Members name: " + i.getName());
-                        System.out.println("ModuleCommunication inQueue Members address: " + i.getAddress());
-                        System.out.println("ModuleCommunication inQueue Members port: " + i.getPort());
-                    });*/
                 } else {
                     System.err.println("Group is null in queue monitor");
                 }
                 if(m.getType().equals("join")) {
                     comm.connectToMembers(m.getGroup().getMembers());
-/*
+                /*
                     Member[] members = m.getGroup().getMembers();
 
                     for (Member member : members) {

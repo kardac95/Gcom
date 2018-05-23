@@ -15,7 +15,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Debugger {
-    private CopyOnWriteArrayList <Message> debugBuffer;
     private Thread debugMonitor;
     private AtomicBoolean debug;
     private Communication comm;
@@ -34,7 +33,6 @@ public class Debugger {
         this.groupBuffer = new ConcurrentHashMap<>();
         this.bufferStateChanged = new AtomicBoolean(false);
         this.bufferCond = bufferLock.newCondition();
-        this.debugBuffer = new CopyOnWriteArrayList<>();
         this.debugMonitor = initDebugMonitor();
         this.debugMonitor.start();
     }
@@ -136,7 +134,6 @@ public class Debugger {
 
     public void play(String group) {
         groupBuffer.get(group).forEach(message -> {
-            System.err.println("play    :   " + message);
             bufferLock.lock();
             deliverQueue.add(groupBuffer.get(group).remove(0));
             bufferStateChanged.set(true);

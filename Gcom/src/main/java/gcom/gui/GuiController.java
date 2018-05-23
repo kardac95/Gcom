@@ -100,20 +100,6 @@ public class GuiController {
         }
     }
 
-    /*public void fillDebugGroupBox() {
-        String current = debugGroupBox.getSelectionModel().getSelectedItem();
-        debugGroupBox.getItems().clear();
-        System.out.println("Fill me Logic over here from debug:   " + logic);
-
-        Group[] groups = logic.getGM().getGroups();
-        for (Group g : groups) {
-            if(g.getName().equals(current)) {
-                debugGroupBox.getSelectionModel().select(current);
-            }
-            debugGroupBox.getItems().add(g.getName());
-        }
-    }*/
-
     public void connectPopUP() {
         connectDialog = new Dialog();
         connectDialog.setTitle("CONNECT");

@@ -59,7 +59,7 @@ public class StartController {
             GuiController g = loader.getController();
 
             //new Thread(this.logic.monitorGroupManager(g));
-            g.setUserName(getUname());
+            g.setUserName(getUname() + "    :   " + getPort());
             g.init();
             g.setGUILogic(new Logic(getUname(), getPort()));
             g.updateTree();
@@ -70,9 +70,6 @@ public class StartController {
             appStage.show();
             g.monitorGroupManager();
 
-
-            //Controller c = new Controller(new Logic(getUname(), getPort()));
-            //c.startGuiController((Stage)continueToGuiButton.getScene().getWindow());
         }
     }
 }
