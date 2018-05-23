@@ -8,12 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DebugTabController {
     private Logic logic;
@@ -136,5 +132,6 @@ public class DebugTabController {
     public void initialize(Logic logic, TabPane tabPane) {
         this.logic = logic;
         this.tabPane = tabPane;
+        fillDebugGroupBox();
     }
 }

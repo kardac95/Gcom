@@ -17,7 +17,6 @@ import javafx.stage.Window;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
@@ -25,6 +24,7 @@ public class GuiController {
 
     private Logic logic;
     private FXMLLoader loader;
+    DebugTabController dtc;
 
     public GuiController() {
 
@@ -51,7 +51,6 @@ public class GuiController {
     @FXML ComboBox<String> debugGroupBox;
 
     public void setTextInTextFlow (final Message m) {
-        Platform.runLater(() -> {
             String color = "magenta";
             if(m.getSender().equals(logic.getMe())) {
                 color = "green";
@@ -61,20 +60,21 @@ public class GuiController {
             if(tabPane == null) {
                 System.out.println("TABPANE NULL");
             }
+
             //CustomTab tab = (CustomTab)tabPane.getTabs().filtered((t) -> (((Label)((HBox)(t.getGraphic())).getChildren().get(0)).getText()).equals(m.getGroup().getName())).get(0);
             CustomTab tab = (CustomTab)tabPane.getTabs().filtered((t) -> t.getText().equals(m.getGroup().getName())).get(0);
+
 
             tab.getSp().vvalueProperty().bind(tab.getTf().heightProperty());
             tab.setText(m.getSender().getName() + "> ", color);
             tab.setText(m.getMessage() + "\n", "black");
 
-        });
     }
 
     public void sendMessage() {
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
         if(currentTab != null && !(currentTab.getText().equals("Debugger"))) {
-            System.out.println("tab is " + currentTab.getText());
+            System.out.println("Current tab: " + currentTab.getText());
             logic.getGM().messageGroup(sendArea.getText(), logic.getMe(), currentTab.getText());
             sendArea.clear();
             sendArea.setText("");
@@ -82,16 +82,18 @@ public class GuiController {
     }
 
     public void leaveGroup(String group) {
-        System.out.println("THIS GROUP IS LEAVING " + group);
-       // logic.getGM().messageGroup(logic.getUserName() + " is leaving!", logic.getMe(),group);
+        System.out.println("Leaving group: " + group);
+        //logic.getGM().messageGroup(logic.getUserName() + " is leaving!", logic.getMe(),group);
         Platform.runLater(() -> logic.getGM().getGroup(group).removeMember(logic.getUserName()));
         Platform.runLater(() -> logic.getGM().removeGroup(group));
-        fillDebugGroupBox();
+       // fillDebugGroupBox();
         updateTree();
-
+        if(dtc != null) {
+            Platform.runLater(() -> dtc.initialize(logic, tabPane));
+        }
     }
 
-    public void fillDebugGroupBox() {
+    /*public void fillDebugGroupBox() {
         String current = debugGroupBox.getSelectionModel().getSelectedItem();
         debugGroupBox.getItems().clear();
         System.out.println("Fill me Logic over here from debug:   " + logic);
@@ -103,7 +105,7 @@ public class GuiController {
             }
             debugGroupBox.getItems().add(g.getName());
         }
-    }
+    }*/
 
     public void connectPopUP() {
         connectDialog = new Dialog();
@@ -180,8 +182,8 @@ public class GuiController {
         this.groupName.clear();
         updateTree();
         addGroupTab(groupName);
-        if(debugGroupBox != null) {
-             fillDebugGroupBox();
+        if(dtc != null) {
+            Platform.runLater(() -> dtc.initialize(logic, tabPane));
         }
     }
 
@@ -225,6 +227,9 @@ public class GuiController {
                   m = ((LinkedBlockingQueue<Message>)logic.getGM().getOutgoingQueue()).take();
               } catch (InterruptedException e) {
                   e.printStackTrace();
+              }
+              if(m == null) {
+                  System.err.println("Message is null in join");
               }
               System.out.println("Update!");
               Platform.runLater(this::updateTree);
@@ -273,7 +278,7 @@ public class GuiController {
             loader = new FXMLLoader(Main.class.getResource("DebugTab.fxml"));
         }
         Parent groupTab = loader.load();
-        DebugTabController dtc = loader.getController();
+        dtc = loader.getController();
         dtc.initialize(logic, tabPane);
         dtc.startDebuggerTab(groupTab, loader);
     }
