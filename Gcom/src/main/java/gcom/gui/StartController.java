@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -19,12 +20,12 @@ public class StartController {
     private FXMLLoader loader;
 
     public StartController() {
-
     }
 
     @FXML Button continueToGuiButton;
     @FXML TextField userName;
     @FXML TextField port;
+    @FXML Text text;
 
 
     public String getUname(){
@@ -41,6 +42,15 @@ public class StartController {
 
         if(event.getSource()==continueToGuiButton)
         {
+            if(!getPort().matches("[0-9]+")) {
+                text.setText("Not a valid port number");
+                return;
+            }
+            else if(!between(Integer.parseInt(getPort()),1025, 65535)) {
+                text.setText("Not a valid port number");
+                return;
+            }
+
             Stage appStage=(Stage)continueToGuiButton.getScene().getWindow();
 
             String os = System.getProperty("os.name");
@@ -70,6 +80,15 @@ public class StartController {
             appStage.show();
             g.monitorGroupManager();
 
+        }
+    }
+
+    public static boolean between(int i, int minValue, int maxValue) {
+        if (i >= minValue && i <= maxValue) {
+            return true;
+        }
+        else{
+            return false;
         }
     }
 }

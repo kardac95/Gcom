@@ -48,9 +48,7 @@ public class Debugger {
                         addDebugBuffer(m.getMessage(), m);
                     }else {
                         if(groupBuffer.get(m.getGroup().getName()) == null) {
-                            System.err.println("Damn This doesn̈́t work : " + m.getGroup().getName());
                             groupBuffer.put(m.getGroup().getName(), new CopyOnWriteArrayList<>());
-                            System.err.println(groupBuffer.get(m.getGroup().getName()));
                         }
                         addDebugBuffer(m.getGroup().getName(), m);
                     }
@@ -126,9 +124,6 @@ public class Debugger {
     }
 
     public List getDebugBuffer(String group) {
-        System.err.println(groupBuffer);
-        System.err.println(group);
-        System.err.println(groupBuffer.get(group));
         return groupBuffer.get(group);
     }
 

@@ -49,6 +49,7 @@ public class GuiController {
     @FXML Button connectButton;
     @FXML MenuItem debugStart;
 
+
     public void setTextInTextFlow (final Message m) {
             String color = "magenta";
             if(m.getSender().equals(logic.getMe())) {
@@ -72,7 +73,7 @@ public class GuiController {
 
     public void sendMessage() {
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-        if(currentTab == null) {
+        if(currentTab == null || currentTab.getText().equals("Welcome")) {
             return;
         }
         if(!(currentTab.getText().equals("Debugger"))) {
@@ -91,8 +92,8 @@ public class GuiController {
     public void leaveGroup(String group) {
         System.out.println("Leaving group: " + group);
         //logic.getGM().messageGroup(logic.getUserName() + " is leaving!", logic.getMe(),group);
-        Platform.runLater(() -> logic.getGM().getGroup(group).removeMember(logic.getUserName()));
-        Platform.runLater(() -> logic.getGM().removeGroup(group));
+        logic.getGM().getGroup(group).removeMember(logic.getUserName());
+        logic.getGM().removeGroup(group);
        // fillDebugGroupBox();
         updateTree();
         if(dtc != null) {
@@ -244,32 +245,6 @@ public class GuiController {
 
     public void startDebuggerTab() throws IOException {
 
-        /*String os = System.getProperty("os.name");
-        if(os.equals("Linux") || os.equals("Windows 10")) {
-            //These 2 lines are for Linux!
-            URL url = new File("src/main/java/gcom/gui/DebugTab.fxml").toURL();
-            loader = new FXMLLoader(url);
-        } else if(os.equals("Windows")) {
-            //This line is for Windows!
-            loader = new FXMLLoader(Main.class.getResource("DebugTab.fxml"));
-        }
-        Parent groupTab = loader.load();
-
-
-        //INIT NODES HERE
-        debugGroupBox = (ComboBox) loader.getNamespace().get("debugGroupBox");
-        stopMessageButton = (Button) loader.getNamespace().get("stopMessageButton");
-        debugListView = (ListView) loader.getNamespace().get("debugListView");
-
-
-        Tab tab = new Tab("Debugger");
-        tab.setContent(groupTab);
-        tab.setOnClosed(event -> logic.getGM().getDebugger().StopDebugger());
-        tabPane.getTabs().add(tab);
-        monitorDebugBuffer();
-        logic.getGM().getDebugger().startDebugger();
-        Platform.runLater(this::fillDebugGroupBox);
-        */
         String os = System.getProperty("os.name");
         if(os.equals("Linux") || os.equals("Windows 10")) {
             //These 2 lines are for Linux!

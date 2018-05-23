@@ -1,12 +1,11 @@
 package gcom.messageordering;
 
+import gcom.Message;
+import gcom.communication.CommunicationObject;
 import gcom.debugger.Debug;
 import gcom.debugger.DebugObject;
 import gcom.groupmanagement.Member;
-import gcom.Message;
-import gcom.communication.CommunicationObject;
 
-import java.util.Arrays;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -39,7 +38,6 @@ public class ModuleCommunication {
             while(true) {
                 Message m = debugger.getNextMessage();//comm.getNextMessage();
                 System.out.println("Receive queue");
-
                 switch (m.getType()) {
                     case "join":
                         comm.connectToMembers(m.getGroup().getMembers());
