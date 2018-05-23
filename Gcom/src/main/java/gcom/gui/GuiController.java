@@ -17,7 +17,6 @@ import javafx.stage.Window;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
@@ -25,6 +24,7 @@ public class GuiController {
 
     private Logic logic;
     private FXMLLoader loader;
+    DebugTabController dtc;
 
     public GuiController() {
 
@@ -86,12 +86,14 @@ public class GuiController {
        // logic.getGM().messageGroup(logic.getUserName() + " is leaving!", logic.getMe(),group);
         Platform.runLater(() -> logic.getGM().getGroup(group).removeMember(logic.getUserName()));
         Platform.runLater(() -> logic.getGM().removeGroup(group));
-        fillDebugGroupBox();
+       // fillDebugGroupBox();
         updateTree();
-
+        if(dtc != null) {
+            Platform.runLater(() -> dtc.initialize(logic, tabPane));
+        }
     }
 
-    public void fillDebugGroupBox() {
+    /*public void fillDebugGroupBox() {
         String current = debugGroupBox.getSelectionModel().getSelectedItem();
         debugGroupBox.getItems().clear();
         System.out.println("Fill me Logic over here from debug:   " + logic);
@@ -103,7 +105,7 @@ public class GuiController {
             }
             debugGroupBox.getItems().add(g.getName());
         }
-    }
+    }*/
 
     public void connectPopUP() {
         connectDialog = new Dialog();
@@ -180,8 +182,8 @@ public class GuiController {
         this.groupName.clear();
         updateTree();
         addGroupTab(groupName);
-        if(debugGroupBox != null) {
-             fillDebugGroupBox();
+        if(dtc != null) {
+            Platform.runLater(() -> dtc.initialize(logic, tabPane));
         }
     }
 
@@ -273,7 +275,7 @@ public class GuiController {
             loader = new FXMLLoader(Main.class.getResource("DebugTab.fxml"));
         }
         Parent groupTab = loader.load();
-        DebugTabController dtc = loader.getController();
+        dtc = loader.getController();
         dtc.initialize(logic, tabPane);
         dtc.startDebuggerTab(groupTab, loader);
     }
