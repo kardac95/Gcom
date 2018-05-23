@@ -9,7 +9,6 @@ import javafx.scene.text.TextFlow;
 public class CustomTab extends Tab {
     private TextFlow tf;
     private ScrollPane sp;
-    private String label;
 
     public CustomTab() {
         super();
@@ -27,14 +26,7 @@ public class CustomTab extends Tab {
         t.setFill(Paint.valueOf(color));
         tf.getChildren().add(t);
     }
-
-    public void setLabel(String label) {
-        this.label=label;
-    }
-    public String getLabel() {
-        return label;
-    }
-
+/*
     public TextFlow getTf() {
         return tf;
     }
@@ -42,4 +34,5 @@ public class CustomTab extends Tab {
     public ScrollPane getSp() {
         return sp;
     }
+*/
 }

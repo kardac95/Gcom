@@ -116,7 +116,7 @@ public class ModuleCommunication {
 
     public void setOrder(String order) {
         if(order.equals("causal")) {
-            this.order = new CausalOrder(this.order.clock.getMyId());
+            this.order = new CausalOrder(this.order.getClock().getMyId());
         } else if(order.equals("unordered")) {
             this.order = new Unorderd();
         } else {

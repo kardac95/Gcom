@@ -18,8 +18,8 @@ public class DebugObject implements Debug {
     }
 
     @Override
-    public void StopDebugger() {
-        debug.setDebug(true);
+    public void stopDebugger() {
+        debug.setDebug(false);
     }
 
     @Override

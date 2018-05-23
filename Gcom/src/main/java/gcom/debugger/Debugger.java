@@ -41,11 +41,12 @@ public class Debugger {
         return new Thread(()-> {
             while (true) {
                 Message m = comm.getNextMessage();
-
                 if (debug.get()) {
                     if(m.getRecipient() != null) {
+                        System.err.println(m.getMessage());
                         groupBuffer.put(m.getMessage(), new CopyOnWriteArrayList<>());
                         addDebugBuffer(m.getMessage(), m);
+                        System.err.println("Here I am once again, a torn in the...");
                     }else {
                         if(groupBuffer.get(m.getGroup().getName()) == null) {
                             groupBuffer.put(m.getGroup().getName(), new CopyOnWriteArrayList<>());
@@ -58,7 +59,7 @@ public class Debugger {
             }
         });
     }
-    // move to gui!
+
     public Thread monitorDebugBuffer(Runnable updateFunction) {
         return new Thread(() -> {
             while(true) {
@@ -71,6 +72,7 @@ public class Debugger {
                 }
             }
                 //update Gui!
+                System.err.println("UPDATE GUI");
                 new Thread(updateFunction).start();
                 bufferStateChanged.set(false);
                 bufferLock.unlock();
@@ -102,8 +104,6 @@ public class Debugger {
     public void step(String group) {
 
         if(!groupBuffer.get(group).isEmpty()) {
-            //put the first element in a deliver queue.
-            //remove the first element from the list.
             bufferLock.lock();
             deliverQueue.add(groupBuffer.get(group).remove(0));
             bufferStateChanged.set(true);

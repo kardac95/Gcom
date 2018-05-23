@@ -60,7 +60,7 @@ public class DebugTabController {
 
         Tab tab = new Tab("Debugger");
         tab.setContent(groupTab);
-        tab.setOnClosed(event -> logic.getGM().getDebugger().StopDebugger());
+        tab.setOnClosed(event -> logic.getGM().getDebugger().stopDebugger());
         tabPane.getTabs().add(tab);
         monitorDebugBuffer();
         logic.getGM().getDebugger().startDebugger();
@@ -122,9 +122,16 @@ public class DebugTabController {
         debugListView.getItems().clear();
 
         debugBuffer.forEach((m) -> {
-            if(workingDebugTab.equals(m.getGroup().getName())) {
-                //debugListView.getItems().add(m.getMessage() +" ["+m.getVectorClock().getValue(m.getVectorClock().getMyId())+"]");
-                debugListView.getItems().add(m.getMessage());
+            if(m.getRecipient() == null) {
+                if (workingDebugTab.equals(m.getGroup().getName())) {
+                    //debugListView.getItems().add(m.getMessage() +" ["+m.getVectorClock().getValue(m.getVectorClock().getMyId())+"]");
+                    debugListView.getItems().add(m.getMessage());
+                }
+            } else {
+                if (workingDebugTab.equals(m.getMessage())) {
+                    //debugListView.getItems().add(m.getMessage() +" ["+m.getVectorClock().getValue(m.getVectorClock().getMyId())+"]");
+                    debugListView.getItems().add(m.getMessage());
+                }
             }
 
         });

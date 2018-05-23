@@ -7,7 +7,7 @@ import java.util.List;
 public interface Debug {
 
     void startDebugger();
-    void StopDebugger();
+    void stopDebugger();
     void removeMessage(String group, int i);
     void moveMessage(String group, int src, int dest);
     Message getNextMessage();

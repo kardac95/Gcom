@@ -17,6 +17,9 @@ import javafx.stage.Window;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
@@ -51,22 +54,13 @@ public class GuiController {
 
 
     public void setTextInTextFlow (final Message m) {
-            String color = "magenta";
-            if(m.getSender().equals(logic.getMe())) {
-                color = "green";
-            } else if(m.getType().equals("join")){
-                color = "red";
-            }
-            if(tabPane == null) {
-                System.out.println("TABPANE NULL");
-            }
-
-            //CustomTab tab = (CustomTab)tabPane.getTabs().filtered((t) -> (((Label)((HBox)(t.getGraphic())).getChildren().get(0)).getText()).equals(m.getGroup().getName())).get(0);
             CustomTab tab = (CustomTab)tabPane.getTabs().filtered((t) -> t.getText().equals(m.getGroup().getName())).get(0);
 
+            String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
 
-            tab.getSp().vvalueProperty().bind(tab.getTf().heightProperty());
-            tab.setText(m.getSender().getName() + "> ", color);
+            //tab.getSp().vvalueProperty().bind(tab.getTf().heightProperty());
+            tab.setText("[" + timeStamp + "] ", "red");
+            tab.setText(m.getSender().getName() + "> ", m.getSender().equals(logic.getMe()) ? "green" : "magenta");
             tab.setText(m.getMessage() + "\n", "black");
 
     }
