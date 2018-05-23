@@ -49,6 +49,7 @@ public class GuiController {
     @FXML Button connectButton;
     @FXML MenuItem debugStart;
 
+
     public void setTextInTextFlow (final Message m) {
             String color = "magenta";
             if(m.getSender().equals(logic.getMe())) {
@@ -72,7 +73,7 @@ public class GuiController {
 
     public void sendMessage() {
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-        if(currentTab == null) {
+        if(currentTab == null || currentTab.getText().equals("Welcome")) {
             return;
         }
         if(!(currentTab.getText().equals("Debugger"))) {

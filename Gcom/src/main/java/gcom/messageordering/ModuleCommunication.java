@@ -1,12 +1,11 @@
 package gcom.messageordering;
 
+import gcom.Message;
+import gcom.communication.CommunicationObject;
 import gcom.debugger.Debug;
 import gcom.debugger.DebugObject;
 import gcom.groupmanagement.Member;
-import gcom.Message;
-import gcom.communication.CommunicationObject;
 
-import java.util.Arrays;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -48,7 +47,7 @@ public class ModuleCommunication {
                 System.out.println("Receive queue");
                 if(m.getType().equals("join")) {
                     comm.connectToMembers(m.getGroup().getMembers());
-                    order.clock.addNewMemberClock(m.getGroup().getMembers(), m.getVectorClock());
+               //     order.clock.addNewMemberClock(m.getGroup().getMembers(), m.getVectorClock());
                 } else if(m.getType().equals("disconnect")) {
                     /* Disconnect sending member */
                     comm.disconnectMember(m.getSender());

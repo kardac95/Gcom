@@ -1,7 +1,6 @@
 package gcom.gui;
 
 import gcom.Message;
-import gcom.groupmanagement.Group;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +25,8 @@ public class DebugTabController {
     @FXML Button debugStepButton;
     @FXML ComboBox<String> debugGroupBox;
     @FXML Button stopMessageButton;
-
+    @FXML Button debugRemove;
+    @FXML ToggleButton playStopToggle;
     public DebugTabController() {
 
     }
@@ -143,6 +143,16 @@ public class DebugTabController {
             }
 
         });
+    }
+
+    public void changePlayOrStopState() {
+        if(playStopToggle.isSelected()) {
+            logic.getGM().getDebugger().play(selectedGroup);
+            playStopToggle.setText("Stop");
+        } else {
+            logic.getGM().getDebugger().stop();
+            playStopToggle.setText("Play");
+        }
     }
 
     public ComboBox<String> getDebugGroupBox() {
