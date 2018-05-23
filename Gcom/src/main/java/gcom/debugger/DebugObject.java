@@ -38,7 +38,7 @@ public class DebugObject implements Debug {
     }
 
     @Override
-    public List getDebugBuffer(String group) {
+    public List<Message> getDebugBuffer(String group) {
         return debug.getDebugBuffer(group);
     }
 

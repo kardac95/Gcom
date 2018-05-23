@@ -31,7 +31,7 @@
       </ScrollPane>
       <Button fx:id="debugUP" layoutX="285.0" layoutY="71.0" mnemonicParsing="false" onAction="#moveMessageUP" prefHeight="25.0" prefWidth="52.0" text="UP" />
       <Button fx:id="debugDown" layoutX="285.0" layoutY="117.0" mnemonicParsing="false" onAction="#moveMessageDown" text="Down" />
-      <ComboBox fx:id="debugGroupBox" layoutX="666.0" layoutY="71.0" prefWidth="150.0" promptText="Groups" />
+      <ComboBox fx:id="debugGroupBox" layoutX="666.0" layoutY="71.0" prefWidth="150.0" promptText="Groups" onAction="#setSelectedItem"/>
       <Text layoutX="627.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose a group to monitor">
          <font>
             <Font size="17.0" />

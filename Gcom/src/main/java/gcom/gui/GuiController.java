@@ -48,7 +48,6 @@ public class GuiController {
     @FXML TextField connectHostName;
     @FXML Button connectButton;
     @FXML MenuItem debugStart;
-    @FXML ComboBox<String> debugGroupBox;
 
     public void setTextInTextFlow (final Message m) {
             String color = "magenta";

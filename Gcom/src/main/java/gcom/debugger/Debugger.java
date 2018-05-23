@@ -128,6 +128,9 @@ public class Debugger {
     }
 
     public List getDebugBuffer(String group) {
+        System.err.println(groupBuffer);
+        System.err.println(group);
+        System.err.println(groupBuffer.get(group));
         return groupBuffer.get(group);
     }
 

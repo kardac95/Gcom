@@ -91,7 +91,7 @@ public class ModuleCommunication {
                 }
                 if(m.getType().equals("join")) {
                     comm.connectToMembers(m.getGroup().getMembers());
-
+/*
                     Member[] members = m.getGroup().getMembers();
 
                     for (Member member : members) {
@@ -102,11 +102,14 @@ public class ModuleCommunication {
                     }
 
                     m.setVectorClock(order.clock);
+                    */
                 }
+                /*
                 if(m.getType().equals("message")) {
                     order.clock.inc();
                     m.setVectorClock(order.clock);
                 }
+                */
                 System.out.println("Message Type: " + m.getType());
                 send(m);
             }

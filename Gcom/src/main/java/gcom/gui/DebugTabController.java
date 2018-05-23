@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class DebugTabController {
@@ -36,16 +37,30 @@ public class DebugTabController {
 
     public void fillDebugGroupBox() {
         selectedGroup = debugGroupBox.getSelectionModel().getSelectedItem();
+        System.out.println("this is selected group and i am fine? " + selectedGroup);
         debugGroupBox.getItems().clear();
-        System.out.println("Fill me Logic over here fill debug:   " + logic);
-
-        Group[] groups = logic.getGM().getGroups();
-        for (Group g : groups) {
+        System.out.println(logic.getGM().getGroups().length);
+        Arrays.stream(logic.getGM().getGroups()).forEach(g -> {
             if(g.getName().equals(selectedGroup)) {
+                System.out.println("INSIDE SLECTED GROUP");
                 debugGroupBox.getSelectionModel().select(selectedGroup);
             }
+            System.out.println("riperinos perpperinos");
             debugGroupBox.getItems().add(g.getName());
-        }
+        });
+
+        /*Group[] groups = logic.getGM().getGroups();
+        for (Group g : groups) {
+            if(g.getName().equals(selectedGroup)) {
+                System.out.println("INSIDE SLECTED GROUP");
+                debugGroupBox.getSelectionModel().select(selectedGroup);
+            }
+
+        }*/
+    }
+
+    public void setSelectedItem() {
+        selectedGroup = debugGroupBox.getSelectionModel().getSelectedItem();
     }
 
     public void startDebuggerTab(Parent groupTab, FXMLLoader loader) throws IOException {
@@ -107,7 +122,8 @@ public class DebugTabController {
     }
 
     public void fillListView() {
-        List <Message>debugBuffer = logic.getGM().getDebugger().getDebugBuffer(selectedGroup);
+        System.out.println("this is selected group: " + selectedGroup);
+        List<Message> debugBuffer = logic.getGM().getDebugger().getDebugBuffer(selectedGroup);
         if(debugListView == null) {
             System.out.println("RETURN");
             return;
@@ -132,6 +148,6 @@ public class DebugTabController {
     public void initialize(Logic logic, TabPane tabPane) {
         this.logic = logic;
         this.tabPane = tabPane;
-        fillDebugGroupBox();
+        Platform.runLater(this::fillDebugGroupBox);
     }
 }

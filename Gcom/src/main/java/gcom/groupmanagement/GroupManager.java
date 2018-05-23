@@ -2,6 +2,7 @@ package gcom.groupmanagement;
 
 import gcom.Message;
 
+import gcom.debugger.Debug;
 import gcom.messageordering.Ordering;
 import gcom.messageordering.OrderingObject;
 
