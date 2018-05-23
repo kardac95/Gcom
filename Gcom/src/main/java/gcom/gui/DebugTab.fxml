@@ -17,8 +17,6 @@
             <Font size="17.0" />
          </font>
       </Text>
-      <Button fx:id="stopMessageButton" layoutX="770.0" layoutY="286.0" mnemonicParsing="false" onAction="#stop" prefHeight="30.0" prefWidth="76.0" text="Stop" />
-      <Button fx:id="debugPlayButton" layoutX="703.0" layoutY="352.0" mnemonicParsing="false" onAction="#play" prefHeight="30.0" prefWidth="76.0" text="Play" />
       <Text layoutX="409.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message Flow" wrappingWidth="120.6611328125">
          <font>
             <Font size="17.0" />
@@ -38,7 +36,7 @@
          </font>
       </Text>
       <Button fx:id="clearDebug" layoutX="861.0" layoutY="71.0" mnemonicParsing="false" onAction="#clearDebugging" prefHeight="25.0" prefWidth="106.0" text="Clear" />
-      <Button fx:id="debugRemove" layoutX="260.0" layoutY="167.0" mnemonicParsing="false" text="Remove Item" />
+      <Button fx:id="debugRemove" layoutX="260.0" layoutY="167.0" mnemonicParsing="false" onAction="#removeItemFromList" text="Remove Item" />
       <ToggleButton fx:id="playStopToggle" layoutX="431.0" layoutY="237.0" mnemonicParsing="false" onAction="#changePlayOrStopState" prefHeight="30.0" prefWidth="76.0" text="Play" />
    </children>
 </AnchorPane>

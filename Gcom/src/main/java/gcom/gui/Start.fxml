@@ -7,9 +7,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane  prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gcom.gui.StartController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gcom.gui.StartController">
    <children>
-      <Button fx:id="continueToGuiButton" layoutX="254.0" layoutY="262.0" mnemonicParsing="false" onAction="#changeSceneToGUI" prefHeight="30.0" prefWidth="93.0" text="Continue" defaultButton="true" />
+      <Button fx:id="continueToGuiButton" defaultButton="true" layoutX="254.0" layoutY="262.0" mnemonicParsing="false" onAction="#changeSceneToGUI" prefHeight="30.0" prefWidth="93.0" text="Continue" />
       <TextField fx:id="userName" layoutX="200.0" layoutY="145.0" prefHeight="30.0" prefWidth="201.0" promptText="User name" />
       <Text layoutX="184.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your user name" wrappingWidth="232.61083984375">
          <font>
@@ -17,5 +17,6 @@
          </font>
       </Text>
       <TextField fx:id="port" layoutX="200.0" layoutY="193.0" prefHeight="30.0" prefWidth="201.0" promptText="Port" />
+      <Text fx:id="text" layoutX="214.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" />
    </children>
 </AnchorPane>

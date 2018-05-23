@@ -13,7 +13,6 @@ import java.util.List;
 
 public class DebugTabController {
     private Logic logic;
-    private FXMLLoader loader;
     private TabPane tabPane;
     private String selectedGroup;
 
@@ -21,10 +20,8 @@ public class DebugTabController {
     @FXML Button debugUP;
     @FXML Button debugDown;
     @FXML Button clearDebug;
-    @FXML Button debugPlayButton;
     @FXML Button debugStepButton;
     @FXML ComboBox<String> debugGroupBox;
-    @FXML Button stopMessageButton;
     @FXML Button debugRemove;
     @FXML ToggleButton playStopToggle;
     public DebugTabController() {
@@ -48,15 +45,6 @@ public class DebugTabController {
             System.out.println("riperinos perpperinos");
             debugGroupBox.getItems().add(g.getName());
         });
-
-        /*Group[] groups = logic.getGM().getGroups();
-        for (Group g : groups) {
-            if(g.getName().equals(selectedGroup)) {
-                System.out.println("INSIDE SLECTED GROUP");
-                debugGroupBox.getSelectionModel().select(selectedGroup);
-            }
-
-        }*/
     }
 
     public void setSelectedItem() {
@@ -67,7 +55,6 @@ public class DebugTabController {
     public void startDebuggerTab(Parent groupTab, FXMLLoader loader) throws IOException {
         //INIT NODES HERE
         debugGroupBox = (ComboBox) loader.getNamespace().get("debugGroupBox");
-        stopMessageButton = (Button) loader.getNamespace().get("stopMessageButton");
         debugListView = (ListView) loader.getNamespace().get("debugListView");
 
 
@@ -80,26 +67,22 @@ public class DebugTabController {
         Platform.runLater(this::fillDebugGroupBox);
     }
 
-    public void stop()  {
-        System.out.println("Logic over here:   " + logic);
-        logic.getGM().getDebugger().stop();
-    }
-
-    public void play() {
-        System.out.println("play");
-        logic.getGM().getDebugger().play(selectedGroup);
-    }
-
     public void step() {
         System.out.println("Logic over here:   " + logic);
         logic.getGM().getDebugger().step(selectedGroup);
     }
 
     public void clearDebugging() {
+        logic.getGM().getDebugger().getDebugBuffer(selectedGroup).forEach(m -> {
+            logic.getGM().getDebugger().removeMessage(selectedGroup, 0);
+        });
         debugListView.getItems().clear();
     }
 
     public void moveMessageUP() {
+        if(debugListView.getItems().size() == 0) {
+            return;
+        }
         String item = debugListView.getSelectionModel().getSelectedItem();
         int curIndex = debugListView.getItems().indexOf(item);
         if(curIndex != 0) {
@@ -154,6 +137,12 @@ public class DebugTabController {
         } else {
             logic.getGM().getDebugger().stop();
             playStopToggle.setText("Play");
+        }
+    }
+
+    public void removeItemFromList() {
+        if(debugListView.getSelectionModel().getSelectedItem() != null) {
+            logic.getGM().getDebugger().removeMessage(selectedGroup, debugListView.getSelectionModel().getSelectedIndex());
         }
     }
 

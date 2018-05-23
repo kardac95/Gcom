@@ -92,28 +92,14 @@ public class GuiController {
     public void leaveGroup(String group) {
         System.out.println("Leaving group: " + group);
         //logic.getGM().messageGroup(logic.getUserName() + " is leaving!", logic.getMe(),group);
-        Platform.runLater(() -> logic.getGM().getGroup(group).removeMember(logic.getUserName()));
-        Platform.runLater(() -> logic.getGM().removeGroup(group));
+        logic.getGM().getGroup(group).removeMember(logic.getUserName());
+        logic.getGM().removeGroup(group);
        // fillDebugGroupBox();
         updateTree();
         if(dtc != null) {
             Platform.runLater(() -> dtc.initialize(logic, tabPane));
         }
     }
-
-    /*public void fillDebugGroupBox() {
-        String current = debugGroupBox.getSelectionModel().getSelectedItem();
-        debugGroupBox.getItems().clear();
-        System.out.println("Fill me Logic over here from debug:   " + logic);
-
-        Group[] groups = logic.getGM().getGroups();
-        for (Group g : groups) {
-            if(g.getName().equals(current)) {
-                debugGroupBox.getSelectionModel().select(current);
-            }
-            debugGroupBox.getItems().add(g.getName());
-        }
-    }*/
 
     public void connectPopUP() {
         connectDialog = new Dialog();
@@ -259,32 +245,6 @@ public class GuiController {
 
     public void startDebuggerTab() throws IOException {
 
-        /*String os = System.getProperty("os.name");
-        if(os.equals("Linux") || os.equals("Windows 10")) {
-            //These 2 lines are for Linux!
-            URL url = new File("src/main/java/gcom/gui/DebugTab.fxml").toURL();
-            loader = new FXMLLoader(url);
-        } else if(os.equals("Windows")) {
-            //This line is for Windows!
-            loader = new FXMLLoader(Main.class.getResource("DebugTab.fxml"));
-        }
-        Parent groupTab = loader.load();
-
-
-        //INIT NODES HERE
-        debugGroupBox = (ComboBox) loader.getNamespace().get("debugGroupBox");
-        stopMessageButton = (Button) loader.getNamespace().get("stopMessageButton");
-        debugListView = (ListView) loader.getNamespace().get("debugListView");
-
-
-        Tab tab = new Tab("Debugger");
-        tab.setContent(groupTab);
-        tab.setOnClosed(event -> logic.getGM().getDebugger().StopDebugger());
-        tabPane.getTabs().add(tab);
-        monitorDebugBuffer();
-        logic.getGM().getDebugger().startDebugger();
-        Platform.runLater(this::fillDebugGroupBox);
-        */
         String os = System.getProperty("os.name");
         if(os.equals("Linux") || os.equals("Windows 10")) {
             //These 2 lines are for Linux!
