@@ -47,8 +47,8 @@ public class ModuleCommunication {
                 Message m = debugger.getNextMessage();//comm.getNextMessage();
                 System.out.println("Receive queue");
                 if(m.getType().equals("join")) {
-                    comm.connectToMembers(m.getGroup().getMembers());
-                    order.clock.addNewMemberClock(m.getGroup().getMembers(), m.getVectorClock());
+                 /*   comm.connectToMembers(m.getGroup().getMembers());
+                    order.clock.addNewMemberClock(m.getGroup().getMembers(), m.getVectorClock());*/
                 } else if(m.getType().equals("disconnect")) {
                     /* Disconnect sending member */
                     comm.disconnectMember(m.getSender());

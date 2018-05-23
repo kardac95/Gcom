@@ -61,6 +61,7 @@ public class DebugTabController {
 
     public void setSelectedItem() {
         selectedGroup = debugGroupBox.getSelectionModel().getSelectedItem();
+        Platform.runLater(this::fillListView);
     }
 
     public void startDebuggerTab(Parent groupTab, FXMLLoader loader) throws IOException {
@@ -85,6 +86,7 @@ public class DebugTabController {
     }
 
     public void play() {
+        System.out.println("play");
         logic.getGM().getDebugger().play(selectedGroup);
     }
 
