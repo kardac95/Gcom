@@ -72,9 +72,17 @@ public class GuiController {
 
     public void sendMessage() {
         Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-        if(currentTab != null && !(currentTab.getText().equals("Debugger"))) {
+        if(currentTab == null) {
+            return;
+        }
+        if(!(currentTab.getText().equals("Debugger"))) {
             System.out.println("Current tab: " + currentTab.getText());
             logic.getGM().messageGroup(sendArea.getText(), logic.getMe(), currentTab.getText());
+            sendArea.clear();
+            sendArea.setText("");
+        } else {
+            ComboBox<String> cb = dtc.getDebugGroupBox();
+            logic.getGM().messageGroup(sendArea.getText(),logic.getMe(),cb.getSelectionModel().getSelectedItem());
             sendArea.clear();
             sendArea.setText("");
         }
@@ -188,6 +196,15 @@ public class GuiController {
 
     public void setUserName(String uName) {
         UserName.setText(uName);
+    }
+
+    public void addWelcomeTab() {
+        CustomTab customTab = new CustomTab();
+        customTab.setText("Welcome");
+        customTab.setContentTextFlow(new TextFlow());
+        String helpText = "\n To create or connect to a group, use the tool menu. \n";
+        customTab.setText(helpText, "black");
+        tabPane.getTabs().add(customTab);
     }
 
     public void addGroupTab(String groupName) {
