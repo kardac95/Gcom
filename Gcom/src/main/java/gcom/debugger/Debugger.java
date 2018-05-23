@@ -105,7 +105,7 @@ public class Debugger {
 
     public void step(String group) {
 
-        if(!debugBuffer.isEmpty()) {
+        if(!groupBuffer.get(group).isEmpty()) {
             //put the first element in a deliver queue.
             //remove the first element from the list.
             bufferLock.lock();
@@ -135,7 +135,8 @@ public class Debugger {
     }
 
     public void play(String group) {
-        debugBuffer.forEach(message -> {
+        groupBuffer.get(group).forEach(message -> {
+            System.err.println("play    :   " + message);
             bufferLock.lock();
             deliverQueue.add(groupBuffer.get(group).remove(0));
             bufferStateChanged.set(true);
