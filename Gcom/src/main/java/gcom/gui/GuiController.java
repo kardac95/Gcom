@@ -54,6 +54,9 @@ public class GuiController {
 
 
     public void setTextInTextFlow (final Message m) {
+            if(m.getRecipient() != null) {
+                return;
+            }
             CustomTab tab = (CustomTab)tabPane.getTabs().filtered((t) -> t.getText().equals(m.getGroup().getName())).get(0);
 
             String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
