@@ -43,6 +43,10 @@ public class Message implements Serializable {
         return sender;
     }
 
+    public String toString() {
+        return vectorClock.toString();
+    }
+
     public VectorClock getVectorClock() {
         return vectorClock;
     }

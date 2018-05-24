@@ -32,7 +32,7 @@ public class ModuleCommunication {
         outQueueMonitor = new Thread(() -> {
             while(true) {
                 Message m = debugger.getNextMessage();//comm.getNextMessage();
-                System.out.println("Receive queue");
+                //System.out.println("Receive queue");
                 switch (m.getType()) {
                     case "join":
                         comm.connectToMembers(m.getGroup().getMembers());
@@ -58,33 +58,11 @@ public class ModuleCommunication {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-                if(m.getGroup() != null) {
-                    System.out.println("Group members: " + m.getGroup().getMembers().length);
-                } else {
-                    System.err.println("Group is null in queue monitor");
-                }
-                if(m.getType().equals("join")) {
+                if(m.getType().equals("join"))
                     comm.connectToMembers(m.getGroup().getMembers());
 
-                    Member[] members = m.getGroup().getMembers();
+                m = order.sendOrder(m);
 
-                    for (Member member : members) {
-                        if(!order.clock.getClock().containsKey(member.getAddress()+member.getPort())) {
-                            order.clock.getClock().put(member.getAddress()+member.getPort(), 0L);
-                        }
-                    }
-
-                    m.setVectorClock(order.clock);
-
-                }
-
-                if(m.getType().equals("message")) {
-                    order.clock.inc();
-                    m.setVectorClock(order.clock);
-                }
-
-                System.out.println("Message Type: " + m.getType());
                 send(m);
             }
 

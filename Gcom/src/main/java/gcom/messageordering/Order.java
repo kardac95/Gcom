@@ -25,6 +25,8 @@ public abstract class Order {
         this.buffer = buffer;
     }
 
+    public abstract Message sendOrder(Message message);
+
     public abstract void Ordering(Message data, Queue<Message> outQueue);
 
     public List <Message> getBuffer() {

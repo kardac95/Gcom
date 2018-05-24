@@ -41,10 +41,11 @@ public class GroupManager {
                 }
 
                 messageTypeAction(m);
-
+/*
                 System.out.println("Group manager receive");
                 System.out.println(m.getType());
                 System.out.println(m.getMessage());
+                */
                 outgoingQueue.add(m);
             }
         });
@@ -86,7 +87,7 @@ public class GroupManager {
     }
 
     public void joinGroupRequest(Member recipient, String groupName) {
-        System.out.println("joinGroupRequest - GroupManager layer");
+        //System.out.println("joinGroupRequest - GroupManager layer");
         order.addInQueue(new Message(recipient, me, groupName, "connect", null));
     }
 

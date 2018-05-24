@@ -9,6 +9,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Unorderd extends Order {
 
     @Override
+    public Message sendOrder(Message message) {
+        return null;
+    }
+
+    @Override
     public void Ordering(Message data, Queue<Message> outQueue) {
         outQueue.add(data);
     }

@@ -1,10 +1,9 @@
 package gcom.messageordering;
 
 import gcom.Message;
+import gcom.groupmanagement.Member;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class CausalOrder extends Order {
 
@@ -13,36 +12,57 @@ public class CausalOrder extends Order {
     }
 
     @Override
-    public void Ordering(Message data, Queue<Message> outQueue) {
-        if(data.getType().equals("message")) {
-            if(this.clock.isBefore(data.getVectorClock())) {
-
-                if(this.clock.getValue(data.getVectorClock().getMyId()) == data.getVectorClock().getValue(data.getVectorClock().getMyId()) - 1) {
-                    outQueue.add(data);
-                    this.clock.updateVectorClock(data.getVectorClock());
-                    checkBuffer(outQueue);
-                } else {
-                    this.buffer.add(data);
-                    sortBuffer();
-                }
-
-            } else {
-                outQueue.add(data);
-                this.clock.updateVectorClock(data.getVectorClock());
+    public void Ordering(Message message, Queue<Message> outQueue) {
+        System.out.println(clock.getMyId());
+        if(message.getType().equals("message")) {
+            if(isNext(message)) {
+                outQueue.add(message);
+                this.clock.updateVectorClock(message.getVectorClock());
                 checkBuffer(outQueue);
+            } else if((message.getSender().getAddress()+message.getSender().getPort()).equals(clock.getMyId())) {
+                outQueue.add(message);
+            } else {
+                this.buffer.add(message);
+                sortBuffer();
             }
         } else {
-            outQueue.add(data);
+            outQueue.add(message);
         }
+
+    }
+
+    public Message sendOrder(Message message) {
+        switch(message.getType()) {
+            case "join":
+                Member[] members = message.getGroup().getMembers();
+
+                for (Member member : members) {
+                    if(!clock.getClock().containsKey(member.getAddress()+member.getPort())) {
+                        clock.getClock().put(member.getAddress()+member.getPort(), 0L);
+                    }
+                }
+                break;
+            case "message":
+                clock.inc();
+                break;
+            case "connect":
+                break;
+            case "disconnect":
+                break;
+            default:
+                System.err.println("Illegal message type.");
+                break;
+        }
+        message.setVectorClock(clock);
+        return message;
     }
 
     private void checkBuffer(Queue<Message> outQueue) {
         while(!this.buffer.isEmpty()) {
             Message first = this.buffer.get(0);
-            if(this.clock.getValue(first.getVectorClock().getMyId()) ==
-                    first.getVectorClock().getValue(first.getVectorClock().getMyId()) - 1) {
-
+            if(isNext(first)) {
                 outQueue.add(first);
+                this.clock.updateVectorClock(first.getVectorClock());
                 this.buffer.remove(0);
             } else {
                 break;
@@ -50,12 +70,27 @@ public class CausalOrder extends Order {
         }
     }
 
-    private boolean isNext() {
-        if(!this.buffer.isEmpty()) {
-            Message first = this.buffer.get(0);
-            //first.getVectorClock().getClock().
+    private boolean isNext(Message message) {
+        System.out.println("Buffer: " + buffer);
+        System.out.println("Local clock: " + clock);
+        System.out.println("Message clock: " + message.getVectorClock());
+
+        Set<String> keySet = message.getVectorClock().getClock().keySet();
+        for (String key : keySet) {
+            if (key.equals(message.getSender().getAddress() + message.getSender().getPort())) {
+                if (!(message.getVectorClock().getValue(key) == (this.clock.getValue(key) + 1))) {
+                    System.err.println("false");
+                    return false;
+                }
+            } else {
+                if (!(message.getVectorClock().getValue(key) <= (this.clock.getValue(key)))) {
+                    System.err.println("false");
+                    return false;
+                }
+            }
         }
-        return false;
+        System.err.println("true");
+        return true;
     }
 
     private void sortBuffer() {

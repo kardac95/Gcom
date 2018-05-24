@@ -4,6 +4,7 @@ import gcom.groupmanagement.Member;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,10 +21,15 @@ public class VectorClock implements Serializable {
 
     public void updateVectorClock(VectorClock receivingClock ) {
         clock.put(receivingClock.myId, receivingClock.getValue(receivingClock.myId));
+
     }
 
     public String getMyId() {
         return myId;
+    }
+
+    public String toString() {
+        return clock.values().toString();
     }
 
     public void inc() {
@@ -65,9 +71,9 @@ public class VectorClock implements Serializable {
     public boolean isBefore(VectorClock other) {
         boolean isBefore = false;
 
-        Set keySet = other.clock.keySet();
+        Set<String> keySet = other.clock.keySet();
 
-        for (Object key : keySet) {
+        for (String key : keySet) {
             int cmp = Long.compare(clock.get(key), other.clock.get(key));
             if (cmp > 0)
                 return false;

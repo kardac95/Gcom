@@ -74,7 +74,7 @@ public class GuiController {
             return;
         }
         if(!(currentTab.getText().equals("Debugger"))) {
-            System.out.println("Current tab: " + currentTab.getText());
+            //System.out.println("Current tab: " + currentTab.getText());
             logic.getGM().messageGroup(sendArea.getText(), logic.getMe(), currentTab.getText());
             sendArea.clear();
             sendArea.setText("");
@@ -231,7 +231,7 @@ public class GuiController {
               if(m == null) {
                   System.err.println("Message is null in join");
               }
-              System.out.println("Update!");
+              //System.out.println("Update!");
               Platform.runLater(this::updateTree);
               final Message message = m;
               Platform.runLater(() -> setTextInTextFlow(message));
