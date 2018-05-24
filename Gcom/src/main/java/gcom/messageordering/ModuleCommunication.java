@@ -14,13 +14,8 @@ public class ModuleCommunication {
     private Integer memberIndex;
     private Queue<Message> outgoingQueue;
     private Queue<Message> incomingQueue;
-
     private CommunicationObject comm;
-
-    
     private Debug debugger;
-
-
     private Thread inQueueMonitor;
     private Thread outQueueMonitor;
 
@@ -30,8 +25,8 @@ public class ModuleCommunication {
         this.comm = new CommunicationObject();
         this.comm.initCommunication(myInfo);
         this.outgoingQueue = new LinkedBlockingQueue<>();
-        //this.order = new CausalOrder(myInfo.getAddress()+myInfo.getPort());
-        this.order = new Unorderd();
+        this.order = new CausalOrder(myInfo.getAddress()+myInfo.getPort());
+        //this.order = new Unorderd();
         debugger = new DebugObject(comm);
 
         outQueueMonitor = new Thread(() -> {
@@ -41,7 +36,7 @@ public class ModuleCommunication {
                 switch (m.getType()) {
                     case "join":
                         comm.connectToMembers(m.getGroup().getMembers());
-                    /*   order.clock.addNewMemberClock(m.getGroup().getMembers(), m.getVectorClock());*/
+                        order.clock.addNewMemberClock(m.getGroup().getMembers(), m.getVectorClock());
                         break;
                     case "disconnect":
                         /* Disconnect sending member */
@@ -71,25 +66,24 @@ public class ModuleCommunication {
                 }
                 if(m.getType().equals("join")) {
                     comm.connectToMembers(m.getGroup().getMembers());
-                /*
+
                     Member[] members = m.getGroup().getMembers();
 
                     for (Member member : members) {
-                        if(order.clock.getClock().containsKey(member.getAddress()+member.getPort())) {
+                        if(!order.clock.getClock().containsKey(member.getAddress()+member.getPort())) {
                             order.clock.getClock().put(member.getAddress()+member.getPort(), 0L);
-                            m.setVectorClock(order.clock);
                         }
                     }
 
                     m.setVectorClock(order.clock);
-                    */
+
                 }
-                /*
+
                 if(m.getType().equals("message")) {
                     order.clock.inc();
                     m.setVectorClock(order.clock);
                 }
-                */
+
                 System.out.println("Message Type: " + m.getType());
                 send(m);
             }
