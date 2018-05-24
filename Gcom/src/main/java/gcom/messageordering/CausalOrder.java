@@ -50,6 +50,14 @@ public class CausalOrder extends Order {
         }
     }
 
+    private boolean isNext() {
+        if(!this.buffer.isEmpty()) {
+            Message first = this.buffer.get(0);
+            //first.getVectorClock().getClock().
+        }
+        return false;
+    }
+
     private void sortBuffer() {
         buffer.sort((m1, m2) -> (m1.getVectorClock().isBefore(m2.getVectorClock()) ? -1:1));
     }
