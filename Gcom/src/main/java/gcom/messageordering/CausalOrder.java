@@ -13,19 +13,21 @@ public class CausalOrder extends Order {
 
     @Override
     public void Ordering(Message message, Queue<Message> outQueue) {
-        System.out.println(clock.getMyId());
         if(message.getType().equals("message")) {
             if(isNext(message)) {
                 outQueue.add(message);
                 this.clock.updateVectorClock(message.getVectorClock());
                 checkBuffer(outQueue);
-            } else if((message.getSender().getAddress()+message.getSender().getPort()).equals(clock.getMyId())) {
+            } else if((message.getSender().getAddress()+message.getSender().getPort()).equals(clock.getMyId()) && message.getVectorClock().isBefore(this.clock)) {
                 outQueue.add(message);
             } else {
                 this.buffer.add(message);
                 sortBuffer();
             }
         } else {
+            if(message.getType().equals("disconnect")) {
+                removeClockIndex(message.getSender());
+            }
             outQueue.add(message);
         }
 
@@ -48,6 +50,7 @@ public class CausalOrder extends Order {
             case "connect":
                 break;
             case "disconnect":
+
                 break;
             default:
                 System.err.println("Illegal message type.");
@@ -71,25 +74,18 @@ public class CausalOrder extends Order {
     }
 
     private boolean isNext(Message message) {
-        System.out.println("Buffer: " + buffer);
-        System.out.println("Local clock: " + clock);
-        System.out.println("Message clock: " + message.getVectorClock());
-
         Set<String> keySet = message.getVectorClock().getClock().keySet();
         for (String key : keySet) {
             if (key.equals(message.getSender().getAddress() + message.getSender().getPort())) {
                 if (!(message.getVectorClock().getValue(key) == (this.clock.getValue(key) + 1))) {
-                    System.err.println("false");
                     return false;
                 }
             } else {
                 if (!(message.getVectorClock().getValue(key) <= (this.clock.getValue(key)))) {
-                    System.err.println("false");
                     return false;
                 }
             }
         }
-        System.err.println("true");
         return true;
     }
 

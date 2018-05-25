@@ -1,6 +1,7 @@
 package gcom.messageordering;
 
 import gcom.Message;
+import gcom.groupmanagement.Member;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,5 +36,9 @@ public abstract class Order {
 
     public VectorClock getClock() {
         return clock;
+    }
+
+    public void removeClockIndex(Member member) {
+        this.clock.remove(member.getAddress()+member.getPort());
     }
 }

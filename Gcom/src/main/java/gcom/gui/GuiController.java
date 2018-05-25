@@ -89,7 +89,7 @@ public class GuiController {
     public void leaveGroup(String group) {
         System.out.println("Leaving group: " + group);
         //logic.getGM().messageGroup(logic.getUserName() + " is leaving!", logic.getMe(),group);
-        logic.getGM().getGroup(group).removeMember(logic.getUserName());
+        logic.getGM().leaveGroup(group);
         logic.getGM().removeGroup(group);
        // fillDebugGroupBox();
         updateTree();
