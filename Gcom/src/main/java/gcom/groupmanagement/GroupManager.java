@@ -41,11 +41,6 @@ public class GroupManager {
                 }
 
                 messageTypeAction(m);
-/*
-                System.out.println("Group manager receive");
-                System.out.println(m.getType());
-                System.out.println(m.getMessage());
-                */
                 outgoingQueue.add(m);
             }
         });
@@ -72,6 +67,9 @@ public class GroupManager {
                 }
                 break;
             case "message":
+                break;
+            case "disconnect":
+                groups.get(m.getGroup().getName()).removeMember(m.getSender().getName());
                 break;
             default:
                 System.err.println("Unknown message type");
@@ -123,10 +121,10 @@ public class GroupManager {
         order.addInQueue(new Message(groups.get(groupName), sender, message, "message", null));
     }
 
-    public void leaveGroup(String groupName, String memberName) {
+    public void leaveGroup(String groupName) {
         Group group = groups.get(groupName);
-        group.removeMember(memberName);
-        order.addInQueue(new Message(group, group.getMember(memberName), memberName + " has disconnected from the group!", "disconnect", null));
+        order.addInQueue(new Message(group, group.getMember(me.getName()), me.getName() + " has disconnected from the group!", "disconnect", null));
+        group.removeMember(me.getName());
     }
 
 

@@ -77,7 +77,7 @@ public class VectorClock implements Serializable {
             int cmp = Long.compare(clock.get(key), other.clock.get(key));
             if (cmp > 0)
                 return false;
-            else if (cmp < 0)
+            else //if (cmp < 0)
                 isBefore = true;
         }
 
