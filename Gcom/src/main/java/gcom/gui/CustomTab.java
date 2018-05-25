@@ -26,7 +26,7 @@ public class CustomTab extends Tab {
         t.setFill(Paint.valueOf(color));
         tf.getChildren().add(t);
     }
-/*
+
     public TextFlow getTf() {
         return tf;
     }
@@ -34,5 +34,5 @@ public class CustomTab extends Tab {
     public ScrollPane getSp() {
         return sp;
     }
-*/
+
 }

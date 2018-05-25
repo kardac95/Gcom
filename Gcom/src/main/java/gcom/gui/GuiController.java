@@ -61,7 +61,7 @@ public class GuiController {
 
             String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
 
-            //tab.getSp().vvalueProperty().bind(tab.getTf().heightProperty());
+            tab.getSp().vvalueProperty().bind(tab.getTf().heightProperty());
             tab.setText("[" + timeStamp + "] ", "red");
             tab.setText(m.getSender().getName() + "> ", m.getSender().equals(logic.getMe()) ? "green" : "magenta");
             tab.setText(m.getMessage() + "\n", "black");
