@@ -2,12 +2,15 @@ package gcom.gui;
 
 import gcom.Message;
 import javafx.application.Platform;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,6 +18,7 @@ public class DebugTabController {
     private Logic logic;
     private TabPane tabPane;
     private String selectedGroup;
+    List<EventHandler<Event>> closedEventHandlers = new ArrayList<>();
 
     @FXML ListView<String> debugListView;
     @FXML Button debugUP;
@@ -24,6 +28,7 @@ public class DebugTabController {
     @FXML ComboBox<String> debugGroupBox;
     @FXML Button debugRemove;
     @FXML ToggleButton playStopToggle;
+    @FXML ToggleButton stateOfOrder;
     public DebugTabController() {
 
     }
@@ -68,8 +73,10 @@ public class DebugTabController {
     }
 
     public void step() {
-        System.out.println("Logic over here:   " + logic);
-        logic.getGM().getDebugger().step(selectedGroup);
+        if(!debugListView.getItems().isEmpty()) {
+            System.out.println("Logic over here:   " + logic);
+            logic.getGM().getDebugger().step(selectedGroup);
+        }
     }
 
     public void clearDebugging() {
@@ -138,12 +145,24 @@ public class DebugTabController {
     }
 
     public void changePlayOrStopState() {
-        if(playStopToggle.isSelected()) {
-            logic.getGM().getDebugger().play(selectedGroup);
-            playStopToggle.setText("Stop");
+        if(!debugListView.getItems().isEmpty() || playStopToggle.getText().equals("Stop")) {
+            if (playStopToggle.isSelected()) {
+                logic.getGM().getDebugger().play(selectedGroup);
+                playStopToggle.setText("Stop");
+            } else {
+                logic.getGM().getDebugger().stop();
+                playStopToggle.setText("Play");
+            }
+        }
+    }
+
+    public void changeOrder() {
+        if(stateOfOrder.isSelected()) {
+            logic.getGM().setOrder();
+            stateOfOrder.setText("Unordered");
         } else {
-            logic.getGM().getDebugger().stop();
-            playStopToggle.setText("Play");
+            logic.getGM().setOrder();
+            stateOfOrder.setText("Causal");
         }
     }
 

@@ -4,6 +4,7 @@ import gcom.Message;
 import gcom.groupmanagement.Group;
 import gcom.groupmanagement.Member;
 import javafx.application.Platform;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,7 +18,6 @@ import javafx.stage.Window;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -93,6 +93,9 @@ public class GuiController {
         logic.getGM().removeGroup(group);
        // fillDebugGroupBox();
         updateTree();
+        if(tabPane.getTabs().isEmpty()) {
+            addWelcomeTab();
+        }
         if(dtc != null) {
             Platform.runLater(() -> dtc.initialize(logic, tabPane));
         }
@@ -186,18 +189,23 @@ public class GuiController {
         CustomTab customTab = new CustomTab();
         customTab.setText("Welcome");
         customTab.setContentTextFlow(new TextFlow());
-        String helpText = "\n To create or connect to a group, use the tool menu. \n";
+        String helpText = "\n To create or connect to a group, use the tools menu. \n";
         customTab.setText(helpText, "black");
+        customTab.setClosable(false);
         tabPane.getTabs().add(customTab);
     }
 
     public void addGroupTab(String groupName) {
-        System.out.println("Logic over here:   " + logic);
         CustomTab tab = new CustomTab();
         tab.setText(groupName);
         tab.setContentTextFlow(new TextFlow());
         tabPane.getTabs().add(tab);
         tab.setOnClosed(event -> leaveGroup(groupName));
+        FilteredList<Tab> list = tabPane.getTabs().filtered((t) -> t.getText().equals("Welcome"));
+        if (!list.isEmpty()) {
+            CustomTab wTab = (CustomTab) list.get(0);
+            tabPane.getTabs().remove(wTab);
+        }
     }
 
     public void updateTree() {

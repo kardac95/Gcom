@@ -129,6 +129,10 @@ public class GroupManager {
         order.addInQueue(new Message(group, group.getMember(memberName), memberName + " has disconnected from the group!", "disconnect", null));
     }
 
+    public void setOrder() {
+        System.out.println("CHANGE ORDER");
+    }
+
 
     public Debug getDebugger() {
         return order.getDebug();

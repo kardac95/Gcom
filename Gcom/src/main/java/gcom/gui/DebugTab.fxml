@@ -11,7 +11,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="1035.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gcom.gui.DebugTabController">
    <children>
       <Button fx:id="debugStepButton" layoutX="431.0" layoutY="292.0" mnemonicParsing="false" onAction="#step" prefHeight="30.0" prefWidth="76.0" text="Step" />
-      <ToggleButton layoutX="416.0" layoutY="71.0" mnemonicParsing="false" text="ToggleButton" />
+      <ToggleButton fx:id="stateOfOrder" layoutX="438.0" layoutY="71.0" mnemonicParsing="false" onAction="#changeOrder" text="Causal" />
       <Text layoutX="402.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Causal/Unorder" wrappingWidth="133.6611328125">
          <font>
             <Font size="17.0" />
@@ -22,21 +22,36 @@
             <Font size="17.0" />
          </font>
       </Text>
-      <ScrollPane prefHeight="442.0" prefWidth="241.0">
+      <ScrollPane layoutY="55.0" prefHeight="387.0" prefWidth="241.0">
          <content>
-            <ListView fx:id="debugListView" prefHeight="440.0" prefWidth="239.0" />
+            <ListView fx:id="debugListView" prefHeight="385.0" prefWidth="239.0" />
          </content>
       </ScrollPane>
       <Button fx:id="debugUP" layoutX="285.0" layoutY="71.0" mnemonicParsing="false" onAction="#moveMessageUP" prefHeight="25.0" prefWidth="52.0" text="UP" />
       <Button fx:id="debugDown" layoutX="285.0" layoutY="117.0" mnemonicParsing="false" onAction="#moveMessageDown" text="Down" />
-      <ComboBox fx:id="debugGroupBox" layoutX="666.0" layoutY="71.0" onAction="#setSelectedItem" prefWidth="150.0" promptText="Groups" />
-      <Text layoutX="627.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose a group to monitor">
+      <ComboBox fx:id="debugGroupBox" layoutX="604.0" layoutY="71.0" onAction="#setSelectedItem" prefWidth="150.0" promptText="Groups" />
+      <Text layoutX="565.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose a group to monitor">
          <font>
             <Font size="17.0" />
          </font>
       </Text>
-      <Button fx:id="clearDebug" layoutX="861.0" layoutY="71.0" mnemonicParsing="false" onAction="#clearDebugging" prefHeight="25.0" prefWidth="106.0" text="Clear" />
-      <Button fx:id="debugRemove" layoutX="260.0" layoutY="167.0" mnemonicParsing="false" onAction="#removeItemFromList" text="Remove Item" />
+      <Button fx:id="clearDebug" layoutX="260.0" layoutY="225.0" mnemonicParsing="false" onAction="#clearDebugging" prefHeight="25.0" prefWidth="106.0" text="Clear" />
+      <Button fx:id="debugRemove" layoutX="260.0" layoutY="177.0" mnemonicParsing="false" onAction="#removeItemFromList" text="Remove Item" />
       <ToggleButton fx:id="playStopToggle" layoutX="431.0" layoutY="237.0" mnemonicParsing="false" onAction="#changePlayOrStopState" prefHeight="30.0" prefWidth="76.0" text="Play" />
+      <ScrollPane layoutX="794.0" layoutY="55.0" prefHeight="387.0" prefWidth="241.0">
+         <content>
+            <ListView prefHeight="385.0" prefWidth="239.0" />
+         </content>
+      </ScrollPane>
+      <Text layoutX="849.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message buffer">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <Text layoutX="58.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message queue">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
