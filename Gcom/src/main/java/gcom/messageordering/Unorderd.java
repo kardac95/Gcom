@@ -10,7 +10,7 @@ public class Unorderd extends Order {
 
     @Override
     public Message sendOrder(Message message) {
-        return null;
+        return message;
     }
 
     @Override

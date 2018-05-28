@@ -1,5 +1,6 @@
 package gcom.gui;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import gcom.Message;
 import gcom.groupmanagement.Group;
 import gcom.groupmanagement.Member;
@@ -202,6 +203,7 @@ public class GuiController {
             logic.getGM().createGroup(groupName, "causal");
         } else if(unorderedButton.isSelected()) {
             logic.getGM().createGroup(groupName, "unordered");
+            System.out.println("IM here motherfucker");
         }
 
         this.groupName.clear();

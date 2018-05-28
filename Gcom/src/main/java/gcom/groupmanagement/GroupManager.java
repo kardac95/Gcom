@@ -120,12 +120,21 @@ public class GroupManager {
     }
 
     public void messageGroup(String message, Member sender, String groupName) {
-        order.addInQueue(new Message(groups.get(groupName), sender, message, "message", null));
+        order.addInQueue(new Message(
+                groups.get(groupName),
+                sender,
+                message,
+                "message",
+                null));
     }
 
     public void leaveGroup(String groupName) {
         Group group = groups.get(groupName);
-        order.addInQueue(new Message(group, group.getMember(me.getName()), me.getName() + " has disconnected from the group!", "disconnect", null));
+        order.addInQueue(new Message(
+                group,
+                group.getMember(me.getName()),
+                me.getName() + " has disconnected from the group!", "disconnect",
+                null));
         group.removeMember(me.getName());
     }
 
