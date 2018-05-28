@@ -172,7 +172,7 @@ public class GuiController {
             System.err.println("Debugger is a reserved name.");
             return;
         }
-        logic.getGM().createGroup(groupName);
+        logic.getGM().createGroup(groupName, "causal");
         this.groupName.clear();
         updateTree();
         addGroupTab(groupName);

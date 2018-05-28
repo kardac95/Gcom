@@ -138,6 +138,19 @@ public class GroupManager {
         return order.getDebug();
     }
 
+    public void createGroup(String groupName, String order) {
+        this.groups.put(groupName, new Group(groupName));
+        this.groups.get(groupName).addMember(me);
+        this.groups.get(groupName).setOrder(order);
+        this.order.addInQueue(new Message(
+                                this.groups.get(groupName),
+                                me,
+                                "",
+                                "creategroup",
+                                null
+        ) );
+    }
+
     public void getAvailableGroups() {
         //connect to nameserver
 

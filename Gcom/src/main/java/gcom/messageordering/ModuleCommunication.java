@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ModuleCommunication {
-    private Order order;
+    //private Order order;
     private ConcurrentMap<String, Order> groupOrders;
     private Integer memberIndex;
     private Queue<Message> outgoingQueue;
@@ -22,15 +22,17 @@ public class ModuleCommunication {
     private Debug debugger;
     private Thread inQueueMonitor;
     private Thread outQueueMonitor;
+    private Member myInfo;
 
     public ModuleCommunication(Member myInfo) {
+        this.myInfo = myInfo;
         this.groupOrders = new ConcurrentHashMap<>();
         this.memberIndex = 0;
         this.incomingQueue = new LinkedBlockingQueue<>();
         this.comm = new CommunicationObject();
         this.comm.initCommunication(myInfo);
         this.outgoingQueue = new LinkedBlockingQueue<>();
-        this.order = new CausalOrder(myInfo.getAddress()+myInfo.getPort());
+       // this.order = new CausalOrder(myInfo.getAddress()+myInfo.getPort());
         //this.order = new Unorderd();
         debugger = new DebugObject(comm);
 
@@ -40,8 +42,12 @@ public class ModuleCommunication {
                 //System.out.println("Receive queue");
                 switch (m.getType()) {
                     case "join":
+                        if(!groupOrders.containsKey(m.getGroup().getName())) {
+                            setOrder(m.getGroup().getName(), m.getGroup().getOrder());
+                        }
                         comm.connectToMembers(m.getGroup().getMembers());
-                        order.clock.addNewMemberClock(m.getGroup().getMembers(), m.getVectorClock());
+                        groupOrders.get(m.getGroup().getName()).getClock().addNewMemberClock(m.getGroup().getMembers(), m.getVectorClock());
+                        //order.clock.addNewMemberClock(m.getGroup().getMembers(), m.getVectorClock());
                         break;
                     case "disconnect":
                         /* Disconnect sending member */
@@ -50,7 +56,8 @@ public class ModuleCommunication {
                     default:
                         break;
                 }
-                order.Ordering(m, outgoingQueue);
+                groupOrders.get(m.getGroup().getName()).Ordering(m, outgoingQueue);
+                //order.Ordering(m, outgoingQueue);
             }
         });
 
@@ -65,12 +72,20 @@ public class ModuleCommunication {
                 }
                 if(m.getType().equals("join")) {
                     comm.connectToMembers(m.getGroup().getMembers());
-                    Arrays.stream(m.getGroup().getMembers()).forEach(System.out::println);
+                    /*if(!groupOrders.containsKey(m.getGroup().getName())) {
+                        setOrder(m.getGroup().getName(), m.getGroup().getOrder());
+                    }*/
+                } else if(m.getType().equals("creategroup")) {
+                    setOrder(m.getGroup().getName(), m.getGroup().getOrder());
+                    continue;
+                }else if(m.getType().equals("connect")) {
+                    send(m);
+                    continue;
                 }
+                send(groupOrders.get(m.getGroup().getName()).sendOrder(m));
+                //m = order.sendOrder(m);
 
-                m = order.sendOrder(m);
-
-                send(m);
+                //send(m);
             }
 
         });
@@ -93,11 +108,11 @@ public class ModuleCommunication {
         }
     }
 
-    public void setOrder(String order) {
+    public void setOrder(String groupName,String order) {
         if(order.equals("causal")) {
-            this.order = new CausalOrder(this.order.getClock().getMyId());
+            this.groupOrders.put(groupName, new CausalOrder(myInfo.getAddress()+myInfo.getPort()));//this.order.getClock().getMyId()));
         } else if(order.equals("unordered")) {
-            this.order = new Unorderd();
+            this.groupOrders.put(groupName, new Unorderd());
         } else {
             System.err.println(order + "is not a valid order.");
         }

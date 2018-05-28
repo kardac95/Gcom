@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Group implements Serializable{
     private Map<String, Member> members;
     private String name;
+    private String order;
 
     public Group(String name) {
         this.name = name;
@@ -72,5 +73,13 @@ public class Group implements Serializable{
             ((ConcurrentHashMap<String,Member>)this.members).put(member.getName(), member);
         });
 
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
     }
 }

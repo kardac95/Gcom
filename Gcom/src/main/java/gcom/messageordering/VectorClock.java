@@ -81,6 +81,7 @@ public class VectorClock implements Serializable, Cloneable {
 
         return isBefore;
     }
+
     @Override
     public VectorClock clone() {
         final VectorClock clone;
