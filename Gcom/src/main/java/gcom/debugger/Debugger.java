@@ -42,17 +42,10 @@ public class Debugger {
             while (true) {
                 Message m = comm.getNextMessage();
                 if (debug.get()) {
-                    if(m.getRecipient() != null) {
-                        System.err.println(m.getMessage());
-                        groupBuffer.put(m.getMessage(), new CopyOnWriteArrayList<>());
-                        addDebugBuffer(m.getMessage(), m);
-                        System.err.println("Here I am once again, a torn in the...");
-                    }else {
-                        if(groupBuffer.get(m.getGroup().getName()) == null) {
-                            groupBuffer.put(m.getGroup().getName(), new CopyOnWriteArrayList<>());
-                        }
-                        addDebugBuffer(m.getGroup().getName(), m);
+                    if(groupBuffer.get(m.getGroup().getName()) == null) {
+                        groupBuffer.put(m.getGroup().getName(), new CopyOnWriteArrayList<>());
                     }
+                    addDebugBuffer(m.getGroup().getName(), m);
                 } else {
                     deliverQueue.add(m);
                 }

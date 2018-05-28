@@ -11,6 +11,7 @@ import java.util.Queue;
 public abstract class Order {
 
     VectorClock clock;
+    Long lampCl;
     List <Message> buffer;
 
     public Order() {
@@ -19,7 +20,16 @@ public abstract class Order {
 
     public Order (String myId) {
         clock = new VectorClock(myId);
+        lampCl = 0L;
         buffer = Collections.synchronizedList(new ArrayList<Message>());
+    }
+
+    public long getLampCl() {
+        return lampCl;
+    }
+
+    public void incLampCl() {
+        lampCl++;
     }
 
     public Order (List<Message> buffer) {

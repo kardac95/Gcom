@@ -45,7 +45,7 @@ public class CausalOrder extends Order {
                 }
                 break;
             case "message":
-                clock.inc();
+                incLampCl();
                 break;
             case "connect":
                 break;
@@ -56,7 +56,10 @@ public class CausalOrder extends Order {
                 System.err.println("Illegal message type.");
                 break;
         }
-        message.setVectorClock(clock);
+        message.setVectorClock(clock.clone());
+        System.err.println("b4 " + clock.getClock());
+        message.getVectorClock().getClock().put(clock.getMyId(), getLampCl());
+        System.err.println("after " + clock.getClock());
         return message;
     }
 

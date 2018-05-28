@@ -50,11 +50,11 @@ public class GroupManager {
     private void messageTypeAction(Message m) {
         switch(m.getType()) {
             case "connect":
-                groups.get(m.getMessage()).addMember(m.getSender());
-
+                //groups.get(m.getMessage()).addMember(m.getSender());
+                groups.get(m.getGroup().getName()).addMember(m.getSender());
                 order.addInQueue(new Message(
-                        groups.get(m.getMessage()),
-                        m.getRecipient(),
+                        groups.get(m.getGroup().getName()),
+                        me,
                         m.getSender().getName() + " has joined the group!",
                         "join",
                         null));
@@ -86,7 +86,9 @@ public class GroupManager {
 
     public void joinGroupRequest(Member recipient, String groupName) {
         //System.out.println("joinGroupRequest - GroupManager layer");
-        order.addInQueue(new Message(recipient, me, groupName, "connect", null));
+        Group group = new Group(groupName);
+        group.addMember(recipient);
+        order.addInQueue(new Message(group, me, groupName, "connect", null));
     }
 
     public void joinGroup(Group group, Member me) {

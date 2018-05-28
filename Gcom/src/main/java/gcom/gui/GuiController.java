@@ -54,7 +54,7 @@ public class GuiController {
 
 
     public void setTextInTextFlow (final Message m) {
-            if(m.getRecipient() != null) {
+            if(m.getType().equals("connect")) {
                 return;
             }
             CustomTab tab = (CustomTab)tabPane.getTabs().filtered((t) -> t.getText().equals(m.getGroup().getName())).get(0);
@@ -236,8 +236,8 @@ public class GuiController {
               } catch (InterruptedException e) {
                   e.printStackTrace();
               }
-              if(m == null) {
-                  System.err.println("Message is null in join");
+              if(m.getType().equals("connect")) {
+                  continue;
               }
               //System.out.println("Update!");
               Platform.runLater(this::updateTree);

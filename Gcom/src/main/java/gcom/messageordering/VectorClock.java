@@ -3,13 +3,12 @@ package gcom.messageordering;
 import gcom.groupmanagement.Member;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.time.Clock;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
-public class VectorClock implements Serializable {
+public class VectorClock implements Serializable, Cloneable {
     private String myId;
     private ConcurrentHashMap<String, Long> clock;
 
@@ -71,9 +70,8 @@ public class VectorClock implements Serializable {
     public boolean isBefore(VectorClock other) {
         boolean isBefore = false;
 
-        Set<String> keySet = other.clock.keySet();
-
-        for (String key : keySet) {
+        for (String key : other.clock.keySet()) {
+            System.err.println(key);
             int cmp = Long.compare(clock.get(key), other.clock.get(key));
             if (cmp > 0)
                 return false;
@@ -83,4 +81,18 @@ public class VectorClock implements Serializable {
 
         return isBefore;
     }
+    @Override
+    public VectorClock clone() {
+        final VectorClock clone;
+        try {
+            clone =(VectorClock) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            throw new Error("Something impossible just happened");
+        }
+        clone.clock = new ConcurrentHashMap<>(this.clock);
+        clone.myId = this.myId;
+        return clone;
+    }
+
 }

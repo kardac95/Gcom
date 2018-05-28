@@ -12,22 +12,12 @@ public class Message implements Serializable {
     private Member sender;
     private Group group;
     private VectorClock vectorClock;
-    private Member recipient;
-
 
     public Message(Group group, Member sender, String message, String type, VectorClock vectorClock) {
         this.message = message;
         this.sender = sender;
         this.vectorClock = vectorClock;
         this.group = group;
-        this.type = type;
-    }
-
-    public Message(Member recipient, Member sender, String message, String type, VectorClock vectorClock) {
-        this.message = message;
-        this.sender = sender;
-        this.vectorClock = vectorClock;
-        this.recipient = recipient;
         this.type = type;
     }
 
@@ -57,9 +47,5 @@ public class Message implements Serializable {
 
     public String getType() {
         return type;
-    }
-
-    public Member getRecipient() {
-        return recipient;
     }
 }

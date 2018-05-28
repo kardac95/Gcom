@@ -128,17 +128,11 @@ public class DebugTabController {
         }
         debugListView.getItems().clear();
 
+
         debugBuffer.forEach((m) -> {
-            if(m.getRecipient() == null) {
-                if (workingDebugTab.equals(m.getGroup().getName())) {
-                    //debugListView.getItems().add(m.getMessage() +" ["+m.getVectorClock().getValue(m.getVectorClock().getMyId())+"]");
-                    debugListView.getItems().add(m.getMessage());
-                }
-            } else {
-                if (workingDebugTab.equals(m.getMessage())) {
-                    //debugListView.getItems().add(m.getMessage() +" ["+m.getVectorClock().getValue(m.getVectorClock().getMyId())+"]");
-                    debugListView.getItems().add(m.getMessage());
-                }
+            if (workingDebugTab.equals(m.getGroup().getName())) {
+                //debugListView.getItems().add(m.getMessage() +" ["+m.getVectorClock().getValue(m.getVectorClock().getMyId())+"]");
+                debugListView.getItems().add(m.getMessage());
             }
 
         });

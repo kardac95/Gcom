@@ -6,11 +6,15 @@ import gcom.debugger.Debug;
 import gcom.debugger.DebugObject;
 import gcom.groupmanagement.Member;
 
+import java.util.Arrays;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ModuleCommunication {
     private Order order;
+    private ConcurrentMap<String, Order> groupOrders;
     private Integer memberIndex;
     private Queue<Message> outgoingQueue;
     private Queue<Message> incomingQueue;
@@ -20,6 +24,7 @@ public class ModuleCommunication {
     private Thread outQueueMonitor;
 
     public ModuleCommunication(Member myInfo) {
+        this.groupOrders = new ConcurrentHashMap<>();
         this.memberIndex = 0;
         this.incomingQueue = new LinkedBlockingQueue<>();
         this.comm = new CommunicationObject();
@@ -58,8 +63,10 @@ public class ModuleCommunication {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                if(m.getType().equals("join"))
+                if(m.getType().equals("join")) {
                     comm.connectToMembers(m.getGroup().getMembers());
+                    Arrays.stream(m.getGroup().getMembers()).forEach(System.out::println);
+                }
 
                 m = order.sendOrder(m);
 
@@ -74,8 +81,8 @@ public class ModuleCommunication {
     public void send(Message message){
         if(message.getType().equals("connect")) {
 
-            comm.connectToMember(message.getRecipient());
-            comm.unReliableUnicast(message, message.getRecipient());
+            comm.connectToMember(message.getGroup().getMembers()[0]);
+            comm.unReliableUnicast(message, message.getGroup().getMembers()[0]);
 
         } else{
             if(message.getGroup() == null) {
