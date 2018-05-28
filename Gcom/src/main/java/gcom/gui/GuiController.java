@@ -5,12 +5,17 @@ import gcom.groupmanagement.Group;
 import gcom.groupmanagement.Member;
 import javafx.application.Platform;
 import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Window;
@@ -51,6 +56,9 @@ public class GuiController {
     @FXML TextField connectHostName;
     @FXML Button connectButton;
     @FXML MenuItem debugStart;
+
+    RadioButton causalButton;
+    RadioButton unorderedButton;
 
 
     public void setTextInTextFlow (final Message m) {
@@ -155,11 +163,28 @@ public class GuiController {
         groupName = new TextField();
         groupButton = new Button("Create");
 
+        ToggleGroup myToggleGroup = new ToggleGroup();
+
+        causalButton = new RadioButton("Causal");
+        unorderedButton = new RadioButton("Unordered");
+        causalButton.setSelected(true);
+
+        causalButton.setToggleGroup(myToggleGroup);
+        unorderedButton.setToggleGroup(myToggleGroup);
+
+        VBox container = new VBox(causalButton, unorderedButton);
+
+
         GridPane grid = new GridPane();
         grid.add(text1, 1 ,1);
         grid.add(groupName, 1, 2);
         grid.add(groupButton,1,3);
+        grid.add(container, 2,3);
+
+
         groupDialog.getDialogPane().setContent(grid);
+
+
         Window window = groupDialog.getDialogPane().getScene().getWindow();
         window.setOnCloseRequest(windowEvent -> groupDialog.hide());
         groupButton.setOnAction(event -> createGroup());
@@ -172,7 +197,13 @@ public class GuiController {
             System.err.println("Debugger is a reserved name.");
             return;
         }
-        logic.getGM().createGroup(groupName, "causal");
+
+        if(causalButton.isSelected()) {
+            logic.getGM().createGroup(groupName, "causal");
+        } else if(unorderedButton.isSelected()) {
+            logic.getGM().createGroup(groupName, "unordered");
+        }
+
         this.groupName.clear();
         updateTree();
         addGroupTab(groupName);
