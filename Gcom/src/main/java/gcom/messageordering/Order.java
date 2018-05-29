@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class Order {
 
@@ -41,7 +42,7 @@ public abstract class Order {
     public abstract void Ordering(Message data, Queue<Message> outQueue);
 
     public List <Message> getBuffer() {
-        return buffer;
+        return (List)((CopyOnWriteArrayList<Message>)buffer).clone();
     }
 
     public VectorClock getClock() {

@@ -61,4 +61,14 @@ public class DebugObject implements Debug {
     public Thread monitorDebugBuffer(Runnable updateFunction) {
         return debug.monitorDebugBuffer(updateFunction);
     }
+
+    @Override
+    public void setOrderBuffer(String groupName, List<Message> buffer) {
+        debug.setOrderBuffer(groupName, buffer);
+    }
+
+    @Override
+    public List<Message> getOrderBuffer(String groupName) {
+        return debug.getOrderBuffer(groupName);
+    }
 }

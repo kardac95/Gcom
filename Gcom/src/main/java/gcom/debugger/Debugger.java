@@ -20,6 +20,7 @@ public class Debugger {
     private Communication comm;
     private BlockingQueue<Message> deliverQueue;
     private ConcurrentHashMap<String, CopyOnWriteArrayList<Message>> groupBuffer;
+    private ConcurrentHashMap<String, List<Message>> orderBuffer;
 
     private Lock bufferLock;
     private Condition bufferCond;
@@ -133,5 +134,13 @@ public class Debugger {
 
     public void setDebug(boolean debug) {
         this.debug.set(debug);
+    }
+
+    public List<Message> getOrderBuffer(String groupName) {
+        return orderBuffer.get(groupName);
+    }
+
+    public void setOrderBuffer(String groupName, List buffer) {
+        this.orderBuffer.put(groupName, buffer);
     }
 }

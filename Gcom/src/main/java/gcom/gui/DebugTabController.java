@@ -21,6 +21,7 @@ public class DebugTabController {
     List<EventHandler<Event>> closedEventHandlers = new ArrayList<>();
 
     @FXML ListView<String> debugListView;
+    @FXML ListView<String> debugMessageBuffer;
     @FXML Button debugUP;
     @FXML Button debugDown;
     @FXML Button clearDebug;
@@ -116,6 +117,7 @@ public class DebugTabController {
     public void fillListView() {
         System.out.println("this is selected group: " + selectedGroup);
         List<Message> debugBuffer = logic.getGM().getDebugger().getDebugBuffer(selectedGroup);
+        //List<Message> messageOrderBuffer = logic.getGM().getDebugger().getOrderBuffer(selectedGroup);
         if(debugListView == null) {
             System.out.println("RETURN");
             return;
@@ -137,6 +139,8 @@ public class DebugTabController {
 
         });
     }
+
+
 
     public void changePlayOrStopState() {
         if(!debugListView.getItems().isEmpty() || playStopToggle.getText().equals("Stop")) {
