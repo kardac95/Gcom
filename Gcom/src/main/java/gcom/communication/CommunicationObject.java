@@ -10,11 +10,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class CommunicationObject implements Communication {
 
     private Node n;
-    private Member myInfo;
 
     @Override
     public void initCommunication(Member myInfo) {
-        this.myInfo = myInfo;
         n = new Node(myInfo);
     }
 
@@ -50,12 +48,13 @@ public class CommunicationObject implements Communication {
     @Override
     public Message getNextMessage() {
         System.out.println("getting the goddamn call...");
-        Message m = null;
+        Message m;
         try {
             m = ((LinkedBlockingQueue<Message>)n.getInQueue()).take();
         } catch (InterruptedException e) {
             e.printStackTrace();
-            System.err.println("12314");
+            System.err.println("Message take failed.");
+            return null;
         }
         System.out.println(m.getType());
         System.out.println("delivering shit");

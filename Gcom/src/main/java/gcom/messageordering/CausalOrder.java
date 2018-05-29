@@ -30,7 +30,6 @@ public class CausalOrder extends Order {
             }
             outQueue.add(message);
         }
-
     }
 
     public Message sendOrder(Message message) {
@@ -50,7 +49,6 @@ public class CausalOrder extends Order {
             case "connect":
                 break;
             case "disconnect":
-
                 break;
             default:
                 System.err.println("Illegal message type.");

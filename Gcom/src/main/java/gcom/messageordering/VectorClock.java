@@ -57,6 +57,10 @@ public class VectorClock implements Serializable, Cloneable {
 
     @Override
     public boolean equals(Object o) {
+        if(!o.getClass().equals(VectorClock.class)) {
+            System.err.println("Must be VectorClock.class object to compare.");
+            return false;
+        }
         Map <String, Long> cmpVector = ((VectorClock)o).getClock();
         for (String k: cmpVector.keySet()) {
             if(!clock.get(k).equals(cmpVector.get(k))) {
@@ -71,11 +75,10 @@ public class VectorClock implements Serializable, Cloneable {
         boolean isBefore = false;
 
         for (String key : other.clock.keySet()) {
-            System.err.println(key);
             int cmp = Long.compare(clock.get(key), other.clock.get(key));
             if (cmp > 0)
                 return false;
-            else //if (cmp < 0)
+            else
                 isBefore = true;
         }
 
