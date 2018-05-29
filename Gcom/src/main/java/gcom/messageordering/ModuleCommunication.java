@@ -13,33 +13,27 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ModuleCommunication {
-    //private Order order;
     private ConcurrentMap<String, Order> groupOrders;
-    private Integer memberIndex;
     private Queue<Message> outgoingQueue;
     private Queue<Message> incomingQueue;
     private CommunicationObject comm;
     private Debug debugger;
-    private Thread inQueueMonitor;
-    private Thread outQueueMonitor;
     private Member myInfo;
 
     public ModuleCommunication(Member myInfo) {
+        Thread inQueueMonitor;
+        Thread outQueueMonitor;
         this.myInfo = myInfo;
         this.groupOrders = new ConcurrentHashMap<>();
-        this.memberIndex = 0;
         this.incomingQueue = new LinkedBlockingQueue<>();
         this.comm = new CommunicationObject();
         this.comm.initCommunication(myInfo);
         this.outgoingQueue = new LinkedBlockingQueue<>();
-       // this.order = new CausalOrder(myInfo.getAddress()+myInfo.getPort());
-        //this.order = new Unorderd();
         debugger = new DebugObject(comm);
 
         outQueueMonitor = new Thread(() -> {
             while(true) {
-                Message m = debugger.getNextMessage();//comm.getNextMessage();
-                //System.out.println("Receive queue");
+                Message m = debugger.getNextMessage();
                 switch (m.getType()) {
                     case "join":
                         if(!groupOrders.containsKey(m.getGroup().getName())) {
@@ -47,7 +41,6 @@ public class ModuleCommunication {
                         }
                         comm.connectToMembers(m.getGroup().getMembers());
                         groupOrders.get(m.getGroup().getName()).getClock().addNewMemberClock(m.getGroup().getMembers(), m.getVectorClock());
-                        //order.clock.addNewMemberClock(m.getGroup().getMembers(), m.getVectorClock());
                         break;
                     case "disconnect":
                         /* Disconnect sending member */
@@ -57,35 +50,39 @@ public class ModuleCommunication {
                         break;
                 }
                 groupOrders.get(m.getGroup().getName()).Ordering(m, outgoingQueue);
-                //order.Ordering(m, outgoingQueue);
             }
         });
 
         inQueueMonitor = new Thread(() -> {
             while(true) {
 
-                Message m = null;
+                Message m;
                 try {
                     m = ((LinkedBlockingQueue<Message>)incomingQueue).take();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    System.err.println("Message take failed from in'Queue.");
+                    continue;
                 }
-                if(m.getType().equals("join")) {
-                    comm.connectToMembers(m.getGroup().getMembers());
-                    /*if(!groupOrders.containsKey(m.getGroup().getName())) {
+                switch (m.getType()) {
+                    case "join":
+                        comm.connectToMembers(m.getGroup().getMembers());
+                        /*if(!groupOrders.containsKey(m.getGroup().getName())) {
+                            setOrder(m.getGroup().getName(), m.getGroup().getOrder());
+                        }*/
+                        break;
+                    case "creategroup":
                         setOrder(m.getGroup().getName(), m.getGroup().getOrder());
-                    }*/
-                } else if(m.getType().equals("creategroup")) {
-                    setOrder(m.getGroup().getName(), m.getGroup().getOrder());
-                    continue;
-                }else if(m.getType().equals("connect")) {
-                    send(m);
-                    continue;
+                        continue;
+                    case "connect":
+                        send(m);
+                        continue;
                 }
-                send(groupOrders.get(m.getGroup().getName()).sendOrder(m));
-                //m = order.sendOrder(m);
 
-                //send(m);
+                send(groupOrders.get(m.getGroup().getName()).sendOrder(m));
+
+                if(m.getType().equals("disconnect")) {
+                    groupOrders.remove(m.getGroup().getName());
+                }
             }
 
         });
@@ -101,7 +98,7 @@ public class ModuleCommunication {
 
         } else{
             if(message.getGroup() == null) {
-                System.err.println("Trying to send null message");
+                System.err.println("No specified recipient.");
             } else {
                 comm.unReliableMulticast(message, message.getGroup().getMembers());
             }
@@ -109,12 +106,16 @@ public class ModuleCommunication {
     }
 
     public void setOrder(String groupName,String order) {
-        if(order.equals("causal")) {
-            this.groupOrders.put(groupName, new CausalOrder(myInfo.getAddress()+myInfo.getPort()));//this.order.getClock().getMyId()));
-        } else if(order.equals("unordered")) {
-            this.groupOrders.put(groupName, new Unorderd());
-        } else {
-            System.err.println(order + "is not a valid order.");
+        switch (order) {
+            case "causal":
+                this.groupOrders.put(groupName, new CausalOrder(myInfo.getAddress() + myInfo.getPort()));//this.order.getClock().getMyId()));
+                break;
+            case "unordered":
+                this.groupOrders.put(groupName, new Unorderd());
+                break;
+            default:
+                System.err.println(order + "is not a valid order.");
+                break;
         }
     }
 

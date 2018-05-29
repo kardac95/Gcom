@@ -18,9 +18,6 @@ public class Group implements Serializable{
         this.members = members;
     }
 
-    public void addMember(String memberName, String address, String port) {
-        members.put(memberName, new Member(memberName, address, port));
-    }
     public void addMember(Member member) {
         members.put(member.getName(), member);
     }
@@ -58,21 +55,9 @@ public class Group implements Serializable{
     }
 
     public void setMembers(Member[] members) {
-        /*Set keySet = this.members.keySet();
-        keySet.forEach(m -> this.members.remove(m));
+        ((ConcurrentHashMap<String,Member>)this.members).forEach(members.length, (s, member) -> this.members.remove(s));
 
-        Arrays.stream(members).forEach(m -> {
-            this.members.put(m.getName(), m);
-        });
-        */
-        ((ConcurrentHashMap<String,Member>)this.members).forEach(members.length, (s, member) -> {
-            this.members.remove(s);
-        });
-
-        Arrays.stream(members).forEach(member -> {
-            ((ConcurrentHashMap<String,Member>)this.members).put(member.getName(), member);
-        });
-
+        Arrays.stream(members).forEach(member -> this.members.put(member.getName(), member));
     }
 
     public String getOrder() {

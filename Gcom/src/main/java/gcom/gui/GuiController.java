@@ -83,7 +83,6 @@ public class GuiController {
             return;
         }
         if(!(currentTab.getText().equals("Debugger"))) {
-            //System.out.println("Current tab: " + currentTab.getText());
             logic.getGM().messageGroup(sendArea.getText(), logic.getMe(), currentTab.getText());
             sendArea.clear();
             sendArea.setText("");
