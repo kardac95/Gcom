@@ -50,7 +50,6 @@ public class GroupManager {
     private void messageTypeAction(Message m) {
         switch(m.getType()) {
             case "connect":
-                //groups.get(m.getMessage()).addMember(m.getSender());
                 groups.get(m.getGroup().getName()).addMember(m.getSender());
                 order.addInQueue(new Message(
                         groups.get(m.getGroup().getName()),
@@ -80,28 +79,15 @@ public class GroupManager {
         groups.put(groupName, new Group(groupName));
         groups.get(groupName).addMember(me);
     }
-    public void createGroup(String groupName, ConcurrentHashMap<String, Member> members) {
-        groups.put(groupName, new Group(groupName, members));
-    }
 
     public void joinGroupRequest(Member recipient, String groupName) {
-        //System.out.println("joinGroupRequest - GroupManager layer");
         Group group = new Group(groupName);
         group.addMember(recipient);
         order.addInQueue(new Message(group, me, groupName, "connect", null));
     }
 
-    public void joinGroup(Group group, Member me) {
-        order.addInQueue(new Message(group, me, null, "connect", null));
-        group.addMember(me);
-    }
-
     public void removeGroup(String groupName) {
         groups.remove(groupName);
-    }
-
-    public Group getGroup(String groupName) {
-        return groups.get(groupName);
     }
 
     public Group[] getGroups() {
@@ -142,7 +128,6 @@ public class GroupManager {
         System.out.println("CHANGE ORDER");
     }
 
-
     public Debug getDebugger() {
         return order.getDebug();
     }
@@ -158,13 +143,5 @@ public class GroupManager {
                                 "creategroup",
                                 null
         ) );
-    }
-
-    public void getAvailableGroups() {
-        //connect to nameserver
-
-        //request list of groups
-
-        //show groups and connection alternatives
     }
 }
