@@ -48,7 +48,7 @@ public class Node {
         } catch (RemoteException e) {
             inQueue.add(new Message (
                     message.getGroup(),
-                    message.getSender(),
+                    member,
                     member.getName() + " has disconnected",
                     "disconnect",
                     null

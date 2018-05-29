@@ -1,6 +1,7 @@
 package gcom.messageordering;
 
 import gcom.Message;
+import gcom.groupmanagement.Member;
 
 import java.util.List;
 import java.util.Queue;
@@ -14,6 +15,15 @@ public class Unordered extends Order {
 
     @Override
     public Message sendOrder(Message message) {
+        if(message.getType().equals("join")) {
+            Member[] members = message.getGroup().getMembers();
+
+            for (Member member : members) {
+                if(!clock.getClock().containsKey(member.getAddress()+member.getPort())) {
+                    clock.getClock().put(member.getAddress()+member.getPort(), 0L);
+                }
+            }
+        }
         message.setVectorClock(this.clock.clone());
         return message;
     }
