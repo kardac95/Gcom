@@ -80,12 +80,12 @@ public class ModuleCommunication {
                 }
 
                 send(groupOrders.get(m.getGroup().getName()).sendOrder(m));
-                /*
+
                 if(m.getType().equals("disconnect")) {
                     if(m.getSender().getName().equals(myInfo.getName())) {
                         groupOrders.remove(m.getGroup().getName());
                     }
-                }*/
+                }
             }
 
         });
