@@ -44,9 +44,7 @@ public class Debugger {
             while (true) {
                 Message m = comm.getNextMessage();
                 if (debug.get()) {
-                    if(groupBuffer.get(m.getGroup().getName()) == null) {
-                        groupBuffer.put(m.getGroup().getName(), new CopyOnWriteArrayList<>());
-                    }
+                    groupBuffer.computeIfAbsent(m.getGroup().getName(), k -> new CopyOnWriteArrayList<>());
                     addDebugBuffer(m.getGroup().getName(), m);
                 } else {
                     deliverQueue.add(m);
@@ -118,7 +116,7 @@ public class Debugger {
     }
 
     public List<Message> getDebugBuffer(String group) {
-        return new CopyOnWriteArrayList<Message>(groupBuffer.get(group));
+        return new CopyOnWriteArrayList<>(groupBuffer.get(group));
     }
 
     public void play(String group) {
