@@ -47,7 +47,6 @@ public class CommunicationObject implements Communication {
 
     @Override
     public Message getNextMessage() {
-        System.out.println("getting the goddamn call...");
         Message m;
         try {
             m = ((LinkedBlockingQueue<Message>)n.getInQueue()).take();
@@ -57,7 +56,6 @@ public class CommunicationObject implements Communication {
             return null;
         }
         System.out.println(m.getType());
-        System.out.println("delivering shit");
         return m;
     }
 

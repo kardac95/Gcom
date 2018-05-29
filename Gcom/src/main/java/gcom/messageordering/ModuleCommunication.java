@@ -44,7 +44,7 @@ public class ModuleCommunication {
                         break;
                     case "disconnect":
                         /* Disconnect sending member */
-                        //comm.disconnectMember(m.getSender());
+                        comm.disconnectMember(m.getSender());
                         break;
                     default:
                         break;

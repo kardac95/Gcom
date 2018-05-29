@@ -41,8 +41,8 @@ public abstract class Order {
 
     public abstract void Ordering(Message data, Queue<Message> outQueue);
 
-    public List <Message> getBuffer() {
-        return (List)((CopyOnWriteArrayList<Message>)buffer).clone();
+    public CopyOnWriteArrayList <Message> getBuffer() {
+        return new CopyOnWriteArrayList<>(buffer);
     }
 
     public VectorClock getClock() {

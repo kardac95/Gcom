@@ -117,7 +117,6 @@ public class DebugTabController {
     public void fillListView() {
         System.out.println("this is selected group: " + selectedGroup);
         List<Message> debugBuffer = logic.getGM().getDebugger().getDebugBuffer(selectedGroup);
-        //List<Message> messageOrderBuffer = logic.getGM().getDebugger().getOrderBuffer(selectedGroup);
         if(debugListView == null) {
             System.out.println("RETURN");
             return;
@@ -128,8 +127,12 @@ public class DebugTabController {
             System.out.println("RETURN");
             return;
         }
+
         debugListView.getItems().clear();
 
+        if(debugBuffer == null) {
+            return;
+        }
 
         debugBuffer.forEach((m) -> {
             if (workingDebugTab.equals(m.getGroup().getName())) {
@@ -138,6 +141,23 @@ public class DebugTabController {
             }
 
         });
+
+        if(debugMessageBuffer == null){
+            return;
+        }
+
+        List<Message> messageOrderBuffer = logic.getGM().getDebugger().getOrderBuffer(selectedGroup);
+
+        if(messageOrderBuffer == null){
+            return;
+        }
+
+        debugMessageBuffer.getItems().clear();
+
+        messageOrderBuffer.forEach(m -> {
+            debugMessageBuffer.getItems().add(m.getVectorClock().toString() + " : " + m.getSender().getName());
+        });
+
     }
 
 

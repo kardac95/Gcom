@@ -28,6 +28,7 @@ public class Debugger {
 
     public Debugger(Communication comm) {
         this.comm = comm;
+        this.orderBuffer = new ConcurrentHashMap<>();
         this.deliverQueue = new LinkedBlockingQueue<>();
         this.debug = new AtomicBoolean(false);
         this.bufferLock = new ReentrantLock();
@@ -66,7 +67,6 @@ public class Debugger {
                 }
             }
                 //update Gui!
-                System.err.println("UPDATE GUI");
                 new Thread(updateFunction).start();
                 bufferStateChanged.set(false);
                 bufferLock.unlock();
@@ -141,6 +141,10 @@ public class Debugger {
     }
 
     public void setOrderBuffer(String groupName, List buffer) {
+        bufferLock.lock();
         this.orderBuffer.put(groupName, buffer);
+        bufferStateChanged.set(true);
+        bufferCond.signal();
+        bufferLock.unlock();
     }
 }
