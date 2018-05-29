@@ -41,7 +41,7 @@ public class Node {
 
     public void unReliableUnicast(Message message, Member member) {
         try {
-            if(!connections.containsKey(member.getAddress()+member.getPort())) {
+            if(!connections.containsKey(member.getAddress() + member.getPort())) {
                 connectToNode(member);
             }
             connections.get(member.getAddress() + member.getPort()).sendMessage(message);
@@ -54,7 +54,7 @@ public class Node {
                     null
             ));
             System.err.println(member.getName() + " has disconnected");
-            //e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -105,7 +105,7 @@ public class Node {
         }
 
         @Override
-        public boolean sendMessage(Message message) throws RemoteException {
+        public boolean sendMessage(Message message) {
             inQueue.add(message);
             return true;
         }
