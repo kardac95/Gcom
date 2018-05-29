@@ -39,7 +39,6 @@ public class ModuleCommunication {
                             setOrder(m.getGroup().getName(), m.getGroup().getOrder());
                         }
                         comm.connectToMembers(m.getGroup().getMembers());
-                        System.err.println("message clock: " + m.getVectorClock().getClock().keySet());
                         groupOrders.get(m.getGroup().getName()).getClock().addNewMemberClock(m.getGroup().getMembers(), m.getVectorClock());
                         break;
                     case "disconnect":
@@ -81,10 +80,12 @@ public class ModuleCommunication {
                 }
 
                 send(groupOrders.get(m.getGroup().getName()).sendOrder(m));
-
+                /*
                 if(m.getType().equals("disconnect")) {
-                    groupOrders.remove(m.getGroup().getName());
-                }
+                    if(m.getSender().getName().equals(myInfo.getName())) {
+                        groupOrders.remove(m.getGroup().getName());
+                    }
+                }*/
             }
 
         });

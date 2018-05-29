@@ -46,22 +46,19 @@ public class Node {
             }
             connections.get(member.getAddress() + member.getPort()).sendMessage(message);
         } catch (RemoteException e) {
-            inQueue.add(new Message (
-                    message.getGroup(),
+            unReliableMulticast(new Message(message.getGroup(),
                     member,
                     member.getName() + " has disconnected",
                     "disconnect",
                     null
-            ));
+            ), message.getGroup().getMembers());
             System.err.println(member.getName() + " has disconnected");
             e.printStackTrace();
         }
     }
 
     public void unReliableMulticast(Message message, Member[] members) {
-        Arrays.stream(members).forEach(m -> {
-            unReliableUnicast(message, m);
-        });
+        Arrays.stream(members).forEach(m -> unReliableUnicast(message, m));
     }
 
     public void connectToNode(Member member) {

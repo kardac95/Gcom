@@ -55,9 +55,7 @@ public class CausalOrder extends Order {
                 break;
         }
         message.setVectorClock(clock.clone());
-        System.err.println("b4 " + clock.getClock());
         message.getVectorClock().getClock().put(clock.getMyId(), getLampCl());
-        System.err.println("after " + clock.getClock());
         return message;
     }
 
