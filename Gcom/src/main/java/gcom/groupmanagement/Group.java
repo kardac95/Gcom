@@ -34,20 +34,11 @@ public class Group implements Serializable{
             memberList[i] = members.get(member.toString());
             i++;
         }
-
         return memberList;
-    }
-
-    public boolean isEmpty() {
-        return members.isEmpty();
     }
 
     public Member getMember(String name) {
         return members.get(name);
-    }
-
-    public boolean isMember(String memberName) {
-        return members.keySet().contains(memberName);
     }
 
     public String getName() {
