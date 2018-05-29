@@ -202,7 +202,6 @@ public class GuiController {
             logic.getGM().createGroup(groupName, "causal");
         } else if(unorderedButton.isSelected()) {
             logic.getGM().createGroup(groupName, "unordered");
-            System.out.println("IM here motherfucker");
         }
 
         this.groupName.clear();
@@ -300,7 +299,6 @@ public class GuiController {
     public void init() {
         sendArea.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-                System.out.println("Send");
                 sendMessage();
                 sendArea.clear();
                 keyEvent.consume();

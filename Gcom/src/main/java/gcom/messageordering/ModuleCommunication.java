@@ -44,12 +44,14 @@ public class ModuleCommunication {
                         break;
                     case "disconnect":
                         /* Disconnect sending member */
-                        //comm.disconnectMember(m.getSender());
+                        comm.disconnectMember(m.getSender());
                         break;
                     default:
                         break;
                 }
                 groupOrders.get(m.getGroup().getName()).Ordering(m, outgoingQueue);
+                debugger.setOrderBuffer(m.getGroup().getName(), groupOrders.get(m.getGroup().getName()).getBuffer());
+
             }
         });
 

@@ -17,4 +17,6 @@ public interface Debug {
     void step(String group);
     Thread monitorDebugBuffer(Runnable updateFunction);
 
+    void setOrderBuffer(String name, List<Message> buffer);
+    List <Message> getOrderBuffer(String groupName);
 }

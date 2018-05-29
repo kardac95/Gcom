@@ -21,6 +21,7 @@ public class DebugTabController {
     List<EventHandler<Event>> closedEventHandlers = new ArrayList<>();
 
     @FXML ListView<String> debugListView;
+    @FXML ListView<String> debugMessageBuffer;
     @FXML Button debugUP;
     @FXML Button debugDown;
     @FXML Button clearDebug;
@@ -28,7 +29,6 @@ public class DebugTabController {
     @FXML ComboBox<String> debugGroupBox;
     @FXML Button debugRemove;
     @FXML ToggleButton playStopToggle;
-    @FXML ToggleButton stateOfOrder;
     public DebugTabController() {
 
     }
@@ -126,8 +126,12 @@ public class DebugTabController {
             System.out.println("RETURN");
             return;
         }
+
         debugListView.getItems().clear();
 
+        if(debugBuffer == null) {
+            return;
+        }
 
         debugBuffer.forEach((m) -> {
             if (workingDebugTab.equals(m.getGroup().getName())) {
@@ -136,7 +140,26 @@ public class DebugTabController {
             }
 
         });
+
+        if(debugMessageBuffer == null){
+            return;
+        }
+
+        List<Message> messageOrderBuffer = logic.getGM().getDebugger().getOrderBuffer(selectedGroup);
+
+        if(messageOrderBuffer == null){
+            return;
+        }
+
+        debugMessageBuffer.getItems().clear();
+
+        messageOrderBuffer.forEach(m -> {
+            debugMessageBuffer.getItems().add(m.getVectorClock().toString() + " : " + m.getSender().getName());
+        });
+
     }
+
+
 
     public void changePlayOrStopState() {
         if(!debugListView.getItems().isEmpty() || playStopToggle.getText().equals("Stop")) {
@@ -147,16 +170,6 @@ public class DebugTabController {
                 logic.getGM().getDebugger().stop();
                 playStopToggle.setText("Play");
             }
-        }
-    }
-
-    public void changeOrder() {
-        if(stateOfOrder.isSelected()) {
-            logic.getGM().setOrder();
-            stateOfOrder.setText("Unordered");
-        } else {
-            logic.getGM().setOrder();
-            stateOfOrder.setText("Causal");
         }
     }
 

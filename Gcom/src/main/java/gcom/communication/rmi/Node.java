@@ -39,11 +39,22 @@ public class Node {
         connectToNode(myInfo);
     }
 
-    public void unReliableUnicast(Message message, Member m) {
+    public void unReliableUnicast(Message message, Member member) {
         try {
-            connections.get(m.getAddress() + m.getPort()).sendMessage(message);
+            if(!connections.containsKey(member.getAddress()+member.getPort())) {
+                connectToNode(member);
+            }
+            connections.get(member.getAddress() + member.getPort()).sendMessage(message);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            inQueue.add(new Message (
+                    message.getGroup(),
+                    message.getSender(),
+                    member.getName() + " has disconnected",
+                    "disconnect",
+                    null
+            ));
+            System.err.println(member.getName() + " has disconnected");
+            //e.printStackTrace();
         }
     }
 
@@ -95,7 +106,6 @@ public class Node {
 
         @Override
         public boolean sendMessage(Message message) throws RemoteException {
-            System.out.println("Received Message");
             inQueue.add(message);
             return true;
         }
