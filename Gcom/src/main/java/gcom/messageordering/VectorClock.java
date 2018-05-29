@@ -48,7 +48,9 @@ public class VectorClock implements Serializable, Cloneable {
     }
 
     public void addNewMemberClock(Member[] newMembers, VectorClock newClock) {
+        System.err.println("local clock: " + clock.keySet());
         Arrays.stream(newMembers).forEach(m -> {
+            System.err.println(m.getAddress()+m.getPort());
             if(!clock.containsKey(m.getAddress()+m.getPort())) {
                 clock.put(m.getAddress()+m.getPort(), newClock.getValue(m.getAddress()+m.getPort()));
             }

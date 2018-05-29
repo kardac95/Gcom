@@ -6,10 +6,15 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class Unorderd extends Order {
+public class Unordered extends Order {
+
+    public Unordered(String myId) {
+        super(myId);
+    }
 
     @Override
     public Message sendOrder(Message message) {
+        message.setVectorClock(this.clock.clone());
         return message;
     }
 

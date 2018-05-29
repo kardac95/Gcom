@@ -15,10 +15,6 @@ public abstract class Order {
     Long lampCl;
     List <Message> buffer;
 
-    public Order() {
-
-    }
-
     public Order (String myId) {
         clock = new VectorClock(myId);
         lampCl = 0L;

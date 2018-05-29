@@ -117,8 +117,8 @@ public class Debugger {
         return m;
     }
 
-    public List getDebugBuffer(String group) {
-        return groupBuffer.get(group);
+    public List<Message> getDebugBuffer(String group) {
+        return new CopyOnWriteArrayList<Message>(groupBuffer.get(group));
     }
 
     public void play(String group) {

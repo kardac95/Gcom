@@ -47,7 +47,7 @@ public class CausalOrder extends Order {
                 incLampCl();
                 break;
             case "connect":
-                break;
+                return message;
             case "disconnect":
                 break;
             default:

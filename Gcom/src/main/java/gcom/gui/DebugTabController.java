@@ -29,6 +29,7 @@ public class DebugTabController {
     @FXML ComboBox<String> debugGroupBox;
     @FXML Button debugRemove;
     @FXML ToggleButton playStopToggle;
+    @FXML ToggleButton stateOfOrder;
     public DebugTabController() {
 
     }
@@ -127,11 +128,12 @@ public class DebugTabController {
             return;
         }
 
-        debugListView.getItems().clear();
-
         if(debugBuffer == null) {
             return;
         }
+
+        debugListView.getItems().clear();
+
 
         debugBuffer.forEach((m) -> {
             if (workingDebugTab.equals(m.getGroup().getName())) {
@@ -170,6 +172,16 @@ public class DebugTabController {
                 logic.getGM().getDebugger().stop();
                 playStopToggle.setText("Play");
             }
+        }
+    }
+
+    public void changeOrder() {
+        if(stateOfOrder.isSelected()) {
+            logic.getGM().setOrder();
+            stateOfOrder.setText("Unordered");
+        } else {
+            logic.getGM().setOrder();
+            stateOfOrder.setText("Causal");
         }
     }
 

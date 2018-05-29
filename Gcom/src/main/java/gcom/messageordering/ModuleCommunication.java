@@ -6,7 +6,6 @@ import gcom.debugger.Debug;
 import gcom.debugger.DebugObject;
 import gcom.groupmanagement.Member;
 
-import java.util.Arrays;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -40,6 +39,7 @@ public class ModuleCommunication {
                             setOrder(m.getGroup().getName(), m.getGroup().getOrder());
                         }
                         comm.connectToMembers(m.getGroup().getMembers());
+                        System.err.println("message clock: " + m.getVectorClock().getClock().keySet());
                         groupOrders.get(m.getGroup().getName()).getClock().addNewMemberClock(m.getGroup().getMembers(), m.getVectorClock());
                         break;
                     case "disconnect":
@@ -113,7 +113,7 @@ public class ModuleCommunication {
                 this.groupOrders.put(groupName, new CausalOrder(myInfo.getAddress() + myInfo.getPort()));//this.order.getClock().getMyId()));
                 break;
             case "unordered":
-                this.groupOrders.put(groupName, new Unorderd());
+                this.groupOrders.put(groupName, new Unordered(myInfo.getAddress() + myInfo.getPort()));
                 break;
             default:
                 System.err.println(order + "is not a valid order.");
