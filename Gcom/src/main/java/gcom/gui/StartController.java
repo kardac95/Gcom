@@ -11,9 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 public class StartController {
 
@@ -57,11 +55,9 @@ public class StartController {
 
             if(os.equals("Linux") || os.equals("Windows 10")) {
                 //These 2 lines are for Linux!
-                URL url = new File("src/main/java/gcom/gui/gui.fxml").toURL();
-                loader = new FXMLLoader(url);
-            } else if(os.equals("Windows")) {
-                //This line is for Windows!
-                loader = new FXMLLoader(Main.class.getResource("gui.fxml"));
+                /*URL url = new File("src/main/java/gcom/gui/gui.fxml").toURL();
+                loader = new FXMLLoader(url);*/
+                loader = new FXMLLoader(getClass().getResource("/gui.fxml"));
             }
             Parent root = loader.load();
 

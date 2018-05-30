@@ -1,29 +1,22 @@
 package gcom.gui;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import gcom.Message;
 import gcom.groupmanagement.Group;
 import gcom.groupmanagement.Member;
 import javafx.application.Platform;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Window;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -284,11 +277,9 @@ public class GuiController {
         String os = System.getProperty("os.name");
         if(os.equals("Linux") || os.equals("Windows 10")) {
             //These 2 lines are for Linux!
-            URL url = new File("src/main/java/gcom/gui/DebugTab.fxml").toURL();
-            loader = new FXMLLoader(url);
-        } else if(os.equals("Windows")) {
-            //This line is for Windows!
-            loader = new FXMLLoader(Main.class.getResource("DebugTab.fxml"));
+            /*URL url = new File("src/main/java/gcom/gui/DebugTab.fxml").toURL();
+            loader = new FXMLLoader(url);*/
+            loader = new FXMLLoader(getClass().getResource("/DebugTab.fxml"));
         }
         Parent groupTab = loader.load();
         dtc = loader.getController();

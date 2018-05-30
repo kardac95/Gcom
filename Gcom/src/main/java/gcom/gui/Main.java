@@ -7,9 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.net.URL;
-
 public class Main extends Application {
 
     private FXMLLoader loader;
@@ -25,11 +22,9 @@ public class Main extends Application {
 
             if (os.equals("Linux") || os.equals("Windows 10")) {
                 //These 2 lines are for Linux!
-                URL url = new File("src/main/java/gcom/gui/gui.fxml").toURL();
-                loader = new FXMLLoader(url);
-            } else if (os.equals("Windows")) {
-                //This line is for Windows!
-                loader = new FXMLLoader(Main.class.getResource("gui.fxml"));
+                /*URL url = new File("src/main/java/gcom/gui/gui.fxml").toURL();
+                loader = new FXMLLoader(url);*/
+                loader = new FXMLLoader(getClass().getResource("/gui.fxml"));
             }
             Parent root = loader.load();
 
@@ -54,11 +49,7 @@ public class Main extends Application {
 
             if (os.equals("Linux") || os.equals("Windows 10")) {
                 //These 2 lines are for Linux!
-                URL url = new File("src/main/java/gcom/gui/Start.fxml").toURL();
-                loader = new FXMLLoader(url);
-            } else if (os.equals("Windows")) {
-                //This line is for Windows!
-                loader = new FXMLLoader(Main.class.getResource("Start.fxml"));
+                loader = new FXMLLoader(getClass().getResource("/Start.fxml"));
             }
 
             Parent root = loader.load();
