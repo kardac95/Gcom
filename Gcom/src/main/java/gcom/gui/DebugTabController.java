@@ -18,7 +18,6 @@ public class DebugTabController {
     private Logic logic;
     private TabPane tabPane;
     private String selectedGroup;
-    List<EventHandler<Event>> closedEventHandlers = new ArrayList<>();
 
     @FXML ListView<String> debugListView;
     @FXML ListView<String> debugMessageBuffer;
@@ -29,7 +28,6 @@ public class DebugTabController {
     @FXML ComboBox<String> debugGroupBox;
     @FXML Button debugRemove;
     @FXML ToggleButton playStopToggle;
-    @FXML ToggleButton stateOfOrder;
     public DebugTabController() {
 
     }
@@ -40,15 +38,11 @@ public class DebugTabController {
 
     public void fillDebugGroupBox() {
         selectedGroup = debugGroupBox.getSelectionModel().getSelectedItem();
-        System.out.println("this is selected group and i am fine? " + selectedGroup);
         debugGroupBox.getItems().clear();
-        System.out.println(logic.getGM().getGroups().length);
         Arrays.stream(logic.getGM().getGroups()).forEach(g -> {
             if(g.getName().equals(selectedGroup)) {
-                System.out.println("INSIDE SLECTED GROUP");
                 debugGroupBox.getSelectionModel().select(selectedGroup);
             }
-            System.out.println("riperinos perpperinos");
             debugGroupBox.getItems().add(g.getName());
         });
     }
@@ -75,7 +69,6 @@ public class DebugTabController {
 
     public void step() {
         if(!debugListView.getItems().isEmpty()) {
-            System.out.println("Logic over here:   " + logic);
             logic.getGM().getDebugger().step(selectedGroup);
         }
     }
@@ -115,16 +108,13 @@ public class DebugTabController {
     }
 
     public void fillListView() {
-        System.out.println("this is selected group: " + selectedGroup);
         List<Message> debugBuffer = logic.getGM().getDebugger().getDebugBuffer(selectedGroup);
-        if(debugListView == null) {
-            System.out.println("RETURN");
+        if(debugListView == null || debugBuffer == null) {
             return;
         }
 
         String workingDebugTab = debugGroupBox.getSelectionModel().getSelectedItem();
         if(workingDebugTab == null) {
-            System.out.println("RETURN");
             return;
         }
 
@@ -138,25 +128,20 @@ public class DebugTabController {
         debugBuffer.forEach((m) -> {
             if (workingDebugTab.equals(m.getGroup().getName())) {
                 //debugListView.getItems().add(m.getMessage() +" ["+m.getVectorClock().getValue(m.getVectorClock().getMyId())+"]");
-                debugListView.getItems().add(m.getMessage());
+                debugListView.getItems().add(m.getVectorClock() + " : " + m.getSender().getName() + " : " + m.getMessage());
             }
 
         });
-
-        if(debugMessageBuffer == null){
-            return;
-        }
-
         List<Message> messageOrderBuffer = logic.getGM().getDebugger().getOrderBuffer(selectedGroup);
 
-        if(messageOrderBuffer == null){
+        if(debugMessageBuffer == null || messageOrderBuffer == null){
             return;
         }
 
         debugMessageBuffer.getItems().clear();
 
         messageOrderBuffer.forEach(m -> {
-            debugMessageBuffer.getItems().add(m.getVectorClock().toString() + " : " + m.getSender().getName());
+            debugMessageBuffer.getItems().add(m.getVectorClock().toString() +" : " + m.getSender().getName() + " : " + m.getMessage());
         });
 
     }
@@ -172,16 +157,6 @@ public class DebugTabController {
                 logic.getGM().getDebugger().stop();
                 playStopToggle.setText("Play");
             }
-        }
-    }
-
-    public void changeOrder() {
-        if(stateOfOrder.isSelected()) {
-            logic.getGM().setOrder();
-            stateOfOrder.setText("Unordered");
-        } else {
-            logic.getGM().setOrder();
-            stateOfOrder.setText("Causal");
         }
     }
 

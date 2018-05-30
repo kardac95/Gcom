@@ -48,6 +48,11 @@ public class ModuleCommunication {
                     default:
                         break;
                 }
+
+                if(groupOrders.containsKey(m.getGroup().getName())) {
+                    continue;
+                }
+
                 groupOrders.get(m.getGroup().getName()).Ordering(m, outgoingQueue);
                 debugger.setOrderBuffer(m.getGroup().getName(), groupOrders.get(m.getGroup().getName()).getBuffer());
 

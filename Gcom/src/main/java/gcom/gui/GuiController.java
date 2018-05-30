@@ -81,6 +81,9 @@ public class GuiController {
             sendArea.setText("");
         } else {
             ComboBox<String> cb = dtc.getDebugGroupBox();
+            if(cb.getSelectionModel().getSelectedItem() == null) {
+                return;
+            }
             logic.getGM().messageGroup(sendArea.getText(),logic.getMe(),cb.getSelectionModel().getSelectedItem());
             sendArea.clear();
             sendArea.setText("");

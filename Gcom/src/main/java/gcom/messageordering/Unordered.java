@@ -24,6 +24,11 @@ public class Unordered extends Order {
                 }
             }
         }
+
+        if(message.getType().equals("message")) {
+            clock.inc();
+        }
+
         message.setVectorClock(this.clock.clone());
         return message;
     }

@@ -55,7 +55,6 @@ public class CommunicationObject implements Communication {
             System.err.println("Message take failed.");
             return null;
         }
-        System.out.println(m.getType());
         return m;
     }
 

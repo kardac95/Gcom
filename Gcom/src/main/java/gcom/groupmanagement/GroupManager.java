@@ -124,9 +124,6 @@ public class GroupManager {
         group.removeMember(me.getName());
     }
 
-    public void setOrder() {
-        System.out.println("CHANGE ORDER");
-    }
 
     public Debug getDebugger() {
         return order.getDebug();

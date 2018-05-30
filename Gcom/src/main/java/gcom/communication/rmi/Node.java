@@ -53,7 +53,9 @@ public class Node {
                     null
             ), message.getGroup().getMembers());
             System.err.println(member.getName() + " has disconnected");
-            e.printStackTrace();
+            //e.printStackTrace();
+        } catch (NullPointerException e2) {
+            //e2.printStackTrace();
         }
     }
 
