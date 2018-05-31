@@ -49,10 +49,9 @@ public class ModuleCommunication {
                         break;
                 }
 
-                if(groupOrders.containsKey(m.getGroup().getName())) {
+                if(!groupOrders.containsKey(m.getGroup().getName())) {
                     continue;
                 }
-
                 groupOrders.get(m.getGroup().getName()).Ordering(m, outgoingQueue);
                 debugger.setOrderBuffer(m.getGroup().getName(), groupOrders.get(m.getGroup().getName()).getBuffer());
 
@@ -103,7 +102,7 @@ public class ModuleCommunication {
 
             comm.connectToMember(message.getGroup().getMembers()[0]);
             comm.unReliableUnicast(message, message.getGroup().getMembers()[0]);
-
+            System.out.println("sent " + message.getMessage() );
         } else{
             if(message.getGroup() == null) {
                 System.err.println("No specified recipient.");

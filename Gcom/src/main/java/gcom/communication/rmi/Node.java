@@ -36,7 +36,11 @@ public class Node {
             e.printStackTrace();
         }
 
-        connectToNode(myInfo);
+        try {
+            connectToNode(myInfo);
+        } catch (RemoteException | NotBoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void unReliableUnicast(Message message, Member member) {
@@ -45,7 +49,9 @@ public class Node {
                 connectToNode(member);
             }
             connections.get(member.getAddress() + member.getPort()).sendMessage(message);
-        } catch (RemoteException e) {
+        } catch (RemoteException | NotBoundException e) {
+            //disconnectFromNode(member);
+            message.getGroup().removeMember(member.getName());
             unReliableMulticast(new Message(message.getGroup(),
                     member,
                     member.getName() + " has disconnected",
@@ -63,17 +69,13 @@ public class Node {
         Arrays.stream(members).forEach(m -> unReliableUnicast(message, m));
     }
 
-    public void connectToNode(Member member) {
-        try {
-            if(connections.get(member.getAddress()+member.getPort()) == null) {
-                Registry registry = LocateRegistry.getRegistry(member.getAddress(), Integer.parseInt(member.getPort()));
-                RemoteObject stub = (RemoteObject) registry.lookup("MessageService");
-                connections.put(member.getAddress()+member.getPort(), stub);
-            }else {
-                System.out.println("Connection already established");
-            }
-        } catch (RemoteException | NotBoundException e) {
-            e.printStackTrace();
+    public void connectToNode(Member member) throws RemoteException, NotBoundException {
+        if(connections.get(member.getAddress()+member.getPort()) == null) {
+            Registry registry = LocateRegistry.getRegistry(member.getAddress(), Integer.parseInt(member.getPort()));
+            RemoteObject stub = (RemoteObject) registry.lookup("MessageService");
+            connections.put(member.getAddress()+member.getPort(), stub);
+        }else {
+            System.out.println("Connection already established");
         }
     }
 
@@ -84,7 +86,15 @@ public class Node {
     }
 
     public void connectToNodes(Member[] members) {
-        Arrays.stream(members).forEach(this::connectToNode);
+        Arrays.stream(members).forEach((m)-> {
+            try {
+                connectToNode(m);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (NotBoundException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 

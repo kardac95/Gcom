@@ -5,6 +5,7 @@ import gcom.Message;
 import gcom.debugger.Debug;
 import gcom.messageordering.Ordering;
 import gcom.messageordering.OrderingObject;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.HashMap;
 import java.util.Queue;
@@ -68,10 +69,15 @@ public class GroupManager {
             case "message":
                 break;
             case "disconnect":
-                groups.get(m.getGroup().getName()).removeMember(m.getSender().getName());
+                try {
+                    groups.get(m.getGroup().getName()).removeMember(m.getSender().getName());
+                } catch(NullPointerException e) {
+                    //like I care
+                }
                 break;
             default:
                 System.err.println("Unknown message type");
+                break;
         }
     }
 

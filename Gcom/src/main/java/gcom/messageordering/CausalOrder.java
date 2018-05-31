@@ -74,7 +74,14 @@ public class CausalOrder extends Order {
 
     private boolean isNext(Message message) {
         Set<String> keySet = message.getVectorClock().getClock().keySet();
-        for (String key : keySet) {
+        Set<String> equalKeys = new HashSet<>();
+        keySet.forEach(s -> {
+                if (clock.getClock().containsKey(s)) {
+                    equalKeys.add(s);
+                }
+        });
+
+        for (String key : equalKeys) {
             if (key.equals(message.getSender().getAddress() + message.getSender().getPort())) {
                 if (!(message.getVectorClock().getValue(key) == (this.clock.getValue(key) + 1))) {
                     return false;

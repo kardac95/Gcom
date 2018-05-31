@@ -266,7 +266,6 @@ public class GuiController {
               if(m.getType().equals("connect")) {
                   continue;
               }
-              //System.out.println("Update!");
               Platform.runLater(this::updateTree);
               final Message message = m;
               Platform.runLater(() -> setTextInTextFlow(message));

@@ -4,6 +4,8 @@ import gcom.groupmanagement.Member;
 import gcom.Message;
 import gcom.communication.rmi.Node;
 
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -18,7 +20,11 @@ public class CommunicationObject implements Communication {
 
     @Override
     public void connectToMember(Member member) {
-        n.connectToNode(member);
+        try {
+            n.connectToNode(member);
+        } catch (RemoteException | NotBoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
